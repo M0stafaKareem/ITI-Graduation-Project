@@ -1,0 +1,44 @@
+# Root-level ignores (common for both frontend and backend)
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+.env
+# .env.*
+
+# Ignore IDE and system-specific files
+frontend/.vscode/
+/.idea/
+*.DS_Store
+*.log
+
+# Backend (Laravel) ignores
+/backend/vendor/
+/backend/node_modules/
+/backend/storage/*.key
+/backend/storage/logs/*.log
+/backend/public/storage
+/backend/public/hot
+/backend/public/storage
+/backend/public/mix-manifest.json
+/backend/public/*.map
+/backend/public/css
+/backend/public/js
+
+# Laravel cache files
+/backend/bootstrap/cache/*
+!backend/bootstrap/cache/.gitignore
+
+# Frontend (Angular) ignores
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.angular/cache
+/frontend/.angular/config.json
+/frontend/src/environments/environment.prod.ts
+/frontend/src/environments/environment.ts
+
+# Build output for Angular
+/frontend/dist/*
+/frontend/out-tsc
+/frontend/.angular/cache
+/frontend/.firebase/
