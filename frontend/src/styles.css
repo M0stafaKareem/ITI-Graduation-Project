@@ -1,1 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --mainTextColor: #415094;
+  --textTablecolor: #828bb2;
+}
+
+body {
+  color: var(--mainTextColor);
+}

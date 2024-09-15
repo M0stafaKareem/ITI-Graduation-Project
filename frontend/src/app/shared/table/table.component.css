@@ -1,0 +1,18 @@
+table {
+  margin-top: 2rem;
+  --border: 1px solid black;
+  border-radius: 10px;
+  border-spacing: 0;
+  border-collapse: separate;
+  overflow: hidden;
+}
+
+th,
+td {
+  vertical-align: middle;
+  padding-left: 20px;
+}
+
+th {
+  color: var(--mainTextColor);
+}
