@@ -1,0 +1,58 @@
+<div class="d-flex" [class.sidebar-open]="isSidebarOpen">
+  <div
+    class="sidebar d-flex flex-column flex-shrink-0 p-3 text-white bg-dark"
+    [class.active]="isSidebarOpen"
+  >
+    <a
+      href="/"
+      class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
+    >
+      <span class="fs-4">Sidebar</span>
+    </a>
+    <hr />
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a
+          routerLink="dashboard"
+          routerLinkActive="active"
+          class="nav-link"
+          style="color: white"
+        >
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="clients"
+          routerLinkActive="active"
+          class="nav-link text-white"
+          >Clients</a
+        >
+      </li>
+      <li>
+        <a
+          routerLink="cases"
+          routerLinkActive="active"
+          class="nav-link text-white"
+          >Cases</a
+        >
+      </li>
+      <li>
+        <a
+          class="nav-link text-white"
+          routerLink="court"
+          routerLinkActive="active"
+          >Court</a
+        >
+      </li>
+    </ul>
+  </div>
+
+  <button
+    class="btn btn-primary toggle-sidebar d-md-none"
+    (click)="toggleSidebar()"
+    style="position: fixed; top: 10px; left: 10px; z-index: 1001"
+  >
+    <i class="fa fa-bars"></i>
+  </button>
+</div>

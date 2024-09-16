@@ -1,0 +1,24 @@
+<div class="">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">SL</th>
+        <th scope="col">{{ firstColumnHeader }}</th>
+        <th scope="col">{{ secondColumnHeader }}</th>
+        <th scope="col">{{ thirdColumnHeader }}</th>
+        <th scope="col">{{ fourthColumnHeader }}</th>
+        <ng-content select="fifthColumnHeader"></ng-content>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <ng-content select="firstContent"></ng-content>
+        <ng-content select="secondContent"></ng-content>
+        <ng-content select="thirdContent"></ng-content>
+        <ng-content select="fourthContent"></ng-content>
+        <ng-content select="fifthContent"></ng-content>
+      </tr>
+    </tbody>
+  </table>
+</div>

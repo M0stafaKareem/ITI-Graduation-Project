@@ -1,0 +1,7 @@
+th {
+  color: var(--mainTextColor);
+}
+
+td {
+  color: var(--textTablecolor);
+}

@@ -1,0 +1,19 @@
+<div class="container">
+  <app-secondary-nav tableTitle="Client List" addNewButton="New Client" />
+  <app-table
+    firstColumnHeader="Client"
+    secondColumnHeader="Contact"
+    thirdColumnHeader="Category"
+    fourthColumnHeader="Address"
+  >
+    <th ngProjectAs="fifthColumnHeader" scope="col">Action</th>
+
+    <td ngProjectAs="firstContent">Client Name</td>
+    <td ngProjectAs="secondContent">Mobile Number <br />Email</td>
+    <td ngProjectAs="thirdContent">Client Category</td>
+    <td ngProjectAs="fourthContent">Client Address</td>
+    <td ngProjectAs="fifthContent">
+      <button>SELECT <i class="fa-solid fa-arrow-down"></i></button>
+    </td>
+  </app-table>
+</div>
