@@ -6,6 +6,5 @@ import { Component, ViewEncapsulation } from '@angular/core';
   imports: [],
   templateUrl: './case.component.html',
   styleUrls: ['./case.component.css'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class CaseComponent {}

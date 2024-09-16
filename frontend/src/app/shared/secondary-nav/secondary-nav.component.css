@@ -1,3 +1,18 @@
+nav {
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  nav .left-nav,
+  nav .search {
+    margin: auto;
+  }
+
+  nav .left-nav {
+    justify-content: space-between;
+  }
+}
+
 h3 {
   color: var(--mainTextColor);
 }
@@ -31,11 +46,10 @@ input[type="search"] {
   font-size: 16px;
   border: none;
   outline: none;
-  border-bottom: 2px solid #ccc; /* Default bottom border color */
+  border-bottom: 2px solid #ccc;
   position: relative;
 }
 
-/* Add a pseudo-element for the animated bottom border */
 input[type="search"]::after {
   content: "";
   position: absolute;
@@ -43,11 +57,10 @@ input[type="search"]::after {
   left: 0;
   width: 0;
   height: 2px;
-  background-color: black; /* Desired bottom border color */
+  background-color: black;
   transition: width 0.5s ease;
 }
 
-/* On focus, animate the bottom border width from 0% to 100% */
 input[type="search"]:focus::after {
   width: 100%;
 }

@@ -29,6 +29,6 @@ button:hover {
   color: white;
 }
 
-span {
-  color: red;
+.me-5 {
+  flex: auto;
 }

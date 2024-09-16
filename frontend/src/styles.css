@@ -3,6 +3,8 @@
   --textTablecolor: #828bb2;
 }
 
+html,
 body {
   color: var(--mainTextColor);
+  overflow-x: hidden;
 }
