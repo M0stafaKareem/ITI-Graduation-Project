@@ -38,6 +38,8 @@ button {
 .search {
   position: relative;
   width: 300px;
+  background-color: transparent;
+  border-bottom: 2px solid #bce;
 }
 
 input[type="search"] {
@@ -46,8 +48,8 @@ input[type="search"] {
   font-size: 16px;
   border: none;
   outline: none;
-  border-bottom: 2px solid #ccc;
   position: relative;
+  background-color: transparent;
 }
 
 input[type="search"]::after {
@@ -61,6 +63,6 @@ input[type="search"]::after {
   transition: width 0.5s ease;
 }
 
-input[type="search"]:focus::after {
+input[type="search"]::after:focus {
   width: 100%;
 }

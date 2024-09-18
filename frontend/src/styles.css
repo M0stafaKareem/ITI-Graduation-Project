@@ -7,4 +7,5 @@ html,
 body {
   color: var(--mainTextColor);
   overflow-x: hidden;
+  background: url(./assets/body-bg.jpg);
 }
