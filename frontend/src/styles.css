@@ -1,1 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --mainTextColor: #415094;
+  --textTablecolor: #828bb2;
+}
+
+html,
+body {
+  color: var(--mainTextColor);
+  overflow-x: hidden;
+  background: url(./assets/body-bg.jpg);
+}

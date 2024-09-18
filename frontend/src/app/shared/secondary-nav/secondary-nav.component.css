@@ -1,0 +1,68 @@
+nav {
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  nav .left-nav,
+  nav .search {
+    margin: auto;
+  }
+
+  nav .left-nav {
+    justify-content: space-between;
+  }
+}
+
+h3 {
+  color: var(--mainTextColor);
+}
+
+button {
+  background: rgb(247, 0, 190);
+  background: linear-gradient(
+    151deg,
+    rgba(247, 0, 190, 1) 1%,
+    rgba(228, 8, 200, 1) 17%,
+    rgba(223, 10, 203, 1) 21%,
+    rgba(212, 15, 209, 1) 30%,
+    rgba(198, 21, 216, 1) 42%,
+    rgba(180, 28, 226, 1) 57%,
+    rgba(128, 50, 253, 1) 100%
+  );
+  padding: 5px 15px;
+  border-radius: 40px;
+  border: none;
+  color: white;
+}
+
+.search {
+  position: relative;
+  width: 300px;
+  background-color: transparent;
+  border-bottom: 2px solid #bce;
+}
+
+input[type="search"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  position: relative;
+  background-color: transparent;
+}
+
+input[type="search"]::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: black;
+  transition: width 0.5s ease;
+}
+
+input[type="search"]::after:focus {
+  width: 100%;
+}

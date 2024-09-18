@@ -1,0 +1,20 @@
+<div class="">
+  <app-secondary-nav
+    tableTitle="All Cases"
+    addNewButton="New Case"
+    addingRoute="add-case"
+  />
+  <app-table
+    firstColumnHeader="Case"
+    secondColumnHeader="Client"
+    thirdColumnHeader="Details"
+    fourthColumnHeader="Actions"
+  >
+    <td casetd ngProjectAs="firstContent"></td>
+    <td casetd ngProjectAs="secondContent"></td>
+    <td casetd ngProjectAs="thirdContent"></td>
+    <td ngProjectAs="fourthContent">
+      <button>SELECT <i class="fa-solid fa-arrow-down"></i></button>
+    </td>
+  </app-table>
+</div>

@@ -1,0 +1,55 @@
+table {
+  margin-top: 2rem;
+  --border: 1px solid black;
+  border-radius: 10px;
+  border-spacing: 0;
+  border-collapse: separate;
+  overflow: hidden;
+}
+
+th,
+td {
+  vertical-align: middle;
+  padding-left: 20px;
+}
+
+th {
+  color: var(--mainTextColor);
+}
+
+@media (max-width: 768px) {
+  table thead {
+    display: none;
+  }
+  table tbody tr {
+    display: flex;
+    flex-direction: column;
+  }
+  table tbody tr td,
+  table tbody tr th {
+    display: block;
+    width: 100%;
+  }
+  table tbody tr td:last-child {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+  }
+}
+
+.content {
+  transition: margin-left 0.3s ease-in-out;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  /* On larger screens, adjust the content to account for the sidebar width */
+  .content {
+    margin-left: 280px;
+  }
+}
+
+/* Sidebar toggle button */
+.toggle-sidebar {
+  z-index: 1001;
+}
