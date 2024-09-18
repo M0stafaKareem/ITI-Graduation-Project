@@ -1,8 +1,8 @@
-.grid {
-  display: grid;
-  grid-template-columns: 20rem 1fr; 
+.main-wrapper {
+  display: main-wrapper;
+  main-wrapper-template-columns: 20rem 1fr;
 }
-.grid {
+.main-wrapper {
   display: flex;
   width: 100%;
   height: 100vh;
@@ -36,7 +36,7 @@
     transform: translateX(0);
   }
 
-  .grid.sidebar-open .main-content {
+  .main-wrapper.sidebar-open .main-content {
     width: 100%;
   }
 }

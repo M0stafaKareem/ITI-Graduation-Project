@@ -1,0 +1,65 @@
+<div class="d-flex mainSide" [class.sidebar-open]="isSidebarOpen">
+  <div
+    class="sidebar d-flex flex-column flex-shrink-0 pe-3 text-white bg-transparent"
+    [class.active]="isSidebarOpen"
+  >
+    <a
+      href="/"
+      class="d-flex align-items-center mb-3 mb-md-0 p-3 me-md-auto text-decoration-none"
+      style="color: var(--mainTextColor)"
+    >
+      <span class="fs-4">Sidebar</span>
+    </a>
+    <hr style="color: var(--mainTextColor)" />
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a
+          routerLink="dashboard"
+          routerLinkActive="activated"
+          class="nav-link"
+          style="color: var(--mainTextColor)"
+        >
+          <i class="fa-solid fa-table-cells"></i>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a routerLink="clients" routerLinkActive="activated" class="nav-link">
+          <i class="fa-solid fa-users"></i>
+          Clients</a
+        >
+      </li>
+      <li>
+        <a routerLink="cases" routerLinkActive="activated" class="nav-link">
+          <i class="fa-solid fa-suitcase"></i>
+          Cases</a
+        >
+      </li>
+      <li>
+        <a class="nav-link" routerLink="court" routerLinkActive="activated">
+          <i class="fa-solid fa-building-columns"></i>
+          Court</a
+        >
+      </li>
+    </ul>
+    @if (isSidebarOpen) {
+    <button
+      class="btn btn-danger close-sidebar d-md-none"
+      (click)="toggleSidebar()"
+      style="position: fixed; top: 10px; left: 230px; z-index: 1001"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+    }
+  </div>
+
+  @if (!isSidebarOpen) {
+  <button
+    class="btn btn-primary toggle-sidebar d-md-none"
+    (click)="toggleSidebar()"
+    style="position: fixed; top: 10px; left: 10px; z-index: 1001"
+  >
+    <i class="fa fa-bars"></i>
+  </button>
+  }
+</div>
