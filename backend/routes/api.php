@@ -4,6 +4,7 @@ use App\Http\Controllers\CaseCategoryController;
 use App\Http\Controllers\CaseController;
 use App\Http\Controllers\CaseGradeController;
 use App\Http\Controllers\CasesPartiesController;
+use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\PartyController;
 
 use Illuminate\Http\Request;
@@ -34,16 +35,17 @@ Route::group(['prefix' => 'case'], function () {
 
 // Verb          Path                        Action  Route Name
 // GET           /users                      index   users.index
-// GET           /users/create               create  users.create
+// // GET           /users/create               create  users.create
 // POST          /users                      store   users.store
 // GET           /users/{user}               show    users.show
 // GET           /users/{user}/edit          edit    users.edit
-// PUT|PATCH     /users/{user}               update  users.update
+//  //PUT|PATCH     /users/{user}               update  users.update
 // DELETE        /users/{user}               destroy users.destroy
 Route::apiResource('CaseCategories', CaseCategoryController::class);
 Route::apiResource('CaseGrades', CaseGradeController::class);
 Route::apiResource('parties', PartyController::class);
 Route::apiResource('CasesParties', CasesPartiesController::class);
 Route::apiResource('Cases',CaseController::class);
+Route::apiResource('Clients', ClientsController::class);
 
 
