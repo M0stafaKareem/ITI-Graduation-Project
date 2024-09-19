@@ -15,6 +15,7 @@ class MCase extends Model
         'first_session_date',
         'case_category_id',
         'case_grade_id',
+        'client_id',
     ];
 
     protected $casts = [
