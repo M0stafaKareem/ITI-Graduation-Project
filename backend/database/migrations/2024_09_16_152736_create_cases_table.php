@@ -33,6 +33,10 @@ return new class extends Migration
 			$table->foreign('case_grade_id')->references('id')
 				->on('case_grades')->onDelete('SET NULL');
 
+			$table->bigInteger('client_id')->nullable()->unsigned();
+			$table->foreign('client_id')->references('id')
+				->on('clients')->onDelete('SET NULL');
+
 
 			$table->timestamps();
 
