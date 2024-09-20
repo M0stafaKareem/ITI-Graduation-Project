@@ -7,10 +7,18 @@ table {
   overflow: hidden;
 }
 
-th,
-td {
+tbody {
+  background-color: white;
+}
+
+th {
   vertical-align: middle;
   padding-left: 20px;
+}
+
+td {
+  padding-left: 20px;
+  min-width: 200px;
 }
 
 th {
@@ -19,7 +27,7 @@ th {
 
 @media (max-width: 768px) {
   table thead {
-    display: none;
+    display: contents;
   }
   table tbody tr {
     display: flex;
@@ -36,18 +44,25 @@ th {
     padding-top: 10px;
   }
 }
+/* @media screen and (max-width: 750px) {
+  tbody,
+  thead {
+    float: left;
+  }
+  thead {
+    min-width: 120px;
+  }
+  td,
+  th {
+    display: block;
+  }
+} */
 
+/* @media  (min-width: 768px) {
 .content {
-  transition: margin-left 0.3s ease-in-out;
-  width: 100%;
-}
-
-@media (min-width: 768px) {
-  /* On larger screens, adjust the content to account for the sidebar width */
-  .content {
     margin-left: 280px;
   }
-}
+} */
 
 /* Sidebar toggle button */
 .toggle-sidebar {
