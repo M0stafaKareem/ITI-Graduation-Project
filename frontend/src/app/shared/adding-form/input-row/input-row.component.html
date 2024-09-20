@@ -1,0 +1,23 @@
+@if (input_Info.type == 'select') {
+<div class="input-group">
+  <label for="selectInput">{{ input_Info.title | uppercase }}</label>
+  <select id="selectInput" (change)="emmitNewValue($event)">
+    <option [value]="null" hidden>
+      Please Select an {{ input_Info.title }}
+    </option>
+    @for (item of input_Info.options; track $index) {
+    <option [value]="item">{{ item }}</option>
+    }
+  </select>
+</div>
+} @else {
+<div class="input-group">
+  <label for="input-row">{{ input_Info.title | uppercase }}</label>
+  <input
+    [id]="input_Info.id"
+    [placeholder]="input_Info.title"
+    [type]="input_Info.type"
+    (change)="emmitNewValue($event)"
+  />
+</div>
+}

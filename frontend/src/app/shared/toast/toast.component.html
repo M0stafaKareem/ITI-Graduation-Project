@@ -1,0 +1,15 @@
+<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast-body">
+    {{ toastMessage }}
+    <div class="mt-2 pt-2 border-top">
+      <button
+        type="button"
+        class="btn btn-secondary btn-sm"
+        (click)="onClickHandler()"
+        data-bs-dismiss="toast"
+      >
+        {{ isError ? "retry" : "done" }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="form-box">
+    <h2>Add Case</h2>
+    <form>
+      @for (item of formInputRows; track $index) {
+      <app-input-row
+        [input_Info]="item"
+        (inputChanged)="saveInputData($index, $event)"
+      />
+      }
+      <app-toast [isError]="true" />
+      <button type="submit">Add</button>
+    </form>
+  </div>
+</div>
