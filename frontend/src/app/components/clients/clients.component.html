@@ -12,7 +12,9 @@
   >
     @for (client of clients; track $index) {
     <tr>
-      <td style="color: var(--mainTextColor)">{{ $index + 1 }}</td>
+      <td style="color: var(--mainTextColor)" class="text-center">
+        {{ $index + 1 }}
+      </td>
       <td>{{ client.name }} <br />Email</td>
       <td>
         Mobile: {{ client.mobile }} <br />

@@ -1,3 +1,7 @@
+.mainSide {
+  position: fixed;
+}
+
 .d-flex {
   position: relative;
   width: 100%;
