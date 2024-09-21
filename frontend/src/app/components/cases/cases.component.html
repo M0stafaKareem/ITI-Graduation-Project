@@ -10,11 +10,46 @@
     thirdColumnHeader="Details"
     fourthColumnHeader="Actions"
   >
-    <td casetd ngProjectAs="firstContent"></td>
-    <td casetd ngProjectAs="secondContent"></td>
-    <td casetd ngProjectAs="thirdContent"></td>
-    <td ngProjectAs="fourthContent">
-      <button>SELECT <i class="fa-solid fa-arrow-down"></i></button>
-    </td>
+    @for (case of cases; track $index) {
+    <tr>
+      <td class="">{{ $index + 1 }}</td>
+      <td
+        casetd
+        [caseName]="case.case_name"
+        [caseId]="case.id"
+        [caseCategory]="
+          case.case_category_id ? case.categoryName : 'No Category'
+        "
+        [caseDate]="case.case_date"
+        [caseGrade]="case.case_grade"
+      ></td>
+      <td
+        client-td
+        [clientName]="case.client?.name"
+        [clientMobile]="case.client?.mobile"
+        [clientEmail]="case.client?.email"
+        [clientAddress]="case.client?.address"
+      ></td>
+      <td></td>
+      <td>
+        <div class="custom-select">
+          <select
+            (change)="onActionSelect($event, case.id)"
+            name="SELECT"
+            id=""
+          >
+            <option value="">SELECT</option>
+            <option value="View">View</option>
+            <option value="Delete">Delete</option>
+          </select>
+          <i
+            class="fa-solid fa-arrow-down"
+            style="color: var(--mainTextColor)"
+          ></i>
+        </div>
+      </td>
+      <td *ngIf="loading">Deleting...</td>
+    </tr>
+    }
   </app-table>
 </div>

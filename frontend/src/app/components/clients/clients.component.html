@@ -1,4 +1,4 @@
-<div class="container">
+<div class="">
   <app-secondary-nav
     tableTitle="Client List"
     addNewButton="New Client"
@@ -7,17 +7,36 @@
   <app-table
     firstColumnHeader="Client"
     secondColumnHeader="Contact"
-    thirdColumnHeader="Category"
-    fourthColumnHeader="Address"
+    thirdColumnHeader="Address"
+    fourthColumnHeader="Action"
   >
-    <th ngProjectAs="fifthColumnHeader" scope="col">Action</th>
-
-    <td ngProjectAs="firstContent">Client Name</td>
-    <td ngProjectAs="secondContent">Mobile Number <br />Email</td>
-    <td ngProjectAs="thirdContent">Client Category</td>
-    <td ngProjectAs="fourthContent">Client Address</td>
-    <td ngProjectAs="fifthContent">
-      <button>SELECT <i class="fa-solid fa-arrow-down"></i></button>
-    </td>
+    @for (client of clients; track $index) {
+    <tr>
+      <td style="color: var(--mainTextColor)">{{ $index + 1 }}</td>
+      <td>{{ client.name }} <br />Email</td>
+      <td>
+        Mobile: {{ client.mobile }} <br />
+        Email: {{ client.email }}
+      </td>
+      <td>{{ client.address }}</td>
+      <td>
+        <div class="custom-select">
+          <select
+            (change)="onActionSelect($event, client.id)"
+            name="SELECT"
+            id=""
+          >
+            <option value="">SELECT</option>
+            <option value="View">View</option>
+            <option value="Delete">Delete</option>
+          </select>
+          <i
+            class="fa-solid fa-arrow-down"
+            style="color: var(--mainTextColor)"
+          ></i>
+        </div>
+      </td>
+    </tr>
+    }
   </app-table>
 </div>

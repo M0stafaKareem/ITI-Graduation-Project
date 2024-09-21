@@ -4,4 +4,10 @@ th {
 
 td {
   color: var(--textTablecolor);
+  padding: 8px;
+}
+
+td,
+th {
+  vertical-align: middle;
 }

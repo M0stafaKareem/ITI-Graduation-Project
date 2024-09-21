@@ -42,24 +42,23 @@
   width: 280px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 786px) {
   .sidebar {
     transform: translateX(-100%);
     position: fixed;
     z-index: 1000;
     height: 100%;
     background: rgba(255, 255, 255, 0.5) !important;
-        backdrop-filter: blur(3px) !important;
-    }
+    backdrop-filter: blur(3px) !important;
   }
+}
 
-  .sidebar.active {
-    transform: translateX(0);
-  }
+.sidebar.active {
+  transform: translateX(0);
+}
 
-  .d-flex.sidebar-open .content {
-    margin-left: 0;
-  }
+.d-flex.sidebar-open .content {
+  margin-left: 0;
 }
 
 .content {
