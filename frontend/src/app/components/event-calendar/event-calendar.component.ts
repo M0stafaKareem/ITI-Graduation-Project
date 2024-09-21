@@ -19,24 +19,7 @@ export class EventCalendarComponent {
   dangerAlert: any;
   close: any;
   calendar: any;
-  myEvents: any[] = JSON.parse(localStorage.getItem('events')!) || [
-    {
-      id: this.uuidv4(),
-      title: `Edit Me`,
-      start: '2023-04-11',
-      backgroundColor: 'red',
-      allDay: false,
-      editable: false,
-    },
-    {
-      id: this.uuidv4(),
-      title: `Delete me`,
-      start: '2023-04-17',
-      end: '2023-04-21',
-      allDay: false,
-      editable: false,
-    },
-  ];
+  myEvents: any[] = JSON.parse(localStorage.getItem('events')!);
 
   ngOnInit() {
     this.initCalendar();
