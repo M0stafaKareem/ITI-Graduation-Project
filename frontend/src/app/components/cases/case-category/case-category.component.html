@@ -13,7 +13,11 @@
       <td>{{ category.description }}</td>
       <td>
         <div class="custom-select">
-          <select name="SELECT" id="">
+          <select
+            name="SELECT"
+            id=""
+            (change)="onActionSelect($event, category.id)"
+          >
             <option value="">SELECT</option>
             <option value="Update">Update</option>
             <option value="Delete">Delete</option>
