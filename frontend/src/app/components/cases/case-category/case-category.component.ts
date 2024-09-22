@@ -10,7 +10,7 @@ import { NgIf } from '@angular/common';
   standalone: true,
   imports: [TableComponent, SecondaryNavComponent, NgIf],
   templateUrl: './case-category.component.html',
-  styleUrls: ['./case-category.component.css'],
+  styleUrls: ['./case-category.component.css', '../cases.component.css'],
 })
 export class CaseCategoryComponent implements OnInit {
   categories?: CaseCategory[];
