@@ -1,0 +1,22 @@
+.drop-container {
+  background-color: #7485b7;
+}
+
+.drop-container li a {
+  color: white;
+}
+
+.drop-container li {
+  cursor: pointer;
+}
+
+.drop-container li:hover {
+  background-color: #8733f9;
+  backdrop-filter: 0.9;
+}
+
+.activated {
+  color: white !important;
+  background-color: #8733f9 !important;
+  border-left: 4px solid #9e34ec !important;
+}
