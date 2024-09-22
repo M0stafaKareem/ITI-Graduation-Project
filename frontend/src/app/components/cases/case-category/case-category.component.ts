@@ -28,10 +28,18 @@ export class CaseCategoryComponent implements OnInit {
     });
   }
 
+  onActionSelect(event: any, categoryId: number): void {
+    const selectedValue = event.target.value;
+
+    if (selectedValue === 'Delete') {
+      this.deleteCategory(categoryId);
+    }
+  }
+
   deleteCategory(categoryId: number): void {
-    if (confirm('Are you sure you want to delete this case?')) {
+    if (confirm('Are you sure you want to delete this Category?')) {
       this.loading = true;
-      this.caseService.deleteCase(categoryId).subscribe({
+      this.caseService.deleteCategory(categoryId).subscribe({
         next: () => {
           this.categories = this.categories?.filter(
             (category: CaseCategory) => category.id !== categoryId
