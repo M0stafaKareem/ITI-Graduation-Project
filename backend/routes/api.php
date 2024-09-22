@@ -52,15 +52,15 @@ Route::apiResource('Cases',CaseController::class);
 Route::apiResource('Clients', ClientsController::class);
 
 // Countries
-Route::get('/countries', CountryController::class.'@index');
-Route::get('/countries/{id}', CountryController::class.'@show');
+Route::get('/Countries', CountryController::class.'@index');
+Route::get('/Countries/{id}', CountryController::class.'@show');
 
 // States
-Route::get('/states', StateController::class.'@index');
-Route::get('/states/{id}', StateController::class.'@show');
+Route::get('/States', StateController::class.'@index');
+Route::get('/States/{id}', StateController::class.'@show');
 
 // Cities
-Route::get('/cities', CityController::class.'@index');
-Route::get('/cities/{id}', CityController::class.'@show');
+Route::get('/Cities', CityController::class.'@index');
+Route::get('/Cities/{id}', CityController::class.'@show');
 
 
