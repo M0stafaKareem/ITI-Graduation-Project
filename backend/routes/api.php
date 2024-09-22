@@ -4,9 +4,12 @@ use App\Http\Controllers\CaseCategoryController;
 use App\Http\Controllers\CaseController;
 use App\Http\Controllers\CaseGradeController;
 use App\Http\Controllers\CasesPartiesController;
+use App\Http\Controllers\CityController;
 use App\Http\Controllers\ClientsController;
+use App\Http\Controllers\CountryController;
 use App\Http\Controllers\PartyController;
 
+use App\Http\Controllers\StateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -47,5 +50,17 @@ Route::apiResource('parties', PartyController::class);
 Route::apiResource('CasesParties', CasesPartiesController::class);
 Route::apiResource('Cases',CaseController::class);
 Route::apiResource('Clients', ClientsController::class);
+
+// Countries
+Route::get('/Countries', CountryController::class.'@index');
+Route::get('/Countries/{id}', CountryController::class.'@show');
+
+// States
+Route::get('/States', StateController::class.'@index');
+Route::get('/States/{id}', StateController::class.'@show');
+
+// Cities
+Route::get('/Cities', CityController::class.'@index');
+Route::get('/Cities/{id}', CityController::class.'@show');
 
 

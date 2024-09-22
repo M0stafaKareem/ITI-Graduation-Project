@@ -71,12 +71,13 @@ class ClientsController extends Controller
             "state_id"=> "required",
             "role"=> "required",
             "mobile"=> "required",
-            "email"=> "required|unique:clients,email",
+            "email"=> "required|email",
             "gender"=> "required",
             "address"=> "required",
             "description"=> "required",
            
         ]);
+        
 
         $country = Country::findOrFail($request->country_id);
        
