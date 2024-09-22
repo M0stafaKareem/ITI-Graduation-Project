@@ -144,6 +144,7 @@ export class ClientsComponent implements OnInit {
       error: (error) => console.error('Error:', error),
     });
   }
+
   getClients() {
     this.clientsService.getClients().subscribe({
       next: (data) => {
@@ -156,6 +157,15 @@ export class ClientsComponent implements OnInit {
     });
   }
 
+  updateClient(clientId: number, updatedClient: any): void {
+    this.clientsService.updateClient(clientId, updatedClient).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (error) => console.error('Error:', error),
+    });
+  }
+
   onActionSelect(event: any, clientId: number): void {
     const selectedValue = event.target.value;
 
@@ -164,15 +174,6 @@ export class ClientsComponent implements OnInit {
     } else if (selectedValue === 'Update') {
       this.toggleFormVisibility(clientId);
     }
-  }
-
-  updateClient(clientId: number, updatedClient: any): void {
-    this.clientsService.updateClient(clientId, updatedClient).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (error) => console.error('Error:', error),
-    });
   }
 
   deleteClient(clientId: number): void {

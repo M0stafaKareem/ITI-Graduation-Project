@@ -19,17 +19,10 @@ export class EventCalendarComponent {
   dangerAlert: any;
   close: any;
   calendar: any;
-  myEvents: any[] = JSON.parse(localStorage.getItem('events')!);
+  myEvents: any[] = JSON.parse(localStorage.getItem('events')!) || [];
 
   ngOnInit() {
     this.initCalendar();
-
-    document.addEventListener('click', () => {
-      const contextMenu = document.getElementById('contextMenu');
-      if (contextMenu) {
-        contextMenu.style.display = 'none';
-      }
-    });
   }
 
   initCalendar() {
