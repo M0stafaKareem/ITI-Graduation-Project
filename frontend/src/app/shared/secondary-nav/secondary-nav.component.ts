@@ -1,15 +1,18 @@
-import { Component, Input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-secondary-nav',
   standalone: true,
-  imports: [RouterLink],
   templateUrl: './secondary-nav.component.html',
   styleUrl: './secondary-nav.component.css',
 })
 export class SecondaryNavComponent {
   @Input() tableTitle!: string;
   @Input() addNewButton!: string;
-  @Input() addingRoute!: string;
+  @Input() btnClickHandler!: Function;
+  @Output() btnClicked = new EventEmitter();
+
+  handleClick() {
+    this.btnClicked.emit();
+  }
 }

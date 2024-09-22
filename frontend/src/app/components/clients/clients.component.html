@@ -3,7 +3,16 @@
     tableTitle="Client List"
     addNewButton="New Client"
     addingRoute="add-case"
+    (btnClicked)="toggleFormVisibility()"
   />
+
+  <app-adding-form
+    *ngIf="isFormVisible"
+    formHeader="Add New Client"
+    [formInputRows]="newClientInputRows"
+    [onFormSubmit]="submitForm"
+  ></app-adding-form>
+
   <app-table
     firstColumnHeader="Client"
     secondColumnHeader="Contact"

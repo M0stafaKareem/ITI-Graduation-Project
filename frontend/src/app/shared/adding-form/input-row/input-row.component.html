@@ -6,7 +6,9 @@
       Please Select an {{ input_Info.title }}
     </option>
     @for (item of input_Info.options; track $index) {
-    <option [value]="item">{{ item }}</option>
+    <option [value]="item.id" [selected]="item.id == input_Info.value">
+      {{ item.value }}
+    </option>
     }
   </select>
 </div>
@@ -17,6 +19,7 @@
     [id]="input_Info.id"
     [placeholder]="input_Info.title"
     [type]="input_Info.type"
+    [value]="input_Info.value ? input_Info.value : ''"
     (change)="emmitNewValue($event)"
   />
 </div>

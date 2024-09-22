@@ -15,6 +15,9 @@ export class CasesService {
   getCases(): Observable<any> {
     return this.httpClient.get(this.getCasesURL);
   }
+  insertCase(newCase: any): Observable<any> {
+    return this.httpClient.post(this.getCasesURL, newCase);
+  }
 
   getCategories(): Observable<any[]> {
     return this.httpClient.get<any[]>(this.categoriesApiUrl);

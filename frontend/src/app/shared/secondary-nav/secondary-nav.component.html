@@ -2,7 +2,7 @@
   <div class="left-nav d-flex align-items-center">
     <h3 class="table-title me-3">{{ tableTitle }}</h3>
     <div class="add-new">
-      <button routerLink="add-case">+ {{ addNewButton }}</button>
+      <button (click)="handleClick()">+ {{ addNewButton }}</button>
     </div>
   </div>
   <div class="search d-flex align-items-center">

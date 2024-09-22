@@ -1,6 +1,6 @@
 <div class="container">
   <div class="form-box">
-    <h2>Add Case</h2>
+    <h2>{{ formHeader }}</h2>
     <form>
       @for (item of formInputRows; track $index) {
       <app-input-row
@@ -8,8 +8,7 @@
         (inputChanged)="saveInputData($index, $event)"
       />
       }
-      <app-toast [isError]="true" />
-      <button type="submit">Add</button>
+      <button type="button" (click)="submitForm()">{{ formType }}</button>
     </form>
   </div>
 </div>

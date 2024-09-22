@@ -10,6 +10,10 @@ import { Case } from '../../shared/models/case.model';
 import { CaseCategory } from '../../shared/models/case.category.model';
 import { CaseGrade } from '../../shared/models/case.grade.model';
 import { Clients } from '../../shared/models/clients.model';
+import {
+  inputType,
+  AddingFormComponent,
+} from '../../shared/adding-form/adding-form.component';
 
 @Component({
   selector: 'app-cases',
@@ -21,6 +25,7 @@ import { Clients } from '../../shared/models/clients.model';
     NgFor,
     ClientComponent,
     NgIf,
+    AddingFormComponent,
   ],
   templateUrl: './cases.component.html',
   styleUrl: './cases.component.css',
@@ -32,10 +37,29 @@ export class CasesComponent {
   clients?: Array<Clients>;
   client!: Clients;
   loading: boolean = false;
+  isFormVisable: boolean = false;
   constructor(
     private caseService: CasesService,
     private clientService: ClientsService
   ) {}
+
+  newCasesInputRows!: inputType[];
+
+  toggleFormVisibility() {
+    this.isFormVisable = !this.isFormVisable;
+  }
+
+  submitForm = (data: any) => {
+    this.addNewCase({
+      case_name: data[0],
+      case_date: data[1],
+      first_session_date: data[2],
+      case_category_id: data[3],
+      case_grade_id: data[4],
+      client_id: data[5],
+    });
+    this.toggleFormVisibility();
+  };
 
   ngOnInit() {
     this.loadCases();
@@ -44,6 +68,46 @@ export class CasesComponent {
     this.getClient();
   }
 
+  ngDoCheck() {
+    this.newCasesInputRows = [
+      { id: '1', title: 'Case Name', type: 'text' },
+      { id: '2', title: 'Case Date', type: 'date' },
+      { id: '3', title: 'First Session Date', type: 'date' },
+      {
+        id: '4',
+        title: 'Case Category',
+        type: 'select',
+        options: this.categories?.map((item) => {
+          return { id: '' + item.id, value: item.name };
+        }),
+      },
+      {
+        id: '5',
+        title: 'Case Grade',
+        type: 'select',
+        options: this.grades?.map((item) => {
+          return { id: '' + item.id, value: item.name };
+        }),
+      },
+      {
+        id: '6',
+        title: 'Client Name',
+        type: 'select',
+        options: this.clients?.map((item) => {
+          return { id: '' + item.id, value: item.name };
+        }),
+      },
+    ];
+  }
+
+  addNewCase(newCase: any): void {
+    this.caseService.insertCase(newCase).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (error) => console.error('Error:', error),
+    });
+  }
   loadCases(): void {
     this.caseService.getCases().subscribe({
       next: (data) => {
@@ -93,15 +157,12 @@ export class CasesComponent {
           const foundClient = this.clients?.find(
             (client: Clients) => client.id === caseItem.client_id
           );
-          console.log(foundClient);
 
           return {
             ...caseItem,
             client: foundClient,
           };
         });
-
-        console.log(this.cases);
       },
       error: (error) => console.error('Error:', error),
     });

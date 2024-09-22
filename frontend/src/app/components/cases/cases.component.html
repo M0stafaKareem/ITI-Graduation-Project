@@ -3,7 +3,14 @@
     tableTitle="All Cases"
     addNewButton="New Case"
     addingRoute="add-case"
+    (btnClicked)="toggleFormVisibility()"
   />
+  <app-adding-form
+    *ngIf="isFormVisable"
+    formHeader="Add New Case"
+    [formInputRows]="newCasesInputRows"
+    [onFormSubmit]="submitForm"
+  ></app-adding-form>
   <app-table
     firstColumnHeader="Case"
     secondColumnHeader="Client"

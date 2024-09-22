@@ -10,7 +10,7 @@
  * from the child component to store the corresponding data.
  *
  * @usage
- * <app-adding-form [formInputRows]="inputsArray"></app-adding-form>
+ * <app-adding-form [formInputRows]="inputsArray" [onFormSubmit]="submitHandler" [formHeader]="'Add Case'"></app-adding-form>
  *
  * @imports {InputRowComponent}
  * Used for rendering individual form rows.
@@ -21,7 +21,6 @@
  */
 import { Component, Input } from '@angular/core';
 import { InputRowComponent } from './input-row/input-row.component';
-import { ToastComponent } from '../toast/toast.component';
 
 /**
  * @interface inputType
@@ -31,6 +30,7 @@ import { ToastComponent } from '../toast/toast.component';
  * @property {string} title - The label or placeholder for the form field.
  * @property {'text' | 'password' | 'email' | 'number' | 'date' | 'checkbox' | 'radio' | 'file' | 'tel' | 'url' | 'hidden' | 'range' | 'color' | 'select'} type - The type of the input field.
  * @property {string[]} [options] - Optional. Available options for `select` input type (dropdown).
+ * @property {string} [value] - Optional. The value of the input field, typically used for pre-filling data in 'Update' forms.
  */
 export interface inputType {
   id: string;
@@ -50,7 +50,8 @@ export interface inputType {
     | 'range'
     | 'color'
     | 'select';
-  options?: string[];
+  options?: { id: string; value: string }[];
+  value?: string;
 }
 
 /**
@@ -59,11 +60,12 @@ export interface inputType {
  * @description
  * The AddingFormComponent dynamically renders a form based on the `formInputRows` array, which defines each input's properties.
  * User inputs are stored in the `formData` array corresponding to the form inputs by index.
+ * The form can be used in both 'Add' and 'Update' modes, based on the `formType` input.
  */
 @Component({
   selector: 'app-adding-form',
   standalone: true,
-  imports: [InputRowComponent, ToastComponent],
+  imports: [InputRowComponent],
   templateUrl: './adding-form.component.html',
   styleUrl: './adding-form.component.css',
 })
@@ -83,28 +85,51 @@ export class AddingFormComponent {
    *   { id: '3', title: 'Gender', type: 'select', options: ['Male', 'Female'] }
    * ]
    */
-  @Input({ required: true }) formInputRows: inputType[] = [
-    {
-      id: '1',
-      title: 'Marwan',
-      type: 'select',
-      options: ['Male', 'Marwan', 'ezz'],
-    },
-    { id: '12', title: 'email', type: 'date' },
-    { id: '11', title: 'password', type: 'password' },
-    { id: '13', title: 'Gender', type: 'select', options: ['Male', 'Female'] },
-  ];
+  @Input({ required: true }) formInputRows!: inputType[];
+
+  /**
+   * @input {Function} onFormSubmit
+   *
+   * @description
+   * A function to handle form submission. The function is called when the user submits the form and passes
+   * the `formData` array as an argument, which contains all the user input.
+   * This input is required for form submission.
+   *
+   * @example
+   * onFormSubmit = (formData) => { console.log(formData); }
+   */
+  @Input({ required: true }) onFormSubmit!: Function;
+
+  /**
+   * @input {'Add' | 'Update'} formType
+   *
+   * @description
+   * Defines the mode of the form. It can either be 'Add' (default) or 'Update'.
+   * Depending on this input, the form behavior may change, such as pre-filling existing values for 'Update'.
+   *
+   * @default 'Add'
+   */
+  @Input() formType: 'Add' | 'Update' = 'Add';
+
+  /**
+   * @input {string} formHeader
+   *
+   * @description
+   * The header text for the form, typically reflecting the action being performed (e.g., 'Add Case' or 'Update Case').
+   * This input is required to give context to the form action.
+   *
+   * @default 'Add Case'
+   */
+  @Input({ required: true }) formHeader: string = 'Add Case';
 
   /**
    * @property {string[]} formData
    *
    * @description
-   * An array that stores the user input values. Each index corresponds to the position of the form input
-   * in the `formInputRows` array. For example, the first input's value is stored at index `0`.
-   *
-   * @default []
+   * Stores the data entered by the user in the form. The data corresponds to the form inputs in the `formInputRows` array.
+   * Each index in this array matches the index of the form input rows.
    */
-  formData: string[] = [];
+  private formData: string[] = [];
 
   /**
    * @method saveInputData
@@ -123,6 +148,18 @@ export class AddingFormComponent {
    */
   saveInputData(index: number, value: string) {
     this.formData[index] = value;
-    console.log(this.formData); // Logs the form data whenever a value is updated
+  }
+
+  /**
+   * @method submitForm
+   *
+   * @description
+   * Calls the `onFormSubmit` function and passes the `formData` as an argument when the form is submitted.
+   * This function is triggered by the form's submit button.
+   */
+  submitForm() {
+    if (this.onFormSubmit) {
+      this.onFormSubmit(this.formData);
+    }
   }
 }
