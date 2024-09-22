@@ -38,7 +38,7 @@ class CasesPartiesController extends Controller
         return $CasesParty;
     }
 
-    public function show(int $id)
+    public function show($id)
     {
         
         $CasesParty = CasesParties::find($id);
@@ -50,7 +50,7 @@ class CasesPartiesController extends Controller
 
 
 
-    public function update(Request $request, int $id)
+    public function update(Request $request, $id)
     {
     
         $request->validate([
@@ -80,7 +80,7 @@ class CasesPartiesController extends Controller
         return 'CasesParty updated successfully.';
     }
 
-    public function destroy(int $id)
+    public function destroy($id)
     {
         $CasesParty = CasesParties::find($id);
         if ($CasesParty) {

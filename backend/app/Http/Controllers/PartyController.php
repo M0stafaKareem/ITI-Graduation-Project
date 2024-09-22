@@ -25,7 +25,7 @@ class PartyController extends Controller
         return $party;
     }
 
-    public function show(int $id)
+    public function show($id)
     {
         
         $party = Party::find($id);
@@ -37,7 +37,7 @@ class PartyController extends Controller
 
 
 
-    public function update(Request $request, int $id)
+    public function update(Request $request, $id)
     {
     
         $request->validate([
@@ -55,7 +55,7 @@ class PartyController extends Controller
         return 'party updated successfully.';
     }
 
-    public function destroy(int $id)
+    public function destroy($id)
     {
         $party = Party::find($id);
         if ($party) {

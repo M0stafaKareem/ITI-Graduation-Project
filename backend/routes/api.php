@@ -44,6 +44,7 @@ Route::group(['prefix' => 'case'], function () {
 // GET           /users/{user}/edit          edit    users.edit
 //  //PUT|PATCH     /users/{user}               update  users.update
 // DELETE        /users/{user}               destroy users.destroy
+Route::group(['prefix'=> ''], function () {
 Route::apiResource('CaseCategories', CaseCategoryController::class);
 Route::apiResource('CaseGrades', CaseGradeController::class);
 Route::apiResource('parties', PartyController::class);
@@ -51,9 +52,12 @@ Route::apiResource('CasesParties', CasesPartiesController::class);
 Route::apiResource('Cases',CaseController::class);
 Route::apiResource('Clients', ClientsController::class);
 
+})->middleware('');
+
 // Countries
 Route::get('/Countries', CountryController::class.'@index');
 Route::get('/Countries/{id}', CountryController::class.'@show');
+Route::get('/Countries/{id}/Cities', CountryController::class.'@City');
 
 // States
 Route::get('/States', StateController::class.'@index');

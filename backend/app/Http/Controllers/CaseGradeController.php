@@ -26,7 +26,7 @@ class CaseGradeController extends Controller
         return $CaseGrade;
     }
 
-    public function show(int $id)
+    public function show($id)
     {
         
         $CaseGrade = CaseGrade::find($id);
@@ -38,7 +38,7 @@ class CaseGradeController extends Controller
 
 
 
-    public function update(Request $request, int $id)
+    public function update(Request $request, $id)
     {
     
         $request->validate([
@@ -57,7 +57,7 @@ class CaseGradeController extends Controller
         return 'CaseGrade updated successfully.';
     }
 
-    public function destroy(int $id)
+    public function destroy($id)
     {
         $CaseGrade = CaseGrade::find($id);
         if ($CaseGrade) {
