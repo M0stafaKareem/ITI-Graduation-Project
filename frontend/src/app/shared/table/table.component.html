@@ -6,7 +6,7 @@
         <th scope="col">{{ firstColumnHeader }}</th>
         <th scope="col">{{ secondColumnHeader }}</th>
         <th scope="col">{{ thirdColumnHeader }}</th>
-        <th scope="col">{{ fourthColumnHeader }}</th>
+        <ng-content select="fourthColumnHeader"></ng-content>
         <ng-content select="fifthColumnHeader"></ng-content>
       </tr>
     </thead>

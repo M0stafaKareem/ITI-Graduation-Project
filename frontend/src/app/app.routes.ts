@@ -6,10 +6,12 @@ import { CourtsComponent } from './components/courts/courts.component';
 import { LoginFromComponent } from './login-from/login-from.component';
 import { RegisterFromComponent } from './register-from/register-from.component';
 import { EventCalendarComponent } from './components/event-calendar/event-calendar.component';
+import { CaseCategoryComponent } from './components/cases/case-category/case-category.component';
 
 export const routes: Routes = [
   { path: 'clients', component: ClientsComponent },
   { path: 'cases', component: CasesComponent },
+  { path: 'caseCategories', component: CaseCategoryComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'calender', component: EventCalendarComponent },
   { path: 'court', component: CourtsComponent },

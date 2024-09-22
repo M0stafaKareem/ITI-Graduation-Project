@@ -21,6 +21,13 @@
     thirdColumnHeader="Details"
     fourthColumnHeader="Actions"
   >
+    <th
+      scope="col"
+      style="color: var(--mainTextColor)"
+      ngProjectAs="fourthColumnHeader"
+    >
+      Action
+    </th>
     @for (case of cases; track $index) {
     <tr>
       <td class="text-center">{{ $index + 1 }}</td>

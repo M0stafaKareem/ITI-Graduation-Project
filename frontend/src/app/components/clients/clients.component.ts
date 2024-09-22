@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { SecondaryNavComponent } from '../../shared/secondary-nav/secondary-nav.component';
 import { TableComponent } from '../../shared/table/table.component';
@@ -8,7 +9,6 @@ import {
   inputType,
   AddingFormComponent,
 } from '../../shared/adding-form/adding-form.component';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-clients',
@@ -32,6 +32,31 @@ export class ClientsComponent implements OnInit {
   newClientInputRows!: inputType[];
 
   constructor(private clientsService: ClientsService) {}
+
+  ngOnInit(): void {
+    this.getClients();
+  }
+
+  addNewClient(newClient: any): void {
+    this.clientsService.insertClient(newClient).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (error) => console.error('Error:', error),
+    });
+  }
+
+  getClients() {
+    this.clientsService.getClients().subscribe({
+      next: (data) => {
+        this.clients = data;
+        console.log(this.clients);
+      },
+      error: (error) => {
+        console.error('Error retrieving clients:', error);
+      },
+    });
+  }
 
   toggleFormVisibility = (clientId?: number) => {
     this.upaddingClientId = clientId;
@@ -131,31 +156,6 @@ export class ClientsComponent implements OnInit {
     }
     this.toggleFormVisibility();
   };
-
-  ngOnInit(): void {
-    this.getClients();
-  }
-
-  addNewClient(newClient: any): void {
-    this.clientsService.insertClient(newClient).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (error) => console.error('Error:', error),
-    });
-  }
-
-  getClients() {
-    this.clientsService.getClients().subscribe({
-      next: (data) => {
-        this.clients = data;
-        console.log(this.clients);
-      },
-      error: (error) => {
-        console.error('Error retrieving clients:', error);
-      },
-    });
-  }
 
   updateClient(clientId: number, updatedClient: any): void {
     this.clientsService.updateClient(clientId, updatedClient).subscribe({
