@@ -8,8 +8,8 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
   styleUrl: './table.component.css',
 })
 export class TableComponent {
-  @Input() firstColumnHeader!: string;
-  @Input() secondColumnHeader!: string;
-  @Input() thirdColumnHeader!: string;
-  @Input() fourthColumnHeader!: string;
+  @Input() firstColumnHeader?: string;
+  @Input() secondColumnHeader?: string;
+  @Input() thirdColumnHeader?: string;
+  @Input() fourthColumnHeader?: string;
 }

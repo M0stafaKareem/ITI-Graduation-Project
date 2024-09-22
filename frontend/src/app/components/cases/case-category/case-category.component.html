@@ -1,0 +1,31 @@
+<div class="">
+  <app-secondary-nav tableTitle="Case Categories" addNewButton="New Category" />
+
+  <app-table
+    firstColumnHeader="Category Name"
+    secondColumnHeader="Description"
+    thirdColumnHeader="Action"
+  >
+    @for (category of categories; track $index) {
+    <tr>
+      <td class="text-center">{{ $index + 1 }}</td>
+      <td>Category Name: {{ category.name }}</td>
+      <td>{{ category.description }}</td>
+      <td>
+        <div class="custom-select">
+          <select name="SELECT" id="">
+            <option value="">SELECT</option>
+            <option value="Update">Update</option>
+            <option value="Delete">Delete</option>
+          </select>
+          <i
+            class="fa-solid fa-arrow-down"
+            style="color: var(--mainTextColor)"
+          ></i>
+        </div>
+      </td>
+      <td *ngIf="loading">Deleting...</td>
+    </tr>
+    }
+  </app-table>
+</div>

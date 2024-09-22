@@ -19,8 +19,8 @@
     firstColumnHeader="Client"
     secondColumnHeader="Contact"
     thirdColumnHeader="Address"
-    fourthColumnHeader="Action"
   >
+    <th scope="col" ngProjectAs="fourthColumnHeader">Action</th>
     @for (client of clients; track $index) {
     <tr>
       <td style="color: var(--mainTextColor)" class="text-center">
