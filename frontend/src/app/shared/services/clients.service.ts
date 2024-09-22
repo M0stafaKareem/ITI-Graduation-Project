@@ -12,6 +12,13 @@ export class ClientsService {
   getClients(): Observable<any> {
     return this.httpClient.get<any[]>(this.clientsUrl);
   }
+  insertClient(newClient: any): Observable<any> {
+    return this.httpClient.post(this.clientsUrl, newClient);
+  }
+  updateClient(clientId: number, updatedClient: any) {
+    return this.httpClient.put(`${this.clientsUrl}/${clientId}`, updatedClient);
+  }
+
   deleteClient(clienId: any) {
     return this.httpClient.delete(`${this.clientsUrl}/${clienId}`);
   }

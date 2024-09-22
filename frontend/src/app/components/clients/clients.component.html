@@ -3,7 +3,18 @@
     tableTitle="Client List"
     addNewButton="New Client"
     addingRoute="add-case"
+    (btnClicked)="toggleFormVisibility()"
   />
+
+  <app-adding-form
+    *ngIf="isFormVisible"
+    [formType]="formType"
+    [formHeader]="formHeader"
+    [formInputRows]="newClientInputRows"
+    [onFormSubmit]="submitForm"
+    (backdropClicked)="toggleFormVisibility()"
+  ></app-adding-form>
+
   <app-table
     firstColumnHeader="Client"
     secondColumnHeader="Contact"
@@ -30,6 +41,7 @@
           >
             <option value="">SELECT</option>
             <option value="View">View</option>
+            <option value="Update">Update</option>
             <option value="Delete">Delete</option>
           </select>
           <i

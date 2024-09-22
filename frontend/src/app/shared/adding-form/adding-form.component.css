@@ -1,0 +1,66 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+}
+
+.form-box {
+  position: absolute;
+  margin: 0 auto;
+  width: 60%;
+  background-color: #2d3748;
+  padding: 50px 0 50px 30px;
+  border-radius: 8px;
+  z-index: 1010;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-box h2 {
+  color: #e2e8f0;
+  margin-bottom: 16px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5vh;
+  max-height: 50vh;
+  overflow-y: scroll;
+}
+form::-webkit-scrollbar {
+  display: none;
+}
+
+p {
+  color: #fff;
+  margin-top: 10px;
+}
+
+button {
+  background: linear-gradient(to right, #6366f1, #3b82f6);
+  color: #fff;
+  padding: 10px;
+  width: 95%;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+button:hover {
+  background: linear-gradient(to right, #4f46e5, #2563eb);
+}
