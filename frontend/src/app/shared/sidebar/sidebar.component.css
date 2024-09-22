@@ -11,24 +11,46 @@
   border-right: 1px solid var(--mainTextColor);
 }
 
+.drop-container {
+  background-color: #6d7eb4;
+}
+
+.arrowDown i {
+  color: #415094;
+}
+
 .activated {
   color: white !important;
   background-color: #415094 !important;
   border-left: 4px solid #9e34ec !important;
+  .nav-link,
+  .arrowDown i {
+    color: white;
+  }
 }
 
 .nav-link {
   color: #415094;
   border-radius: 0;
+}
+
+.nav-list {
+  cursor: pointer;
+  align-items: center;
   border-left: 4px solid transparent;
 }
 
-.nav-link:hover {
+.nav-list:hover,
+.nav-list::selection {
   color: white !important;
   background-color: #415094;
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
   border-left: 4px solid #9e34ec;
+  .nav-link,
+  .arrowDown i {
+    color: white !important;
+  }
 }
 
 .sidebar {
