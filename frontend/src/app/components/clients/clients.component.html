@@ -8,9 +8,11 @@
 
   <app-adding-form
     *ngIf="isFormVisible"
-    formHeader="Add New Client"
+    [formType]="formType"
+    [formHeader]="formHeader"
     [formInputRows]="newClientInputRows"
     [onFormSubmit]="submitForm"
+    (backdropClicked)="toggleFormVisibility()"
   ></app-adding-form>
 
   <app-table
@@ -39,6 +41,7 @@
           >
             <option value="">SELECT</option>
             <option value="View">View</option>
+            <option value="Update">Update</option>
             <option value="Delete">Delete</option>
           </select>
           <i

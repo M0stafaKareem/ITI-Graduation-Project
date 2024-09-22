@@ -1,14 +1,13 @@
-<div class="container">
-  <div class="form-box">
-    <h2>{{ formHeader }}</h2>
-    <form>
-      @for (item of formInputRows; track $index) {
-      <app-input-row
-        [input_Info]="item"
-        (inputChanged)="saveInputData($index, $event)"
-      />
-      }
-      <button type="button" (click)="submitForm()">{{ formType }}</button>
-    </form>
-  </div>
+<div class="backdrop" (click)="closeForm()"></div>
+<div class="form-box">
+  <h2>{{ formHeader }}</h2>
+  <form>
+    @for (item of formInputRows; track $index) {
+    <app-input-row
+      [input_Info]="item"
+      (inputChanged)="saveInputData($index, $event)"
+    />
+    }
+    <button type="button" (click)="submitForm()">{{ formType }}</button>
+  </form>
 </div>

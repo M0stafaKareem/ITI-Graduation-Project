@@ -26,16 +26,93 @@ export class ClientsComponent implements OnInit {
   clients?: Array<Clients>;
   loading: boolean = false;
   isFormVisible: boolean = false;
+  formType: 'Add' | 'Update' = 'Add';
+  formHeader: string = 'Add New Client';
+  upaddingClientId?: number;
+  newClientInputRows!: inputType[];
 
   constructor(private clientsService: ClientsService) {}
 
-  newClientInputRows!: inputType[];
-  toggleFormVisibility = () => {
+  toggleFormVisibility = (clientId?: number) => {
+    this.upaddingClientId = clientId;
+    const targetCliet = this.clients?.find(
+      (clients) => clients.id === clientId
+    );
+    this.newClientInputRows = [
+      {
+        id: '1',
+        title: 'Client Name',
+        type: 'text',
+        value: targetCliet ? targetCliet.name : undefined,
+      },
+      {
+        id: '2',
+        title: 'Country',
+        type: 'text',
+        value: targetCliet ? '' + targetCliet.country_id : undefined,
+      },
+      {
+        id: '3',
+        title: 'City',
+        type: 'text',
+        value: targetCliet ? '' + targetCliet.city_id : undefined,
+      },
+      {
+        id: '4',
+        title: 'State',
+        type: 'text',
+        value: targetCliet ? '' + targetCliet.state_id : undefined,
+      },
+      {
+        id: '5',
+        title: 'Role',
+        type: 'text',
+        value: targetCliet ? targetCliet.role : undefined,
+      },
+      {
+        id: '6',
+        title: 'Mobile',
+        type: 'text',
+        value: targetCliet ? targetCliet.mobile : undefined,
+      },
+      {
+        id: '7',
+        title: 'Email',
+        type: 'email',
+        value: targetCliet ? targetCliet.email : undefined,
+      },
+      {
+        id: '8',
+        title: 'Gender',
+        type: 'select',
+        options: [
+          { id: '0', value: 'Male' },
+          { id: '1', value: 'Female' },
+        ],
+        value: targetCliet ? targetCliet.gender : undefined,
+      },
+      {
+        id: '9',
+        title: 'Adress',
+        type: 'text',
+        value: targetCliet ? targetCliet.address : undefined,
+      },
+      {
+        id: '10',
+        title: 'Description',
+        type: 'text',
+        value: targetCliet ? targetCliet.description : undefined,
+      },
+    ];
+    if (targetCliet) {
+      this.formHeader = 'Update Client';
+      this.formType = 'Update';
+    }
     this.isFormVisible = !this.isFormVisible;
   };
 
   submitForm = (data: any) => {
-    this.addNewClient({
+    const clientData = {
       name: data[0],
       country_id: data[1],
       city_id: data[2],
@@ -46,35 +123,17 @@ export class ClientsComponent implements OnInit {
       gender: data[7],
       address: data[8],
       description: data[9],
-    });
+    };
+    if (this.formType === 'Add') {
+      this.addNewClient(clientData);
+    } else if (this.formType === 'Update') {
+      this.updateClient(this.upaddingClientId!, clientData);
+    }
     this.toggleFormVisibility();
   };
 
   ngOnInit(): void {
     this.getClients();
-  }
-
-  ngDoCheck() {
-    this.newClientInputRows = [
-      { id: '1', title: 'Client Name', type: 'text' },
-      { id: '2', title: 'Country', type: 'text' },
-      { id: '3', title: 'City', type: 'text' },
-      { id: '4', title: 'State', type: 'text' },
-      { id: '5', title: 'Role', type: 'text' },
-      { id: '6', title: 'Mobile', type: 'text' },
-      { id: '7', title: 'Email', type: 'email' },
-      {
-        id: '8',
-        title: 'Gender',
-        type: 'select',
-        options: [
-          { id: '0', value: 'Male' },
-          { id: '1', value: 'Female' },
-        ],
-      },
-      { id: '9', title: 'Adress', type: 'text' },
-      { id: '10', title: 'Description', type: 'text' },
-    ];
   }
 
   addNewClient(newClient: any): void {
@@ -102,7 +161,18 @@ export class ClientsComponent implements OnInit {
 
     if (selectedValue === 'Delete') {
       this.deleteClient(clientId);
+    } else if (selectedValue === 'Update') {
+      this.toggleFormVisibility(clientId);
     }
+  }
+
+  updateClient(clientId: number, updatedClient: any): void {
+    this.clientsService.updateClient(clientId, updatedClient).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (error) => console.error('Error:', error),
+    });
   }
 
   deleteClient(clientId: number): void {

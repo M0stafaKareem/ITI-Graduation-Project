@@ -38,26 +38,87 @@ export class CasesComponent {
   client!: Clients;
   loading: boolean = false;
   isFormVisable: boolean = false;
+  formType: 'Add' | 'Update' = 'Add';
+  formHeader: string = 'Add New Client';
+  upaddingCaseId?: number;
+  newCasesInputRows!: inputType[];
+
   constructor(
     private caseService: CasesService,
     private clientService: ClientsService
   ) {}
 
-  newCasesInputRows!: inputType[];
-
-  toggleFormVisibility() {
+  toggleFormVisibility = (caseId?: number): void => {
+    this.upaddingCaseId = caseId;
+    const targetCase = this.cases?.find((clients) => clients.id === caseId);
+    this.newCasesInputRows = [
+      {
+        id: '1',
+        title: 'Case Name',
+        type: 'text',
+        value: targetCase ? targetCase.case_name : undefined,
+      },
+      {
+        id: '2',
+        title: 'Case Date',
+        type: 'date',
+        value: targetCase ? targetCase.case_date : undefined,
+      },
+      {
+        id: '3',
+        title: 'First Session Date',
+        type: 'date',
+        value: targetCase ? targetCase.first_session_date : undefined,
+      },
+      {
+        id: '4',
+        title: 'Case Category',
+        type: 'select',
+        options: this.categories?.map((item) => {
+          return { id: '' + item.id, value: item.name };
+        }),
+        value: targetCase ? '' + targetCase.case_category_id : undefined,
+      },
+      {
+        id: '5',
+        title: 'Case Grade',
+        type: 'select',
+        options: this.grades?.map((item) => {
+          return { id: '' + item.id, value: item.name };
+        }),
+        value: targetCase ? '' + targetCase.case_grade_id : undefined,
+      },
+      {
+        id: '6',
+        title: 'Client Name',
+        type: 'select',
+        options: this.clients?.map((item) => {
+          return { id: '' + item.id, value: item.name };
+        }),
+        value: targetCase ? '' + targetCase.client_id : undefined,
+      },
+    ];
+    if (targetCase) {
+      this.formHeader = 'Update Client';
+      this.formType = 'Update';
+    }
     this.isFormVisable = !this.isFormVisable;
-  }
+  };
 
   submitForm = (data: any) => {
-    this.addNewCase({
+    const caseData = {
       case_name: data[0],
       case_date: data[1],
       first_session_date: data[2],
       case_category_id: data[3],
       case_grade_id: data[4],
       client_id: data[5],
-    });
+    };
+    if (this.formType === 'Add') {
+      this.addNewCase(caseData);
+    } else if (this.formType === 'Update') {
+      this.updateCase(this.upaddingCaseId!, caseData);
+    }
     this.toggleFormVisibility();
   };
 
@@ -68,38 +129,6 @@ export class CasesComponent {
     this.getClient();
   }
 
-  ngDoCheck() {
-    this.newCasesInputRows = [
-      { id: '1', title: 'Case Name', type: 'text' },
-      { id: '2', title: 'Case Date', type: 'date' },
-      { id: '3', title: 'First Session Date', type: 'date' },
-      {
-        id: '4',
-        title: 'Case Category',
-        type: 'select',
-        options: this.categories?.map((item) => {
-          return { id: '' + item.id, value: item.name };
-        }),
-      },
-      {
-        id: '5',
-        title: 'Case Grade',
-        type: 'select',
-        options: this.grades?.map((item) => {
-          return { id: '' + item.id, value: item.name };
-        }),
-      },
-      {
-        id: '6',
-        title: 'Client Name',
-        type: 'select',
-        options: this.clients?.map((item) => {
-          return { id: '' + item.id, value: item.name };
-        }),
-      },
-    ];
-  }
-
   addNewCase(newCase: any): void {
     this.caseService.insertCase(newCase).subscribe({
       next: (data) => {
@@ -108,6 +137,16 @@ export class CasesComponent {
       error: (error) => console.error('Error:', error),
     });
   }
+
+  updateCase(caseId: number, updatedCase: any): void {
+    this.caseService.updateCase(caseId, updatedCase).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (error) => console.error('Error:', error),
+    });
+  }
+
   loadCases(): void {
     this.caseService.getCases().subscribe({
       next: (data) => {
@@ -173,6 +212,8 @@ export class CasesComponent {
 
     if (selectedValue === 'Delete') {
       this.deleteCase(caseId);
+    } else if (selectedValue === 'Update') {
+      this.toggleFormVisibility(caseId);
     }
   }
 

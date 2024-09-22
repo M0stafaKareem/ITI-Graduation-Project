@@ -19,7 +19,7 @@
  * @templateUrl ./adding-form.component.html
  * @styleUrl ./adding-form.component.css
  */
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { InputRowComponent } from './input-row/input-row.component';
 
 /**
@@ -122,6 +122,7 @@ export class AddingFormComponent {
    */
   @Input({ required: true }) formHeader: string = 'Add Case';
 
+  @Output() backdropClicked = new EventEmitter();
   /**
    * @property {string[]} formData
    *
@@ -161,5 +162,14 @@ export class AddingFormComponent {
     if (this.onFormSubmit) {
       this.onFormSubmit(this.formData);
     }
+  }
+  /**
+   * @method closeForm
+   *
+   * @description
+   * Emits an event to close the form by clicking on the backdrop.
+   */
+  closeForm() {
+    this.backdropClicked.emit();
   }
 }
