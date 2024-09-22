@@ -26,7 +26,7 @@ class CaseCategoryController extends Controller
         return $CaseCategory;
     }
 
-    public function show(int $id)
+    public function show($id)
     {
         
         $CaseCategory = CaseCategory::find($id);
@@ -38,7 +38,7 @@ class CaseCategoryController extends Controller
 
 
 
-    public function update(Request $request, int $id)
+    public function update(Request $request, $id)
     {
     
         $request->validate([
@@ -56,7 +56,7 @@ class CaseCategoryController extends Controller
         return 'CaseCategory updated successfully.';
     }
 
-    public function destroy(int $id)
+    public function destroy($id)
     {
         $CaseCategory = CaseCategory::find($id);
         if (!$CaseCategory) {

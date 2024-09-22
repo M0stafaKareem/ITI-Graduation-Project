@@ -49,7 +49,7 @@ class CaseController extends Controller
         return $Case;
     }
 
-    public function show(int $id)
+    public function show($id)
     {
         
         $Case = MCase::find($id);
@@ -61,7 +61,7 @@ class CaseController extends Controller
 
 
 
-    public function update(Request $request, int $id)
+    public function update(Request $request, $id)
     {
     
         $request->validate([
@@ -96,7 +96,7 @@ class CaseController extends Controller
         return 'Case updated successfully.';
     }
 
-    public function destroy(int $id)
+    public function destroy($id)
     {
         $Case = MCase::find($id);
         if ($Case) {

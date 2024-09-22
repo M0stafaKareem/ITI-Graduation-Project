@@ -49,7 +49,7 @@ class ClientsController extends Controller
         return $Client;
     }
 
-    public function show(int $id)
+    public function show( $id)
     {
         
         $Client = Client::find($id);
@@ -61,7 +61,7 @@ class ClientsController extends Controller
 
 
 
-    public function update(Request $request, int $id)
+    public function update(Request $request,  $id)
     {
     
         $request->validate([
@@ -97,7 +97,7 @@ class ClientsController extends Controller
         return 'Client updated successfully.';
     }
 
-    public function destroy(int $id)
+    public function destroy( $id)
     {
         $Client = Client::find($id);
         if ($Client) {
