@@ -8,11 +8,13 @@ import { AddFormComponent } from './shared/add-form/add-form.component';
 import { LoginFromComponent } from './login-from/login-from.component';
 import { RegisterFromComponent } from './register-from/register-from.component';
 import { AddingFormComponent } from './shared/adding-form/adding-form.component';
+import { EventCalendarComponent } from './components/event-calendar/event-calendar.component';
 
 export const routes: Routes = [
   { path: 'clients', component: ClientsComponent },
   { path: 'cases', component: CasesComponent },
   { path: 'dashboard', component: DashboardComponent },
+  { path: 'calender', component: EventCalendarComponent },
   { path: 'court', component: CourtsComponent },
   { path: 'add-case', component: AddingFormComponent },
   { path: 'register', component: RegisterFromComponent, title: 'Register' },
