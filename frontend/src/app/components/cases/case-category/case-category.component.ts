@@ -4,22 +4,90 @@ import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-n
 import { CasesService } from '../../../shared/services/cases.service';
 import { CaseCategory } from '../../../shared/models/case.category.model';
 import { NgIf } from '@angular/common';
+import {
+  inputType,
+  AddingFormComponent,
+} from '../../../shared/adding-form/adding-form.component';
 
 @Component({
   selector: 'app-case-category',
   standalone: true,
-  imports: [TableComponent, SecondaryNavComponent, NgIf],
+  imports: [TableComponent, SecondaryNavComponent, NgIf, AddingFormComponent],
   templateUrl: './case-category.component.html',
   styleUrls: ['./case-category.component.css', '../cases.component.css'],
 })
 export class CaseCategoryComponent implements OnInit {
   categories?: CaseCategory[];
   loading: boolean = false;
+  isFormVisible: boolean = false;
+  formType: 'Add' | 'Update' = 'Add';
+  formHeader: string = 'Add New Category';
+  upaddingClientId?: number;
+  newCategoryInputRows!: inputType[];
+
   constructor(private caseService: CasesService) {}
 
   ngOnInit(): void {
     this.getCategories();
   }
+
+  addNewCategory(newCategory: CaseCategory): void {
+    this.caseService.insertCategory(newCategory).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (error) => console.error('Error:', error),
+    });
+  }
+
+  updateCategory(categoryId: number, updatedCategory: CaseCategory): void {
+    this.caseService.updateCategory(categoryId, updatedCategory).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (error) => console.error('Error:', error),
+    });
+  }
+
+  toggleFormVisibility = (categoryId?: number) => {
+    this.upaddingClientId = categoryId;
+    const targetCategory = this.categories?.find(
+      (category) => category.id === categoryId
+    );
+    this.newCategoryInputRows = [
+      {
+        id: '1',
+        title: 'Category Name',
+        type: 'text',
+        value: targetCategory ? targetCategory.name : undefined,
+      },
+      {
+        id: '2',
+        title: 'description',
+        type: 'text',
+        value: targetCategory ? targetCategory.description : undefined,
+      },
+    ];
+    if (targetCategory) {
+      this.formHeader = 'Update Category';
+      this.formType = 'Update';
+    }
+    this.isFormVisible = !this.isFormVisible;
+  };
+
+  submitForm = (data: any) => {
+    const categoryData = {
+      name: data[0],
+      description: data[1],
+    };
+    if (this.formType === 'Add') {
+      this.addNewCategory(categoryData);
+    } else if (this.formType === 'Update') {
+      this.updateCategory(this.upaddingClientId!, categoryData);
+    }
+    this.categories?.push(categoryData);
+    this.toggleFormVisibility();
+  };
 
   getCategories(): void {
     this.caseService.getCategories().subscribe({
@@ -33,6 +101,8 @@ export class CaseCategoryComponent implements OnInit {
 
     if (selectedValue === 'Delete') {
       this.deleteCategory(categoryId);
+    } else if (selectedValue === 'Update') {
+      this.toggleFormVisibility(categoryId);
     }
   }
 
