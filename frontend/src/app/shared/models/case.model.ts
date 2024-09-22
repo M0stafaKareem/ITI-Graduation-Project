@@ -1,4 +1,3 @@
-import { CaseGrade } from './case.grade.model';
 import { Clients } from './clients.model';
 
 export interface Case {
