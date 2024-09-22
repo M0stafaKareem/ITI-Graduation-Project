@@ -2,7 +2,6 @@
   <app-secondary-nav
     tableTitle="Client List"
     addNewButton="New Client"
-    addingRoute="add-case"
     (btnClicked)="toggleFormVisibility()"
   />
 
@@ -35,7 +34,7 @@
       <td>
         <div class="custom-select">
           <select
-            (change)="onActionSelect($event, client.id)"
+            (change)="onActionSelect($event, client.id!)"
             name="SELECT"
             id=""
           >

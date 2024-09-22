@@ -39,7 +39,7 @@ export class CasesComponent {
   loading: boolean = false;
   isFormVisable: boolean = false;
   formType: 'Add' | 'Update' = 'Add';
-  formHeader: string = 'Add New Client';
+  formHeader: string = 'Add New Case';
   upaddingCaseId?: number;
   newCasesInputRows!: inputType[];
 
@@ -119,6 +119,7 @@ export class CasesComponent {
     } else if (this.formType === 'Update') {
       this.updateCase(this.upaddingCaseId!, caseData);
     }
+    this.cases?.push(caseData);
     this.toggleFormVisibility();
   };
 

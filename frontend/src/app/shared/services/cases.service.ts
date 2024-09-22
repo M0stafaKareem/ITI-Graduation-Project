@@ -26,6 +26,16 @@ export class CasesService {
     return this.httpClient.get<any[]>(this.categoriesApiUrl);
   }
 
+  insertCategory(newCategory: any): Observable<any> {
+    return this.httpClient.post(this.categoriesApiUrl, newCategory);
+  }
+  updateCategory(categoryId: number, newCategory: any): Observable<any> {
+    return this.httpClient.put(
+      `${this.categoriesApiUrl}/${categoryId}`,
+      newCategory
+    );
+  }
+
   getCaseGrade(): Observable<any[]> {
     return this.httpClient.get<any[]>(this.CaseGrade);
   }
