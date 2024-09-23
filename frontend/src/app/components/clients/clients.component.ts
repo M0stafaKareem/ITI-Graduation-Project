@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { SecondaryNavComponent } from '../../shared/secondary-nav/secondary-nav.component';
 import { TableComponent } from '../../shared/table/table.component';
 import { ClientsService } from '../../shared/services/clients.service';
@@ -9,6 +8,7 @@ import {
   inputType,
   AddingFormComponent,
 } from '../../shared/adding-form/adding-form.component';
+import { CountryService } from '../../shared/services/country.service';
 
 @Component({
   selector: 'app-clients',
@@ -24,6 +24,12 @@ import {
 })
 export class ClientsComponent implements OnInit {
   clients?: Array<Clients>;
+  countries?: {
+    id: string;
+    name: string;
+    code: string;
+    phonecode: string;
+  }[];
   loading: boolean = false;
   isFormVisible: boolean = false;
   formType: 'Add' | 'Update' = 'Add';
@@ -31,10 +37,25 @@ export class ClientsComponent implements OnInit {
   upaddingClientId?: number;
   newClientInputRows!: inputType[];
 
-  constructor(private clientsService: ClientsService) {}
+  constructor(
+    private clientsService: ClientsService,
+    private countryService: CountryService
+  ) {}
 
   ngOnInit(): void {
     this.getClients();
+    this.getCountries();
+  }
+
+  getCountries() {
+    this.countryService.getCountries().subscribe({
+      next: (data) => {
+        this.countries = data;
+      },
+      error: (error) => {
+        console.error('Error retrieving countries:', error);
+      },
+    });
   }
 
   addNewClient(newClient: any): void {
@@ -73,7 +94,10 @@ export class ClientsComponent implements OnInit {
       {
         id: '2',
         title: 'Country',
-        type: 'text',
+        type: 'select',
+        options: this.countries?.map((item) => {
+          return { id: '' + item.id, value: item.name };
+        }),
         value: targetCliet ? '' + targetCliet.country_id : undefined,
       },
       {
@@ -91,7 +115,15 @@ export class ClientsComponent implements OnInit {
       {
         id: '5',
         title: 'Role',
-        type: 'text',
+        type: 'select',
+        options: [
+          { id: 'Defendant', value: 'Defendant' },
+          { id: 'Plaintiff', value: 'Plaintiff' },
+          { id: 'Accused', value: 'Accused' },
+          { id: 'Victim', value: 'Victim' },
+          { id: 'Witness', value: 'Witness' },
+          { id: 'Other', value: 'Other' },
+        ],
         value: targetCliet ? targetCliet.role : undefined,
       },
       {
@@ -137,7 +169,7 @@ export class ClientsComponent implements OnInit {
   };
 
   submitForm = (data: any) => {
-    const clientData = {
+    const clientData: Clients = {
       name: data[0],
       country_id: data[1],
       city_id: data[2],
@@ -154,6 +186,7 @@ export class ClientsComponent implements OnInit {
     } else if (this.formType === 'Update') {
       this.updateClient(this.upaddingClientId!, clientData);
     }
+    this.clients!.push(clientData);
     this.toggleFormVisibility();
   };
 

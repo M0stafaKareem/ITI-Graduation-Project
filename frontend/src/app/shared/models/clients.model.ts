@@ -1,5 +1,5 @@
 export interface Clients {
-  id: number;
+  id?: number;
   name: string;
   country_id: bigint;
   state_id: number;
@@ -10,6 +10,6 @@ export interface Clients {
   gender: string;
   address: string;
   description: string;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
 }
