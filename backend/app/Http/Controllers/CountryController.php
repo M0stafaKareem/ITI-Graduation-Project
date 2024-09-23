@@ -28,10 +28,13 @@ class CountryController extends Controller
 
     public function City($id)
     {
+        
         $country = Country::find($id);
+        
         if (!$country) {
             return 'country not found.';
         }
+        
         //get states of the country States where id of the country in state
         $States = state::where('country_id', $id)->get();
         // get cities of the states

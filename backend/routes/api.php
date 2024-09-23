@@ -51,6 +51,8 @@ Route::apiResource('parties', PartyController::class);
 Route::apiResource('CasesParties', CasesPartiesController::class);
 Route::apiResource('Cases',CaseController::class);
 Route::apiResource('Clients', ClientsController::class);
+Route::apiResource('ClientCategories', ClientsController::class);
+
 
 })->middleware('');
 
