@@ -13,6 +13,7 @@ use App\Http\Controllers\StateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CourtController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -66,5 +67,8 @@ Route::get('/States/{id}', StateController::class.'@show');
 // Cities
 Route::get('/Cities', CityController::class.'@index');
 Route::get('/Cities/{id}', CityController::class.'@show');
+
+// Court 
+Route::apiResource('courts',CourtController::class);
 
 
