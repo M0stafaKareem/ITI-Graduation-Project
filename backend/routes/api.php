@@ -5,6 +5,7 @@ use App\Http\Controllers\CaseController;
 use App\Http\Controllers\CaseGradeController;
 use App\Http\Controllers\CasesPartiesController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\ClientCategoryController;
 use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\PartyController;
@@ -44,17 +45,14 @@ Route::group(['prefix' => 'case'], function () {
 // GET           /users/{user}/edit          edit    users.edit
 //  //PUT|PATCH     /users/{user}               update  users.update
 // DELETE        /users/{user}               destroy users.destroy
-Route::group(['prefix'=> ''], function () {
 Route::apiResource('CaseCategories', CaseCategoryController::class);
 Route::apiResource('CaseGrades', CaseGradeController::class);
 Route::apiResource('parties', PartyController::class);
 Route::apiResource('CasesParties', CasesPartiesController::class);
 Route::apiResource('Cases',CaseController::class);
 Route::apiResource('Clients', ClientsController::class);
-Route::apiResource('ClientCategories', ClientsController::class);
+Route::apiResource('ClientCategories',ClientCategoryController::class);
 
-
-})->middleware('');
 
 // Countries
 Route::get('/Countries', CountryController::class.'@index');

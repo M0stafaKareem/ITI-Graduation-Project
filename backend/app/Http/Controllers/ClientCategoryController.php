@@ -21,7 +21,7 @@ class ClientCategoryController extends Controller
               'description'=> 'nullable',
               
         ]);
-       
+    
 
         $ClientCategory= ClientCategory::create($request->all());
 
