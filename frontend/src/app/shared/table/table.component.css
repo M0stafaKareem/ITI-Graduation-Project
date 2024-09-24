@@ -11,7 +11,7 @@ tbody {
   background-color: white;
 }
 
-th {
+th:not(:first-child) {
   vertical-align: middle;
   padding-left: 20px;
 }
@@ -19,6 +19,10 @@ th {
 td {
   padding-left: 20px;
   min-width: 200px;
+}
+
+th:first-child {
+  text-align: center;
 }
 
 th {

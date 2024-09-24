@@ -14,19 +14,9 @@ export class ClientProfileComponent {
   clientId?: number;
   client?: Clients;
 
-  constructor(
-    private route: ActivatedRoute,
-    private clientsService: ClientsService
-  ) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.clientId = +this.route.snapshot.paramMap.get('id')!;
-    this.getClientById(this.clientId);
-  }
-
-  getClientById(id: number) {
-    this.clientsService.getClientById(id).subscribe((client) => {
-      this.client = client;
-    });
+    this.client = this.route.snapshot.data['client'];
   }
 }

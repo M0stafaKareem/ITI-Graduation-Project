@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { NgIf } from '@angular/common';
+
 import { ClientCategory } from '../../../shared/models/client.category';
 import {
   inputType,
   AddingFormComponent,
 } from '../../../shared/adding-form/adding-form.component';
-import { CaseCategory } from '../../../shared/models/case.category.model';
 import { ClientsService } from '../../../shared/services/clients.service';
 import { TableComponent } from '../../../shared/table/table.component';
 import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-nav.component';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-client-category',
@@ -29,10 +30,13 @@ export class ClientCategoryComponent {
   upaddingClientId?: number;
   newCategoryInputRows!: inputType[];
 
-  constructor(private clientSerivce: ClientsService) {}
+  constructor(
+    private clientSerivce: ClientsService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.getClientCategories();
+    this.categories = this.route.snapshot.data['clientCategories'];
   }
 
   addNewCategory(newCategory: ClientCategory): void {
@@ -92,13 +96,6 @@ export class ClientCategoryComponent {
     this.categories?.push(categoryData);
     this.toggleFormVisibility();
   };
-
-  getClientCategories(): void {
-    this.clientSerivce.getCategories().subscribe({
-      next: (data) => (this.categories = data),
-      error: (error) => console.error('Error retrieving categories:', error),
-    });
-  }
 
   onActionSelect(event: any, categoryId: number): void {
     const selectedValue = event.target.value;

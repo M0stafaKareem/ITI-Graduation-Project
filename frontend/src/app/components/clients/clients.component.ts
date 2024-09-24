@@ -9,7 +9,7 @@ import {
   AddingFormComponent,
 } from '../../shared/adding-form/adding-form.component';
 import { CountryService } from '../../shared/services/country.service';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-clients',
@@ -41,23 +41,13 @@ export class ClientsComponent implements OnInit {
 
   constructor(
     private clientsService: ClientsService,
-    private countryService: CountryService
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.getClients();
-    this.getCountries();
-  }
-
-  getCountries() {
-    this.countryService.getCountries().subscribe({
-      next: (data) => {
-        this.countries = data;
-      },
-      error: (error) => {
-        console.error('Error retrieving countries:', error);
-      },
-    });
+    const resolvedData = this.route.snapshot.data['data'];
+    this.clients = resolvedData.clients;
+    this.countries = resolvedData.countries;
   }
 
   addNewClient(newClient: any): void {
@@ -66,18 +56,6 @@ export class ClientsComponent implements OnInit {
         console.log(data);
       },
       error: (error) => console.error('Error:', error),
-    });
-  }
-
-  getClients() {
-    this.clientsService.getClients().subscribe({
-      next: (data) => {
-        this.clients = data;
-        console.log(this.clients);
-      },
-      error: (error) => {
-        console.error('Error retrieving clients:', error);
-      },
     });
   }
 

@@ -43,7 +43,10 @@
       </li>
       @if (clientsDropDown) {
       <app-dropdown passedRoute="clients" listName="Clients Lists" />
-      <app-dropdown passedRoute="clientCategories" listName="Client Category" />
+      <app-dropdown
+        passedRoute="client-categories"
+        listName="Client Category"
+      />
       }
       <li
         (click)="casesToggle()"
@@ -64,7 +67,7 @@
       </li>
       @if (casesDropDown) {
       <app-dropdown passedRoute="cases" listName="Cases List" />
-      <app-dropdown passedRoute="caseCategories" listName="Case Categories" />
+      <app-dropdown passedRoute="case-categories" listName="Case Categories" />
       }
       <li>
         <a class="nav-link" routerLink="court" routerLinkActive="activated">
