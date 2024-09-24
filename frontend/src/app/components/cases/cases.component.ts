@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CaseComponent } from './case/case.component';
 import { TableComponent } from '../../shared/table/table.component';
 import { SecondaryNavComponent } from '../../shared/secondary-nav/secondary-nav.component';
@@ -15,6 +15,7 @@ import {
   AddingFormComponent,
 } from '../../shared/adding-form/adding-form.component';
 import { LoadingScreenComponent } from '../../shared/loading-screen/loading-screen.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cases',
@@ -32,7 +33,7 @@ import { LoadingScreenComponent } from '../../shared/loading-screen/loading-scre
   templateUrl: './cases.component.html',
   styleUrl: './cases.component.css',
 })
-export class CasesComponent {
+export class CasesComponent implements OnInit {
   cases?: Array<Case>;
   categories?: Array<CaseCategory>;
   grades?: Array<CaseGrade>;
@@ -47,8 +48,16 @@ export class CasesComponent {
 
   constructor(
     private caseService: CasesService,
-    private clientService: ClientsService
+    private route: ActivatedRoute
   ) {}
+
+  ngOnInit() {
+    const resolvedData = this.route.snapshot.data['data'];
+    this.cases = resolvedData.cases;
+    this.categories = resolvedData.categories;
+    this.grades = resolvedData.grades;
+    this.clients = resolvedData.clients;
+  }
 
   toggleFormVisibility = (caseId?: number): void => {
     this.upaddingCaseId = caseId;
@@ -125,13 +134,6 @@ export class CasesComponent {
     this.toggleFormVisibility();
   };
 
-  ngOnInit() {
-    this.loadCases();
-    this.loadCategories();
-    this.getCaseGrade();
-    this.getClient();
-  }
-
   addNewCase(newCase: any): void {
     this.caseService.insertCase(newCase).subscribe({
       next: (data) => {
@@ -147,82 +149,6 @@ export class CasesComponent {
         console.log(data);
       },
       error: (error) => console.error('Error:', error),
-    });
-  }
-
-  loadCases(): void {
-    this.loading = true;
-    this.caseService.getCases().subscribe({
-      next: (data) => {
-        this.cases = data;
-      },
-      error: (error) => console.error('Error:', error),
-      complete: () => {
-        this.loading = false;
-      },
-    });
-  }
-
-  loadCategories(): void {
-    this.loading = true;
-    this.caseService.getCategories().subscribe({
-      next: (categoriesData) => {
-        this.categories = categoriesData;
-        this.cases = this.cases?.map((caseItem: Case) => ({
-          ...caseItem,
-          categoryName:
-            this.categories?.find(
-              (cat: CaseCategory) => cat.id === caseItem.case_category_id
-            )?.name || 'No Category',
-        }));
-      },
-      error: (error) => console.error('Error:', error),
-      complete: () => {
-        this.loading = false;
-      },
-    });
-  }
-
-  getCaseGrade(): void {
-    this.loading = true;
-    this.caseService.getCaseGrade().subscribe({
-      next: (gradeData) => {
-        this.grades = gradeData;
-        this.cases = this.cases?.map((caseItem: Case) => ({
-          ...caseItem,
-          case_grade:
-            this.grades?.find(
-              (grade: CaseGrade) => grade.id === caseItem.case_grade_id
-            )?.name || 'No Grade',
-        }));
-      },
-      error: (error) => console.error('Error:', error),
-      complete: () => {
-        this.loading = false;
-      },
-    });
-  }
-
-  getClient(): void {
-    this.loading = true;
-    this.clientService.getClients().subscribe({
-      next: (clientsData) => {
-        this.clients = clientsData;
-        this.cases = this.cases?.map((caseItem: Case) => {
-          const foundClient = this.clients?.find(
-            (client: Clients) => client.id === caseItem.client_id
-          );
-
-          return {
-            ...caseItem,
-            client: foundClient,
-          };
-        });
-      },
-      error: (error) => console.error('Error:', error),
-      complete: () => {
-        this.loading = false;
-      },
     });
   }
 

@@ -8,6 +8,7 @@ import {
   inputType,
   AddingFormComponent,
 } from '../../../shared/adding-form/adding-form.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-case-category',
@@ -25,10 +26,13 @@ export class CaseCategoryComponent implements OnInit {
   upaddingClientId?: number;
   newCategoryInputRows!: inputType[];
 
-  constructor(private caseService: CasesService) {}
+  constructor(
+    private caseService: CasesService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.getCategories();
+    this.categories = this.route.snapshot.data['categories'];
   }
 
   addNewCategory(newCategory: CaseCategory): void {
@@ -88,13 +92,6 @@ export class CaseCategoryComponent implements OnInit {
     this.categories?.push(categoryData);
     this.toggleFormVisibility();
   };
-
-  getCategories(): void {
-    this.caseService.getCategories().subscribe({
-      next: (data) => (this.categories = data),
-      error: (error) => console.error('Error retrieving categories:', error),
-    });
-  }
 
   onActionSelect(event: any, categoryId: number): void {
     const selectedValue = event.target.value;
