@@ -1,0 +1,54 @@
+<div class="container bootstrap snippets bootdey">
+  <h1>{{ client?.name?.toUpperCase() }} PROFILE</h1>
+  <div class="row">
+    <div class="profile-nav col-md-3">
+      <div class="panel">
+        <div class="user-heading round">
+          <a href="#">
+            @if (client?.gender === 'Male') {
+            <img
+              src="https://images.search.yahoo.com/search/images;_ylt=AwrFELFt1PJmVQQAEgBXNyoA;_ylu=Y29sbwNiZjEEcG9zAzEEdnRpZAMEc2VjA3BpdnM-?p=user+profile&fr2=piv-web&type=E211US714G0&fr=mcafee#id=9&iurl=https%3A%2F%2Fpng.pngtree.com%2Fpng-vector%2F20190710%2Fourlarge%2Fpngtree-business-user-profile-vector-png-image_1541960.jpg&action=click"
+              alt=""
+            />
+            } @else {
+            <img
+              src="https://bootdey.com/img/Content/avatar/avatar3.png"
+              alt=""
+            />
+            }
+          </a>
+          <h1>{{ client?.name }}</h1>
+          <p>{{ client?.email }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="profile-info col-md-9">
+      <div class="panel"></div>
+      <div class="panel">
+        <div class="panel-body bio-graph-info">
+          <h1>Bio Graph</h1>
+          <div class="row">
+            <div class="bio-row">
+              <p><span>First Name </span>: {{ client?.name }}</p>
+            </div>
+            <div class="bio-row">
+              <p><span>Country </span>: Australia</p>
+            </div>
+            <div class="bio-row">
+              <p><span>Occupation </span>: UI Designer</p>
+            </div>
+            <div class="bio-row">
+              <p><span>Email </span>: {{ client?.email }}</p>
+            </div>
+            <div class="bio-row">
+              <p><span>Mobile </span>: {{ client?.mobile }}</p>
+            </div>
+            <div class="bio-row">
+              <p><span>Phone </span>: {{ client?.mobile }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -53,3 +53,8 @@ select option {
 .me-5 {
   flex: auto;
 }
+
+.justify-content-center {
+  margin-top: 20vh;
+  align-items: center;
+}

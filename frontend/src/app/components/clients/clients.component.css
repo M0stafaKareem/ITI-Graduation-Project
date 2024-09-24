@@ -11,3 +11,8 @@ td,
 th {
   vertical-align: middle;
 }
+
+.name:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { inputType } from '../adding-form.component';
 import { FormsModule } from '@angular/forms';
 
+import { inputType } from '../adding-form.component';
 @Component({
   selector: 'app-input-row',
   standalone: true,

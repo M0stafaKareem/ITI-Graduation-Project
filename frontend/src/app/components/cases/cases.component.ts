@@ -14,6 +14,7 @@ import {
   inputType,
   AddingFormComponent,
 } from '../../shared/adding-form/adding-form.component';
+import { LoadingScreenComponent } from '../../shared/loading-screen/loading-screen.component';
 
 @Component({
   selector: 'app-cases',
@@ -26,6 +27,7 @@ import {
     ClientComponent,
     NgIf,
     AddingFormComponent,
+    LoadingScreenComponent,
   ],
   templateUrl: './cases.component.html',
   styleUrl: './cases.component.css',
@@ -149,15 +151,20 @@ export class CasesComponent {
   }
 
   loadCases(): void {
+    this.loading = true;
     this.caseService.getCases().subscribe({
       next: (data) => {
         this.cases = data;
       },
       error: (error) => console.error('Error:', error),
+      complete: () => {
+        this.loading = false;
+      },
     });
   }
 
   loadCategories(): void {
+    this.loading = true;
     this.caseService.getCategories().subscribe({
       next: (categoriesData) => {
         this.categories = categoriesData;
@@ -170,10 +177,14 @@ export class CasesComponent {
         }));
       },
       error: (error) => console.error('Error:', error),
+      complete: () => {
+        this.loading = false;
+      },
     });
   }
 
   getCaseGrade(): void {
+    this.loading = true;
     this.caseService.getCaseGrade().subscribe({
       next: (gradeData) => {
         this.grades = gradeData;
@@ -186,10 +197,14 @@ export class CasesComponent {
         }));
       },
       error: (error) => console.error('Error:', error),
+      complete: () => {
+        this.loading = false;
+      },
     });
   }
 
   getClient(): void {
+    this.loading = true;
     this.clientService.getClients().subscribe({
       next: (clientsData) => {
         this.clients = clientsData;
@@ -205,6 +220,9 @@ export class CasesComponent {
         });
       },
       error: (error) => console.error('Error:', error),
+      complete: () => {
+        this.loading = false;
+      },
     });
   }
 
