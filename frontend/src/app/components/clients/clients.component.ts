@@ -9,6 +9,7 @@ import {
   AddingFormComponent,
 } from '../../shared/adding-form/adding-form.component';
 import { CountryService } from '../../shared/services/country.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-clients',
@@ -18,6 +19,7 @@ import { CountryService } from '../../shared/services/country.service';
     TableComponent,
     AddingFormComponent,
     CommonModule,
+    RouterLink,
   ],
   templateUrl: './clients.component.html',
   styleUrls: ['./clients.component.css', '../cases/cases.component.css'],

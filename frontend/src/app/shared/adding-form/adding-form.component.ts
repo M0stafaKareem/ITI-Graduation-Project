@@ -20,6 +20,7 @@
  * @styleUrl ./adding-form.component.css
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+
 import { InputRowComponent } from './input-row/input-row.component';
 
 /**
