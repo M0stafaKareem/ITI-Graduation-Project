@@ -14,6 +14,8 @@ import { CasesResolver } from './components/cases/cases.resolver';
 import { ClientsResolver } from './components/clients/clients.resolver';
 import { CaseCategoryResolver } from './components/cases/case-category/case.category.resolver';
 import { ClientCategoryResolver } from './components/clients/client-category/client.category.resolver';
+import { CaseDetailsComponent } from './components/cases/case-details/case-details.component';
+import { CaseResolver } from './components/cases/case-details/case.details.resolver';
 
 export const routes: Routes = [
   {
@@ -38,6 +40,11 @@ export const routes: Routes = [
     path: 'cases',
     component: CasesComponent,
     resolve: { data: CasesResolver },
+  },
+  {
+    path: 'cases/:id',
+    component: CaseDetailsComponent,
+    resolve: { case: CaseResolver },
   },
   {
     path: 'case-categories',
