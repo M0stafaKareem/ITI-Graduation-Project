@@ -37,6 +37,7 @@
       <td class="text-center">{{ $index + 1 }}</td>
       <td
         casetd
+        [caseDetail]="['/cases', case.id]"
         [caseName]="case.case_name"
         [caseId]="case.id"
         [caseCategory]="

@@ -1,0 +1,28 @@
+<div class="container bootstrap snippets bootdey">
+  <h1>{{ title.toUpperCase() }} PROFILE</h1>
+  <div class="row">
+    <div class="profile-nav col-md-3">
+      <div class="panel">
+        <div class="user-heading round">
+          <ng-content></ng-content>
+          <h1>{{ title }}</h1>
+          <p>{{ titleContact }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="profile-info col-md-9">
+      <div class="panel"></div>
+      <div class="panel">
+        <div class="panel-body bio-graph-info">
+          <h1 style="font-weight: bold">
+            {{ pageTitle.toUpperCase() }} Details
+          </h1>
+          <div class="row">
+            <ng-content select="rowInfo" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-content select="secondSection"></ng-content>
+</div>

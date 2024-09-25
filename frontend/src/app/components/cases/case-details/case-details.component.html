@@ -1,0 +1,84 @@
+<app-single-page-details
+  title="{{ case?.case_name }}"
+  titleContact="Case NO : {{ case?.id }}"
+  pageTitle="{{ case?.case_name }}"
+>
+  <a href="#">
+    <img
+      src="https://tse4.mm.bing.net/th?id=OIP.155WFvBXXMJ_-yUgYajbNwHaEn&pid=Api&P=0&h=220"
+      alt=""
+    />
+  </a>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Case Name"
+    value="{{ case?.case_name }}"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Case Number"
+    value="{{ case?.id }}"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Reference"
+    value="Lawyer Name"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Reference Mobile"
+    value="Lawyer Number"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Category"
+    value="{{ category?.name }}"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Filing Date"
+    value="{{ case?.first_session_date }}"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Next Hearing Date:"
+    value="{{ case?.first_session_date }}"
+  ></div>
+  <div ngProjectAs="secondSection" class="container bootstrap snippets bootdey">
+    <hr />
+    <h1>Client</h1>
+    <div class="row">
+      <div
+        bio-row
+        ngProjectAs="rowInfo"
+        label="Name"
+        value="{{ client?.name }}"
+      ></div>
+      <div
+        bio-row
+        ngProjectAs="rowInfo"
+        label="Number"
+        value="{{ client?.mobile }}"
+      ></div>
+      <div
+        bio-row
+        ngProjectAs="rowInfo"
+        label="Email"
+        value="{{ client?.email }}"
+      ></div>
+      <div
+        bio-row
+        ngProjectAs="rowInfo"
+        label="Address"
+        value="{{ client?.address }}"
+      ></div>
+    </div>
+  </div>
+</app-single-page-details>
