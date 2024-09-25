@@ -47,6 +47,7 @@ class ClientsController extends Controller
         
        
         $state = state::findOrFail($request->state_id);
+
     
        
 
