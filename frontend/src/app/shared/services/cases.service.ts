@@ -44,9 +44,13 @@ export class CasesService {
   }
 
   deleteCase(caseId: any) {
-    return this.httpClient.delete(`${this.getCasesURL}/${caseId}`);
+    return this.httpClient.delete(`${this.getCasesURL}/${caseId}`, {
+      responseType: 'text',
+    });
   }
   deleteCategory(categoryId: any) {
-    return this.httpClient.delete(`${this.categoriesApiUrl}/${categoryId}`);
+    return this.httpClient.delete(`${this.categoriesApiUrl}/${categoryId}`, {
+      responseType: 'text',
+    });
   }
 }

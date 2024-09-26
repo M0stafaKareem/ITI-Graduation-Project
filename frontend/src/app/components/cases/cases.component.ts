@@ -61,6 +61,13 @@ export class CasesComponent implements OnInit {
   toggleFormVisibility = (caseId?: number): void => {
     this.upaddingCaseId = caseId;
     const targetCase = this.cases?.find((clients) => clients.id === caseId);
+    if (targetCase) {
+      this.formHeader = 'Update Case';
+      this.formType = 'Update';
+    } else {
+      this.formHeader = 'Add New Case';
+      this.formType = 'Add';
+    }
     this.newCasesInputRows = [
       {
         backed_key: 'case_name',
@@ -108,10 +115,7 @@ export class CasesComponent implements OnInit {
         value: targetCase ? '' + targetCase.client_id : undefined,
       },
     ];
-    if (targetCase) {
-      this.formHeader = 'Update Client';
-      this.formType = 'Update';
-    }
+
     this.isFormVisable = !this.isFormVisable;
   };
 
@@ -180,6 +184,7 @@ export class CasesComponent implements OnInit {
     } else if (selectedValue === 'Update') {
       this.toggleFormVisibility(caseId);
     }
+    event.target.value = '';
   }
 
   deleteCase(caseId: number): void {

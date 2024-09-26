@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LoginService } from './login.service';
-import { FormControl, FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login-from',
@@ -26,6 +26,7 @@ export class LoginFromComponent {
       )
     ) {
       console.log('Login successful');
+      location.href = '/dashboard';
     } else {
       console.log('Invalid credentials');
     }

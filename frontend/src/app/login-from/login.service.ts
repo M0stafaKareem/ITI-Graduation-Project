@@ -1,54 +1,58 @@
 import { Injectable } from '@angular/core';
-
+import { BehaviorSubject, interval } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  private loginStatus: boolean = false;
+  private loginStatus = new BehaviorSubject<boolean>(false);
   private token: string | null = null;
 
-  public get isLoggedIn(): boolean {
-    return (
-      this.loginStatus && this.token === sessionStorage.getItem('access_token')!
-    );
+  constructor() {
+    const storedToken = sessionStorage.getItem('access_token');
+    if (storedToken) {
+      this.token = storedToken;
+      this.loginStatus.next(true);
+    } else {
+      this.loginStatus.next(false);
+    }
   }
 
-  async verifyCredentials(email: string, password: string) {
+  public get isLoggedIn() {
+    return this.loginStatus.asObservable();
+  }
+
+  async verifyCredentials(email: string, password: string): Promise<boolean> {
     const api = 'http://localhost:8000/api/login';
 
-    const response = await fetch(api, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const response = await fetch(api, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (response.ok) {
-      const jsonResponse = await response.json();
-      this.loginStatus = true;
-      this.token = jsonResponse.access_token;
-      sessionStorage.setItem('access_token', JSON.stringify(this.token));
-      return true;
+      if (response.ok) {
+        const jsonResponse = await response.json();
+        this.token = jsonResponse.access_token;
+
+        sessionStorage.setItem('access_token', this.token!);
+        this.loginStatus.next(true);
+
+        return true;
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
     }
 
-    this.loginStatus = false;
+    this.loginStatus.next(false);
     return false;
   }
 
-  async logout() {
+  logout(): void {
     this.token = null;
     sessionStorage.removeItem('access_token');
-    this.loginStatus = false;
-
-    // const api = 'http://localhost:8000/api/logout';
-    // await fetch(api, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // });
+    this.loginStatus.next(false);
   }
-
-  constructor() {}
 }

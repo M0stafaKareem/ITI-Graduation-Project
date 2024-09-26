@@ -80,6 +80,12 @@
           Events Calender</a
         >
       </li>
+      <li (click)="logOut()">
+        <button class="nav-link">
+          <i class="fa-solid fa-sign-out"></i>
+          logout
+        </button>
+      </li>
     </ul>
     @if (isSidebarOpen) {
     <button

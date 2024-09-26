@@ -25,7 +25,9 @@ export class ClientsService {
   }
 
   deleteCategory(categoryId: any) {
-    return this.httpClient.delete(`${this.clientCategoryUrl}/${categoryId}`);
+    return this.httpClient.delete(`${this.clientCategoryUrl}/${categoryId}`, {
+      responseType: 'text',
+    });
   }
 
   insertCategory(newCategory: any): Observable<any> {
@@ -51,6 +53,8 @@ export class ClientsService {
   }
 
   deleteClient(clienId: number) {
-    return this.httpClient.delete(`${this.clientsUrl}/${clienId}`);
+    return this.httpClient.delete(`${this.clientsUrl}/${clienId}`, {
+      responseType: 'text',
+    });
   }
 }

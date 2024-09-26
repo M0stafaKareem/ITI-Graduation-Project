@@ -70,6 +70,13 @@ export class CaseCategoryComponent implements OnInit {
     const targetCategory = this.categories?.find(
       (category) => category.id === categoryId
     );
+    if (targetCategory && categoryId) {
+      this.formHeader = 'Update Category';
+      this.formType = 'Update';
+    } else {
+      this.formHeader = 'Add Category';
+      this.formType = 'Add';
+    }
     this.newCategoryInputRows = [
       {
         backed_key: 'name',
@@ -84,10 +91,7 @@ export class CaseCategoryComponent implements OnInit {
         value: targetCategory ? targetCategory.description : undefined,
       },
     ];
-    if (targetCategory) {
-      this.formHeader = 'Update Category';
-      this.formType = 'Update';
-    }
+
     this.isFormVisible = !this.isFormVisible;
   };
 
@@ -128,6 +132,7 @@ export class CaseCategoryComponent implements OnInit {
     } else if (selectedValue === 'Update') {
       this.toggleFormVisibility(categoryId);
     }
+    event.target.value = '';
   }
 
   deleteCategory(categoryId: number): void {
@@ -135,6 +140,8 @@ export class CaseCategoryComponent implements OnInit {
       this.loading = true;
       this.caseService.deleteCategory(categoryId).subscribe({
         next: () => {
+          console.log('deleting');
+
           this.categories = this.categories?.filter(
             (category: CaseCategory) => category.id !== categoryId
           );

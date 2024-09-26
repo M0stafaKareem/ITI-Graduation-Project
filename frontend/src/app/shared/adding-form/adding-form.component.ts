@@ -53,6 +53,7 @@ export interface inputType {
     | 'select';
   options?: { id: string; value: string }[];
   value?: string;
+  disabled?: boolean;
 }
 
 /**
@@ -124,6 +125,7 @@ export class AddingFormComponent {
   @Input({ required: true }) formHeader: string = 'Add Case';
 
   @Output() backdropClicked = new EventEmitter();
+  @Output() inputChanged = new EventEmitter();
   /**
    * @property {string[]} formData
    *
@@ -150,6 +152,7 @@ export class AddingFormComponent {
    */
   saveInputData(key: string, value: string) {
     this.formData[key] = value;
+    this.inputChanged.emit({ key: key, value: value });
   }
 
   /**

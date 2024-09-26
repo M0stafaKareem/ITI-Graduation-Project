@@ -10,6 +10,8 @@ import {
 } from '../../shared/adding-form/adding-form.component';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ClientCategory } from '../../shared/models/client.category';
+import { CountryService } from '../../shared/services/country.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-clients',
@@ -32,6 +34,12 @@ export class ClientsComponent implements OnInit {
     code: string;
     phonecode: string;
   }[];
+  countryCities: BehaviorSubject<
+    { id: string; name: string; country_id?: number }[]
+  > = new BehaviorSubject<{ id: string; name: string; country_id?: number }[]>(
+    []
+  );
+
   loading: boolean = false;
   isFormVisible: boolean = false;
   formType: 'Add' | 'Update' = 'Add';
@@ -42,6 +50,7 @@ export class ClientsComponent implements OnInit {
 
   constructor(
     private clientsService: ClientsService,
+    private countryService: CountryService,
     private route: ActivatedRoute
   ) {}
 
@@ -50,9 +59,24 @@ export class ClientsComponent implements OnInit {
     this.clients = resolvedData.clients;
     this.clientCategories = resolvedData.clientCategories;
     this.countries = resolvedData.countries;
+    this.countryCities.subscribe((cities) => {
+      const cityInput = this.newClientInputRows
+        ? this.newClientInputRows.find(
+            (input) => input.backed_key === 'city_id'
+          )
+        : '';
+      if (cityInput) {
+        cityInput.options = cities.map((city) => ({
+          id: city.id,
+          value: city.name,
+        }));
+        cityInput.disabled = cities.length === 0;
+        // cityInput.value = '';
+      }
+    });
   }
 
-  addNewClient(newClient: any) {
+  addNewClient(newClient: Clients) {
     return new Promise((resolve) => {
       this.clientsService.insertClient(newClient).subscribe({
         next: (data) => {
@@ -81,18 +105,38 @@ export class ClientsComponent implements OnInit {
       });
     });
   }
+  checkChangedInput(changedInput: { key: string; value: string }) {
+    if (changedInput.key === 'country_id' && changedInput.value) {
+      this.countryService.getCountryCities(+changedInput.value).subscribe({
+        next: (cities) => {
+          this.countryCities.next(cities);
+        },
+        error: (err) => {
+          console.error('Error fetching cities:', err);
+        },
+      });
+    }
+  }
 
   toggleFormVisibility = (clientId?: number) => {
     this.upaddingClientId = clientId;
-    const targetCliet = this.clients?.find(
+    const targetClient = this.clients?.find(
       (clients) => clients.id === clientId
     );
+    if (clientId && targetClient) {
+      this.formHeader = 'Update Client';
+      this.formType = 'Update';
+    } else {
+      this.formHeader = 'Add New Client';
+      this.formType = 'Add';
+      this.countryCities.next([]);
+    }
     this.newClientInputRows = [
       {
         backed_key: 'name',
         title: 'Client Name',
         type: 'text',
-        value: targetCliet ? targetCliet.name : undefined,
+        value: targetClient ? targetClient.name : undefined,
       },
       {
         backed_key: 'country_id',
@@ -101,13 +145,17 @@ export class ClientsComponent implements OnInit {
         options: this.countries?.map((item) => {
           return { id: '' + item.id, value: item.name };
         }),
-        value: targetCliet ? '' + targetCliet.country_id : undefined,
+        value: targetClient ? '' + targetClient.country_id : undefined,
       },
       {
         backed_key: 'city_id',
         title: 'City',
-        type: 'text',
-        value: targetCliet ? '' + targetCliet.city_id : undefined,
+        type: 'select',
+        options: this.countryCities.getValue().map((item) => {
+          return { id: '' + item.id, value: item.name };
+        }),
+        disabled: this.countryCities.getValue().length === 0,
+        value: targetClient ? '' + targetClient.city_id : undefined,
       },
       {
         backed_key: 'client_category',
@@ -116,7 +164,7 @@ export class ClientsComponent implements OnInit {
         options: this.clientCategories?.map((item) => {
           return { id: '' + item.id, value: item.category_name };
         }),
-        value: targetCliet ? '' + targetCliet.state_id : undefined,
+        value: targetClient ? '' + targetClient.state_id : undefined,
       },
       {
         backed_key: 'role',
@@ -130,19 +178,19 @@ export class ClientsComponent implements OnInit {
           { id: 'Witness', value: 'Witness' },
           { id: 'Other', value: 'Other' },
         ],
-        value: targetCliet ? targetCliet.role : undefined,
+        value: targetClient ? targetClient.role : undefined,
       },
       {
         backed_key: 'mobile',
         title: 'Mobile',
         type: 'text',
-        value: targetCliet ? targetCliet.mobile : undefined,
+        value: targetClient ? targetClient.mobile : undefined,
       },
       {
         backed_key: 'email',
         title: 'Email',
         type: 'email',
-        value: targetCliet ? targetCliet.email : undefined,
+        value: targetClient ? targetClient.email : undefined,
       },
       {
         backed_key: 'gender',
@@ -152,25 +200,22 @@ export class ClientsComponent implements OnInit {
           { id: '0', value: 'Male' },
           { id: '1', value: 'Female' },
         ],
-        value: targetCliet ? targetCliet.gender : undefined,
+        value: targetClient ? targetClient.gender : undefined,
       },
       {
         backed_key: 'address',
         title: 'Address',
         type: 'text',
-        value: targetCliet ? targetCliet.address : undefined,
+        value: targetClient ? targetClient.address : undefined,
       },
       {
         backed_key: 'description',
         title: 'Description',
         type: 'text',
-        value: targetCliet ? targetCliet.description : undefined,
+        value: targetClient ? targetClient.description : undefined,
       },
     ];
-    if (clientId && targetCliet) {
-      this.formHeader = 'Update Client';
-      this.formType = 'Update';
-    }
+
     this.isFormVisible = !this.isFormVisible;
   };
 
@@ -208,8 +253,10 @@ export class ClientsComponent implements OnInit {
 
     if (selectedValue === 'Delete') {
       this.deleteClient(clientId);
+      event.target.value = '';
     } else if (selectedValue === 'Update') {
       this.toggleFormVisibility(clientId);
+      event.target.value = '';
     }
   }
 
