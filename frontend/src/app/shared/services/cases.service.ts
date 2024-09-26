@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Case } from '../models/case.model';
+import { CaseCategory } from '../models/case.category.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +17,10 @@ export class CasesService {
   getCases(): Observable<any> {
     return this.httpClient.get(this.getCasesURL);
   }
+
+  getCaseById(id: number): Observable<Case> {
+    return this.httpClient.get<Case>(`${this.getCasesURL}/${id}`);
+  }
   insertCase(newCase: any): Observable<any> {
     return this.httpClient.post(this.getCasesURL, newCase);
   }
@@ -26,6 +32,10 @@ export class CasesService {
 
   getCategories(): Observable<any[]> {
     return this.httpClient.get<any[]>(this.categoriesApiUrl);
+  }
+
+  getCategoryById(id: number): Observable<CaseCategory> {
+    return this.httpClient.get<CaseCategory>(`${this.categoriesApiUrl}/${id}`);
   }
 
   insertCategory(newCategory: any): Observable<any> {

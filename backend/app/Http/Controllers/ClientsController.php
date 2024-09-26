@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\City;
 use App\Models\Client;
+use App\Models\ClientCategory;
 use App\Models\Country;
 use App\Models\state;
 use Illuminate\Http\Request;
@@ -32,7 +33,12 @@ class ClientsController extends Controller
             "gender"=> "required",
             "address"=> "required",
             "description"=> "required",
+            "client_category"=> "required",
         ]);
+        $client_category = ClientCategory::find($request->client_category);
+        if ($client_category) {
+            return "Client Category not found.";
+        }
 
         $country = Country::findOrFail($request->country_id);
         
@@ -75,8 +81,12 @@ class ClientsController extends Controller
             "gender"=> "required",
             "address"=> "required",
             "description"=> "required",
-           
+            "client_category"=> "required",
         ]);
+        $client_category = ClientCategory::find($request->client_category);
+        if ($client_category) {
+            return "Client Category not found.";
+        }
         
 
         $country = Country::findOrFail($request->country_id);
