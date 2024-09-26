@@ -12,6 +12,7 @@
     [formInputRows]="newClientInputRows"
     [onFormSubmit]="submitForm"
     (backdropClicked)="toggleFormVisibility()"
+    (inputChanged)="checkChangedInput($event)"
   ></app-adding-form>
 
   <app-table
@@ -25,7 +26,9 @@
       <td style="color: var(--mainTextColor)" class="text-center">
         {{ $index + 1 }}
       </td>
-      <td class="name" [routerLink]="['/clients', client.id]">{{ client.name }}</td>
+      <td class="name" [routerLink]="['/clients', client.id]">
+        {{ client.name }}
+      </td>
       <td>
         Mobile: {{ client.mobile }} <br />
         Email: {{ client.email }}

@@ -27,7 +27,6 @@
         (click)="clientsToggle()"
         class="d-flex justify-content-between nav-list"
         [ngClass]="{ activated: clientsDropDown }"
-        routerLink="#"
       >
         <div>
           <a class="nav-link">
@@ -80,6 +79,12 @@
           <i class="fa-solid fa-calendar-days"></i>
           Events Calender</a
         >
+      </li>
+      <li (click)="logOut()">
+        <button class="nav-link">
+          <i class="fa-solid fa-sign-out"></i>
+          logout
+        </button>
       </li>
     </ul>
     @if (isSidebarOpen) {

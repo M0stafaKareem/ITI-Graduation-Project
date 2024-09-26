@@ -26,7 +26,7 @@ class ClientsController extends Controller
             "name"=> "required",
             "country_id"=> "required",
             "city_id"=> "required",
-            "state_id"=> "required",
+            // "state_id"=> "required",
             "role"=> "required",
             "mobile"=> "required",
             "email"=> "required|unique:clients,email",
@@ -46,8 +46,7 @@ class ClientsController extends Controller
         $city = City::findOrFail($request->city_id);
         
        
-        $state = state::findOrFail($request->state_id);
-
+        // $state = state::findOrFail($request->state_id);
     
        
 
@@ -75,7 +74,7 @@ class ClientsController extends Controller
             "name"=> "required",
             "country_id"=> "required",
             "city_id"=> "required",
-            "state_id"=> "required",
+            // "state_id"=> "required",
             "role"=> "required",
             "mobile"=> "required",
             "email"=> "required|email",
@@ -94,7 +93,7 @@ class ClientsController extends Controller
        
         $city = City::findOrFail($request->city_id);
        
-        $state = state::findOrFail($request->state_id);
+        // $state = state::findOrFail($request->state_id);
     
 
         $Client = Client::find($id);

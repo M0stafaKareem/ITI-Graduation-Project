@@ -1,3 +1,6 @@
+.input-group[id="city_id"] {
+  animation: slideIn 0.5s ease-in-out forwards;
+}
 .input-group {
   display: flex;
   justify-content: space-between;
@@ -32,4 +35,15 @@ input[type="date"]:focus {
 label {
   color: #e2e8f0;
   margin-bottom: 4px;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
 }

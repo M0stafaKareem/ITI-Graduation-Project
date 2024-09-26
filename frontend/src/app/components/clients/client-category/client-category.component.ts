@@ -39,21 +39,33 @@ export class ClientCategoryComponent {
     this.categories = this.route.snapshot.data['clientCategories'];
   }
 
-  addNewCategory(newCategory: ClientCategory): void {
-    this.clientSerivce.insertCategory(newCategory).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (error) => console.error('Error:', error),
+  addNewCategory(newCategory: ClientCategory) {
+    return new Promise((resolve) => {
+      this.clientSerivce.insertCategory(newCategory).subscribe({
+        next: (data) => {
+          console.log(data);
+          resolve(true);
+        },
+        error: (error) => {
+          console.error('Error:', error);
+          resolve(false);
+        },
+      });
     });
   }
 
-  updateCategory(categoryId: number, updatedCategory: ClientCategory): void {
-    this.clientSerivce.updateCategory(categoryId, updatedCategory).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (error) => console.error('Error:', error),
+  updateCategory(categoryId: number, updatedCategory: ClientCategory) {
+    return new Promise((resolve) => {
+      this.clientSerivce.updateCategory(categoryId, updatedCategory).subscribe({
+        next: (data) => {
+          console.log(data);
+          return resolve(true);
+        },
+        error: (error) => {
+          console.error('Error:', error);
+          return resolve(false);
+        },
+      });
     });
   }
 
@@ -62,38 +74,55 @@ export class ClientCategoryComponent {
     const targetCategory = this.categories?.find(
       (category) => category.id === categoryId
     );
+    if (categoryId && targetCategory) {
+      this.formHeader = 'Update Category';
+      this.formType = 'Update';
+    } else {
+      this.formHeader = 'Add New Category';
+      this.formType = 'Add';
+    }
     this.newCategoryInputRows = [
       {
-        id: '1',
+        backed_key: 'category_name',
         title: 'Category Name',
         type: 'text',
         value: targetCategory ? targetCategory.category_name : undefined,
       },
       {
-        id: '2',
+        backed_key: 'description',
         title: 'description',
         type: 'text',
         value: targetCategory ? targetCategory.description : undefined,
       },
     ];
-    if (targetCategory) {
-      this.formHeader = 'Update Category';
-      this.formType = 'Update';
-    }
     this.isFormVisible = !this.isFormVisible;
   };
 
-  submitForm = (data: any) => {
-    const categoryData = {
-      category_name: data[0],
-      description: data[1],
-    };
+  submitForm = async (categoryData: ClientCategory) => {
     if (this.formType === 'Add') {
-      this.addNewCategory(categoryData);
+      this.addNewCategory(categoryData).then((result) => {
+        if (result) {
+          this.categories?.push(categoryData);
+        } else {
+          console.log('failed to add client');
+        }
+      });
     } else if (this.formType === 'Update') {
-      this.updateCategory(this.upaddingClientId!, categoryData);
+      await this.updateCategory(this.upaddingClientId!, categoryData).then(
+        (result) => {
+          if (result) {
+            this.categories = this.categories?.map((category) => {
+              if (category.id == this.upaddingClientId) {
+                return category;
+              }
+              return category;
+            });
+          } else {
+            console.log('failed to update client');
+          }
+        }
+      );
     }
-    this.categories?.push(categoryData);
     this.toggleFormVisibility();
   };
 
@@ -105,6 +134,7 @@ export class ClientCategoryComponent {
     } else if (selectedValue === 'Update') {
       this.toggleFormVisibility(categoryId);
     }
+    event.target.value = '';
   }
 
   deleteCategory(categoryId: number): void {

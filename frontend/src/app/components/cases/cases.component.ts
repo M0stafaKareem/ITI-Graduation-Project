@@ -4,7 +4,6 @@ import { TableComponent } from '../../shared/table/table.component';
 import { SecondaryNavComponent } from '../../shared/secondary-nav/secondary-nav.component';
 import { CasesService } from '../../shared/services/cases.service';
 import { NgFor, NgIf } from '@angular/common';
-import { ClientsService } from '../../shared/services/clients.service';
 import { ClientComponent } from '../clients/client/client.component';
 import { Case } from '../../shared/models/case.model';
 import { CaseCategory } from '../../shared/models/case.category.model';
@@ -62,27 +61,34 @@ export class CasesComponent implements OnInit {
   toggleFormVisibility = (caseId?: number): void => {
     this.upaddingCaseId = caseId;
     const targetCase = this.cases?.find((clients) => clients.id === caseId);
+    if (targetCase) {
+      this.formHeader = 'Update Case';
+      this.formType = 'Update';
+    } else {
+      this.formHeader = 'Add New Case';
+      this.formType = 'Add';
+    }
     this.newCasesInputRows = [
       {
-        id: '1',
+        backed_key: 'case_name',
         title: 'Case Name',
         type: 'text',
         value: targetCase ? targetCase.case_name : undefined,
       },
       {
-        id: '2',
+        backed_key: 'case_date',
         title: 'Case Date',
         type: 'date',
         value: targetCase ? targetCase.case_date : undefined,
       },
       {
-        id: '3',
+        backed_key: 'first_session_date',
         title: 'First Session Date',
         type: 'date',
         value: targetCase ? targetCase.first_session_date : undefined,
       },
       {
-        id: '4',
+        backed_key: 'case_category_id',
         title: 'Case Category',
         type: 'select',
         options: this.categories?.map((item) => {
@@ -91,7 +97,7 @@ export class CasesComponent implements OnInit {
         value: targetCase ? '' + targetCase.case_category_id : undefined,
       },
       {
-        id: '5',
+        backed_key: 'case_grade_id',
         title: 'Case Grade',
         type: 'select',
         options: this.grades?.map((item) => {
@@ -100,7 +106,7 @@ export class CasesComponent implements OnInit {
         value: targetCase ? '' + targetCase.case_grade_id : undefined,
       },
       {
-        id: '6',
+        backed_key: 'client_id',
         title: 'Client Name',
         type: 'select',
         options: this.clients?.map((item) => {
@@ -109,46 +115,64 @@ export class CasesComponent implements OnInit {
         value: targetCase ? '' + targetCase.client_id : undefined,
       },
     ];
-    if (targetCase) {
-      this.formHeader = 'Update Client';
-      this.formType = 'Update';
-    }
+
     this.isFormVisable = !this.isFormVisable;
   };
 
-  submitForm = (data: any) => {
-    const caseData = {
-      case_name: data[0],
-      case_date: data[1],
-      first_session_date: data[2],
-      case_category_id: data[3],
-      case_grade_id: data[4],
-      client_id: data[5],
-    };
+  submitForm = async (caseData: Case) => {
     if (this.formType === 'Add') {
-      this.addNewCase(caseData);
+      this.addNewCase(caseData).then((result) => {
+        if (result) {
+          this.cases?.push(caseData);
+        } else {
+          console.log('failed to add case');
+        }
+      });
     } else if (this.formType === 'Update') {
-      this.updateCase(this.upaddingCaseId!, caseData);
+      await this.updateCase(this.upaddingCaseId!, caseData).then((result) => {
+        if (result) {
+          this.cases = this.cases?.map((item) => {
+            if (item.id == this.upaddingCaseId) {
+              console.log(caseData);
+              return caseData;
+            }
+            return item;
+          });
+        } else {
+          console.log('failed to update case');
+        }
+      });
     }
-    this.cases?.push(caseData);
     this.toggleFormVisibility();
   };
 
-  addNewCase(newCase: any): void {
-    this.caseService.insertCase(newCase).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (error) => console.error('Error:', error),
+  addNewCase(newCase: any) {
+    return new Promise((resolve) => {
+      this.caseService.insertCase(newCase).subscribe({
+        next: (data) => {
+          console.log(data);
+          resolve(true);
+        },
+        error: (error) => {
+          console.error('Error:', error);
+          resolve(false);
+        },
+      });
     });
   }
 
-  updateCase(caseId: number, updatedCase: any): void {
-    this.caseService.updateCase(caseId, updatedCase).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (error) => console.error('Error:', error),
+  updateCase(caseId: number, updatedCase: any) {
+    return new Promise((resolve) => {
+      this.caseService.updateCase(caseId, updatedCase).subscribe({
+        next: (data) => {
+          console.log(data);
+          resolve(true);
+        },
+        error: (error) => {
+          console.error('Error:', error);
+          resolve(false);
+        },
+      });
     });
   }
 
@@ -160,6 +184,7 @@ export class CasesComponent implements OnInit {
     } else if (selectedValue === 'Update') {
       this.toggleFormVisibility(caseId);
     }
+    event.target.value = '';
   }
 
   deleteCase(caseId: number): void {

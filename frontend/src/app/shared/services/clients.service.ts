@@ -25,7 +25,9 @@ export class ClientsService {
   }
 
   deleteCategory(categoryId: any) {
-    return this.httpClient.delete(`${this.clientCategoryUrl}/${categoryId}`);
+    return this.httpClient.delete(`${this.clientCategoryUrl}/${categoryId}`, {
+      responseType: 'text',
+    });
   }
 
   insertCategory(newCategory: any): Observable<any> {
@@ -34,7 +36,8 @@ export class ClientsService {
   updateCategory(categoryId: number, newCategory: any): Observable<any> {
     return this.httpClient.put(
       `${this.clientCategoryUrl}/${categoryId}`,
-      newCategory
+      newCategory,
+      { responseType: 'text' }
     );
   }
 
@@ -42,10 +45,16 @@ export class ClientsService {
     return this.httpClient.post<Clients>(this.clientsUrl, newClient);
   }
   updateClient(clientId: number, updatedClient: Clients) {
-    return this.httpClient.put(`${this.clientsUrl}/${clientId}`, updatedClient);
+    return this.httpClient.put(
+      `${this.clientsUrl}/${clientId}`,
+      updatedClient,
+      { responseType: 'text' }
+    );
   }
 
   deleteClient(clienId: number) {
-    return this.httpClient.delete(`${this.clientsUrl}/${clienId}`);
+    return this.httpClient.delete(`${this.clientsUrl}/${clienId}`, {
+      responseType: 'text',
+    });
   }
 }
