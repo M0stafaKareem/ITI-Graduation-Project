@@ -17,6 +17,8 @@ import { ClientCategoryResolver } from './components/clients/client-category/cli
 import { CaseDetailsComponent } from './components/cases/case-details/case-details.component';
 import { CaseResolver } from './components/cases/case-details/case.details.resolver';
 import { CourtsResolver } from './components/courts/courts.resolver';
+import { CaseGradeComponent } from './components/cases/case-grade/case-grade.component';
+import { CaseGradeResolver } from './components/cases/case-grade/case.grade.resolver';
 
 export const routes: Routes = [
   {
@@ -52,6 +54,13 @@ export const routes: Routes = [
     component: CaseCategoryComponent,
     resolve: {
       categories: CaseCategoryResolver,
+    },
+  },
+  {
+    path: 'case-grades',
+    component: CaseGradeComponent,
+    resolve: {
+      grades: CaseGradeResolver,
     },
   },
   {

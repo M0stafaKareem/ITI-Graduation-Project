@@ -133,6 +133,16 @@ export class CasesComponent implements OnInit {
   };
 
   submitForm = async (caseData: Case) => {
+    this.clients?.forEach((item) => {
+      if (item.id == caseData.client_id)
+        caseData = { ...caseData, client: item };
+    });
+    this.courts?.forEach((item) => {
+      if (item.id == caseData.client_id)
+        caseData = { ...caseData, court: item };
+    });
+    console.log(caseData);
+
     if (this.formType === 'Add') {
       this.addNewCase(caseData).then((result) => {
         if (result) {
