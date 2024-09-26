@@ -68,8 +68,8 @@
       <app-dropdown passedRoute="cases" listName="Cases List" />
       <app-dropdown passedRoute="case-categories" listName="Case Categories" />
       }
-      <li>
-        <a class="nav-link" routerLink="court" routerLinkActive="activated">
+      <li (click)="closeAllDropdowns()">
+        <a class="nav-link" routerLink="courts" routerLinkActive="activated">
           <i class="fa-solid fa-building-columns"></i>
           Court</a
         >

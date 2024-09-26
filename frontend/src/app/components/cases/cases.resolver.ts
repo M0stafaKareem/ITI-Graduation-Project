@@ -8,6 +8,7 @@ import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CasesService } from '../../shared/services/cases.service';
 import { ClientsService } from '../../shared/services/clients.service';
+import { CourtService } from '../../shared/services/court.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,8 @@ import { ClientsService } from '../../shared/services/clients.service';
 export class CasesResolver implements Resolve<any> {
   constructor(
     private caseService: CasesService,
-    private clientService: ClientsService
+    private clientService: ClientsService,
+    private courtService: CourtService
   ) {}
 
   resolve(
@@ -27,9 +29,10 @@ export class CasesResolver implements Resolve<any> {
       categories: this.caseService.getCategories(),
       grades: this.caseService.getCaseGrade(),
       clients: this.clientService.getClients(),
+      courts: this.courtService.getCourts(),
     }).pipe(
       map((data) => {
-        const { cases, categories, grades, clients } = data;
+        const { cases, categories, grades, clients, courts } = data;
         const enrichedCases = cases.map((caseItem: any) => ({
           ...caseItem,
           categoryName:
@@ -41,12 +44,15 @@ export class CasesResolver implements Resolve<any> {
           client:
             clients.find((client: any) => client.id === caseItem.client_id) ||
             null,
+          court:
+            courts.find((court: any) => court.id === caseItem.court_id) || null,
         }));
         return {
           cases: enrichedCases,
           categories,
           grades,
           clients,
+          courts,
         };
       })
     );

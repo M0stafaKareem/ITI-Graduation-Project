@@ -36,7 +36,7 @@ class ClientsController extends Controller
             "client_category"=> "required",
         ]);
         $client_category = ClientCategory::find($request->client_category);
-        if ($client_category) {
+        if (!$client_category) {
             return "Client Category not found.";
         }
 

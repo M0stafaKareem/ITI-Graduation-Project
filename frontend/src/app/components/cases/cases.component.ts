@@ -15,6 +15,7 @@ import {
 } from '../../shared/adding-form/adding-form.component';
 import { LoadingScreenComponent } from '../../shared/loading-screen/loading-screen.component';
 import { ActivatedRoute } from '@angular/router';
+import { Court } from '../../shared/models/court.model';
 
 @Component({
   selector: 'app-cases',
@@ -38,6 +39,7 @@ export class CasesComponent implements OnInit {
   grades?: Array<CaseGrade>;
   clients?: Array<Clients>;
   client!: Clients;
+  courts?: Array<Court>;
   loading: boolean = false;
   isFormVisable: boolean = false;
   formType: 'Add' | 'Update' = 'Add';
@@ -56,6 +58,8 @@ export class CasesComponent implements OnInit {
     this.categories = resolvedData.categories;
     this.grades = resolvedData.grades;
     this.clients = resolvedData.clients;
+    this.courts = resolvedData.courts;
+    console.log(this.cases);
   }
 
   toggleFormVisibility = (caseId?: number): void => {
@@ -113,6 +117,15 @@ export class CasesComponent implements OnInit {
           return { id: '' + item.id, value: item.name };
         }),
         value: targetCase ? '' + targetCase.client_id : undefined,
+      },
+      {
+        backed_key: 'court_id',
+        title: 'Court',
+        type: 'select',
+        options: this.courts?.map((item) => {
+          return { id: '' + item.id, value: item.name };
+        }),
+        value: targetCase ? '' + targetCase.court_id : undefined,
       },
     ];
 
