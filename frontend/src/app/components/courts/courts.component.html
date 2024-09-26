@@ -1,1 +1,47 @@
-<p>courts works!</p>
+<div class="">
+  <app-secondary-nav
+    tableTitle="Courts"
+    addNewButton="New Court"
+    (btnClicked)="toggleFormVisibility()"
+  />
+
+  <app-adding-form
+    *ngIf="isFormVisible"
+    [formType]="formType"
+    [formHeader]="formHeader"
+    [formInputRows]="newCourtInputRows"
+    [onFormSubmit]="submitForm"
+    (backdropClicked)="toggleFormVisibility()"
+  ></app-adding-form>
+
+  <app-table
+    firstColumnHeader="Court Name"
+    secondColumnHeader="Address"
+    thirdColumnHeader="Action"
+  >
+    @for (court of courts; track $index) {
+    <tr>
+      <td class="text-center">{{ $index + 1 }}</td>
+      <td>{{ court.name }}</td>
+      <td>{{ court.location }}</td>
+      <td>
+        <div class="custom-select">
+          <select
+            name="SELECT"
+            id=""
+            (change)="onActionSelect($event, court.id!)"
+          >
+            <option value="">SELECT</option>
+            <option value="Update">Update</option>
+            <option value="Delete">Delete</option>
+          </select>
+          <i
+            class="fa-solid fa-arrow-down"
+            style="color: var(--mainTextColor)"
+          ></i>
+        </div>
+      </td>
+    </tr>
+    }
+  </app-table>
+</div>

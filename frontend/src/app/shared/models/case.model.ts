@@ -1,4 +1,5 @@
 import { Clients } from './clients.model';
+import { Court } from './court.model';
 
 export interface Case {
   id?: number;
@@ -13,4 +14,6 @@ export interface Case {
   client?: Clients | undefined;
   case_grade?: string;
   categoryName?: string;
+  court_id: number;
+  court?: Court;
 }
