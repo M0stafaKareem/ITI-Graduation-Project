@@ -19,7 +19,9 @@ export class CasesService {
     return this.httpClient.post(this.getCasesURL, newCase);
   }
   updateCase(caseId: number, newCase: any): Observable<any> {
-    return this.httpClient.put(`${this.getCasesURL}/${caseId}`, newCase);
+    return this.httpClient.put(`${this.getCasesURL}/${caseId}`, newCase, {
+      responseType: 'text',
+    });
   }
 
   getCategories(): Observable<any[]> {
@@ -32,7 +34,8 @@ export class CasesService {
   updateCategory(categoryId: number, newCategory: any): Observable<any> {
     return this.httpClient.put(
       `${this.categoriesApiUrl}/${categoryId}`,
-      newCategory
+      newCategory,
+      { responseType: 'text' }
     );
   }
 

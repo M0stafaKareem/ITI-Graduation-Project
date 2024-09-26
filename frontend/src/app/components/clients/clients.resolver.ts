@@ -23,6 +23,7 @@ export class ClientsResolver implements Resolve<any> {
   ): Observable<any> {
     return forkJoin({
       clients: this.clientsService.getClients(),
+      clientCategories: this.clientsService.getCategories(),
       countries: this.countryService.getCountries(),
     });
   }

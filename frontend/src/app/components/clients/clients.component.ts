@@ -8,8 +8,8 @@ import {
   inputType,
   AddingFormComponent,
 } from '../../shared/adding-form/adding-form.component';
-import { CountryService } from '../../shared/services/country.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ClientCategory } from '../../shared/models/client.category';
 
 @Component({
   selector: 'app-clients',
@@ -38,6 +38,7 @@ export class ClientsComponent implements OnInit {
   formHeader: string = 'Add New Client';
   upaddingClientId?: number;
   newClientInputRows!: inputType[];
+  clientCategories!: ClientCategory[];
 
   constructor(
     private clientsService: ClientsService,
@@ -47,15 +48,37 @@ export class ClientsComponent implements OnInit {
   ngOnInit(): void {
     const resolvedData = this.route.snapshot.data['data'];
     this.clients = resolvedData.clients;
+    this.clientCategories = resolvedData.clientCategories;
     this.countries = resolvedData.countries;
   }
 
-  addNewClient(newClient: any): void {
-    this.clientsService.insertClient(newClient).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (error) => console.error('Error:', error),
+  addNewClient(newClient: any) {
+    return new Promise((resolve) => {
+      this.clientsService.insertClient(newClient).subscribe({
+        next: (data) => {
+          console.log(data);
+          resolve(true);
+        },
+        error: (error) => {
+          console.error('Error:', error);
+          resolve(false);
+        },
+      });
+    });
+  }
+
+  updateClient(clientId: number, updatedClient: any): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.clientsService.updateClient(clientId, updatedClient).subscribe({
+        next: (data) => {
+          console.log(data);
+          resolve(true);
+        },
+        error: (error) => {
+          console.error('Error:', error);
+          resolve(false);
+        },
+      });
     });
   }
 
@@ -66,13 +89,13 @@ export class ClientsComponent implements OnInit {
     );
     this.newClientInputRows = [
       {
-        id: '1',
+        backed_key: 'name',
         title: 'Client Name',
         type: 'text',
         value: targetCliet ? targetCliet.name : undefined,
       },
       {
-        id: '2',
+        backed_key: 'country_id',
         title: 'Country',
         type: 'select',
         options: this.countries?.map((item) => {
@@ -81,19 +104,22 @@ export class ClientsComponent implements OnInit {
         value: targetCliet ? '' + targetCliet.country_id : undefined,
       },
       {
-        id: '3',
+        backed_key: 'city_id',
         title: 'City',
         type: 'text',
         value: targetCliet ? '' + targetCliet.city_id : undefined,
       },
       {
-        id: '4',
-        title: 'State',
-        type: 'text',
+        backed_key: 'client_category',
+        title: 'Client Category',
+        type: 'select',
+        options: this.clientCategories?.map((item) => {
+          return { id: '' + item.id, value: item.category_name };
+        }),
         value: targetCliet ? '' + targetCliet.state_id : undefined,
       },
       {
-        id: '5',
+        backed_key: 'role',
         title: 'Role',
         type: 'select',
         options: [
@@ -107,19 +133,19 @@ export class ClientsComponent implements OnInit {
         value: targetCliet ? targetCliet.role : undefined,
       },
       {
-        id: '6',
+        backed_key: 'mobile',
         title: 'Mobile',
         type: 'text',
         value: targetCliet ? targetCliet.mobile : undefined,
       },
       {
-        id: '7',
+        backed_key: 'email',
         title: 'Email',
         type: 'email',
         value: targetCliet ? targetCliet.email : undefined,
       },
       {
-        id: '8',
+        backed_key: 'gender',
         title: 'Gender',
         type: 'select',
         options: [
@@ -129,55 +155,53 @@ export class ClientsComponent implements OnInit {
         value: targetCliet ? targetCliet.gender : undefined,
       },
       {
-        id: '9',
-        title: 'Adress',
+        backed_key: 'address',
+        title: 'Address',
         type: 'text',
         value: targetCliet ? targetCliet.address : undefined,
       },
       {
-        id: '10',
+        backed_key: 'description',
         title: 'Description',
         type: 'text',
         value: targetCliet ? targetCliet.description : undefined,
       },
     ];
-    if (targetCliet) {
+    if (clientId && targetCliet) {
       this.formHeader = 'Update Client';
       this.formType = 'Update';
     }
     this.isFormVisible = !this.isFormVisible;
   };
 
-  submitForm = (data: any) => {
-    const clientData: Clients = {
-      name: data[0],
-      country_id: data[1],
-      city_id: data[2],
-      state_id: data[3],
-      role: data[4],
-      mobile: data[5],
-      email: data[6],
-      gender: data[7],
-      address: data[8],
-      description: data[9],
-    };
+  submitForm = async (clientData: Clients) => {
     if (this.formType === 'Add') {
-      this.addNewClient(clientData);
+      this.addNewClient(clientData).then((result) => {
+        if (result) {
+          this.clients?.push(clientData);
+        } else {
+          console.log('failed to add client');
+        }
+      });
     } else if (this.formType === 'Update') {
-      this.updateClient(this.upaddingClientId!, clientData);
+      await this.updateClient(this.upaddingClientId!, clientData).then(
+        (result) => {
+          if (result) {
+            this.clients = this.clients?.map((client) => {
+              if (client.id == this.upaddingClientId) {
+                console.log(clientData);
+                return clientData;
+              }
+              return client;
+            });
+          } else {
+            console.log('failed to update client');
+          }
+        }
+      );
     }
-    this.clients!.push(clientData);
     this.toggleFormVisibility();
   };
-
-  updateClient(clientId: number, updatedClient: any): void {
-    this.clientsService.updateClient(clientId, updatedClient).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (error) => console.error('Error:', error),
-    });
-  }
 
   onActionSelect(event: any, clientId: number): void {
     const selectedValue = event.target.value;

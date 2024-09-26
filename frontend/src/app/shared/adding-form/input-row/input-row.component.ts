@@ -13,9 +13,11 @@ import { inputType } from '../adding-form.component';
 export class InputRowComponent {
   @Input({ required: true }) input_Info!: inputType;
   @Output() inputChanged = new EventEmitter();
+
   ngOnInit(): void {
     this.emmitNewValue({ target: { value: this.input_Info.value } });
   }
+
   emmitNewValue(e: any) {
     this.inputChanged.emit(e.target!.value);
   }

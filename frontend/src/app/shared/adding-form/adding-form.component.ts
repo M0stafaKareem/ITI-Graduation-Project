@@ -34,7 +34,7 @@ import { InputRowComponent } from './input-row/input-row.component';
  * @property {string} [value] - Optional. The value of the input field, typically used for pre-filling data in 'Update' forms.
  */
 export interface inputType {
-  id: string;
+  backed_key: string;
   title: string;
   type:
     | 'text'
@@ -131,7 +131,7 @@ export class AddingFormComponent {
    * Stores the data entered by the user in the form. The data corresponds to the form inputs in the `formInputRows` array.
    * Each index in this array matches the index of the form input rows.
    */
-  private formData: string[] = [];
+  private formData: Record<string, string> = {};
 
   /**
    * @method saveInputData
@@ -148,8 +148,8 @@ export class AddingFormComponent {
    * // Updates the first input value to 'John Doe'
    * this.saveInputData(0, 'John Doe');
    */
-  saveInputData(index: number, value: string) {
-    this.formData[index] = value;
+  saveInputData(key: string, value: string) {
+    this.formData[key] = value;
   }
 
   /**
@@ -162,6 +162,7 @@ export class AddingFormComponent {
   submitForm() {
     if (this.onFormSubmit) {
       this.onFormSubmit(this.formData);
+      this.formData = {};
     }
   }
   /**
