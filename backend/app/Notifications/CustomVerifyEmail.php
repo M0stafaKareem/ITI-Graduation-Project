@@ -32,7 +32,7 @@ class CustomVerifyEmail extends Notification
 
     protected function verificationUrl($notifiable)
     {
-        $prefix = config('app.frontend_url').'/verify-email'; // Customize this to your frontend URL
+        $prefix = config('app.frontend_url').'/(authentication:verify-email)'; // Customize this to your frontend URL
         $temporarySignedURL = URL::temporarySignedRoute(
             'verification.verify', \Illuminate\Support\Carbon::now()->addMinutes(60), ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]
         );
