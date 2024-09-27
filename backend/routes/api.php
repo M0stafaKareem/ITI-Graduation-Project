@@ -1,4 +1,4 @@
-@ -1,74 +1,8 @@
+
 <?php
 
 use App\Http\Controllers\CaseCategoryController;
