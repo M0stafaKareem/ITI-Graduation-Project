@@ -1,3 +1,5 @@
+// app.routes.ts
+
 import { Routes } from '@angular/router';
 import { ClientsComponent } from './components/clients/clients.component';
 import { CasesComponent } from './components/cases/cases.component';
@@ -19,13 +21,27 @@ import { CaseResolver } from './components/cases/case-details/case.details.resol
 import { CourtsResolver } from './components/courts/courts.resolver';
 import { CaseGradeComponent } from './components/cases/case-grade/case-grade.component';
 import { CaseGradeResolver } from './components/cases/case-grade/case.grade.resolver';
-
-export const loginRoutes: Routes = [
-  { path: 'register', component: RegisterFromComponent, title: 'Register' },
-  { path: '', component: LoginFromComponent, title: 'Login' },
-]
+import { MailConfirmationPageComponent } from './mail-confirmation-page/mail-confirmation-page.component';
 
 export const routes: Routes = [
+  {
+    path: '',
+    component: LoginFromComponent,
+    title: 'Login',
+    outlet: 'authentication',
+  },
+  {
+    path: 'register',
+    component: RegisterFromComponent,
+    title: 'Register',
+    outlet: 'authentication',
+  },
+  {
+    path: 'verify-email',
+    component: MailConfirmationPageComponent,
+    title: 'Mail Confirmation',
+    outlet: 'authentication',
+  },
   {
     path: 'clients',
     component: ClientsComponent,
@@ -76,7 +92,6 @@ export const routes: Routes = [
     },
   },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'calender', component: EventCalendarComponent },
+  { path: 'calendar', component: EventCalendarComponent },
   { path: 'court', component: CourtsComponent },
-
 ];

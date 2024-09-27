@@ -1,1 +1,22 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mail Confirmation</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
+    />
+  </head>
+  <body>
+    @if (isLoading) {
+
+    <h1>Confirming Email</h1>
+    }@else {
+    <h1>Email Confirmation</h1>
+    <p>{{ backendResponse }}</p>
+    <!-- <a href="{{ url('login') }}">Login</a> -->
+    }
+  </body>
+</html>
