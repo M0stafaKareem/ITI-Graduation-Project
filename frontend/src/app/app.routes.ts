@@ -17,6 +17,11 @@ import { ClientCategoryResolver } from './components/clients/client-category/cli
 import { CaseDetailsComponent } from './components/cases/case-details/case-details.component';
 import { CaseResolver } from './components/cases/case-details/case.details.resolver';
 
+export const loginRoutes: Routes = [
+  { path: 'register', component: RegisterFromComponent, title: 'Register' },
+  { path: '', component: LoginFromComponent, title: 'Login' },
+]
+
 export const routes: Routes = [
   {
     path: 'clients',
@@ -56,6 +61,5 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'calender', component: EventCalendarComponent },
   { path: 'court', component: CourtsComponent },
-  { path: 'register', component: RegisterFromComponent, title: 'Register' },
-  { path: '', component: LoginFromComponent, title: 'Login' },
+
 ];
