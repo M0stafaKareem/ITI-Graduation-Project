@@ -1,7 +1,7 @@
 <div class="">
   <app-secondary-nav
-    tableTitle="Courts"
-    addNewButton="New Court"
+    tableTitle="Case Grades"
+    addNewButton="New Case Grade"
     (btnClicked)="toggleFormVisibility()"
   />
 
@@ -9,27 +9,27 @@
     *ngIf="isFormVisible"
     [formType]="formType"
     [formHeader]="formHeader"
-    [formInputRows]="newCourtInputRows"
+    [formInputRows]="newGradeInputRows"
     [onFormSubmit]="submitForm"
     (backdropClicked)="toggleFormVisibility()"
   ></app-adding-form>
 
   <app-table
-    firstColumnHeader="Court Name"
-    secondColumnHeader="Address"
+    firstColumnHeader="Grade Name"
+    secondColumnHeader="Description"
     thirdColumnHeader="Action"
   >
-    @for (court of courts; track $index) {
+    @for (category of grades; track $index) {
     <tr>
       <td class="text-center">{{ $index + 1 }}</td>
-      <td>{{ court.name }}</td>
-      <td>{{ court.location }}</td>
+      <td>{{ category.name }}</td>
+      <td>{{ category.description }}</td>
       <td>
         <div class="custom-select">
           <select
             name="SELECT"
             id=""
-            (change)="onActionSelect($event, court.id!)"
+            (change)="onActionSelect($event, category.id!)"
           >
             <option value="">SELECT</option>
             <option value="Update">Update</option>
@@ -41,6 +41,7 @@
           ></i>
         </div>
       </td>
+      <td *ngIf="loading">Deleting...</td>
     </tr>
     }
   </app-table>

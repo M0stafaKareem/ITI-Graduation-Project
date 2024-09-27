@@ -10,7 +10,7 @@ import { CaseCategory } from '../models/case.category.model';
 export class CasesService {
   getCasesURL = 'http://127.0.0.1:8000/api/Cases';
   categoriesApiUrl = 'http://127.0.0.1:8000/api/CaseCategories';
-  CaseGrade = 'http://127.0.0.1:8000/api/CaseGrades';
+  CaseGradeUrl = 'http://127.0.0.1:8000/api/CaseGrades/';
 
   constructor(public httpClient: HttpClient) {}
 
@@ -50,7 +50,23 @@ export class CasesService {
   }
 
   getCaseGrade(): Observable<any[]> {
-    return this.httpClient.get<any[]>(this.CaseGrade);
+    return this.httpClient.get<any[]>(this.CaseGradeUrl);
+  }
+  insertCaseGrade(newGrade: any): Observable<any> {
+    return this.httpClient.post(this.CaseGradeUrl, newGrade);
+  }
+  updateCaseGrade(gradeId: number, newGrade: any): Observable<any> {
+    return this.httpClient.put(
+      `${this.categoriesApiUrl}/${gradeId}`,
+      newGrade,
+      { responseType: 'text' }
+    );
+  }
+
+  deleteCaseGrade(gradeId: any) {
+    return this.httpClient.delete(`${this.CaseGradeUrl}/${gradeId}`, {
+      responseType: 'text',
+    });
   }
 
   deleteCase(caseId: any) {

@@ -54,7 +54,10 @@
         [clientEmail]="case.client?.email"
         [clientAddress]="case.client?.address"
       ></td>
-      <td></td>
+      <td>
+        Court Name : {{ case.court?.name }} <br />
+        Court Location: {{ case.court?.location }}
+      </td>
       <td>
         <div class="custom-select">
           <select
