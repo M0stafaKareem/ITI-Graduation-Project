@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6aef207c7590f6878554d281b60cd6f49ba1e704
 <?php
 
 use App\Http\Controllers\CaseCategoryController;
