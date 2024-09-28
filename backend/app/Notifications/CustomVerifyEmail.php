@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Session;
 use URL;
 
 class CustomVerifyEmail extends Notification
@@ -32,7 +33,7 @@ class CustomVerifyEmail extends Notification
 
     protected function verificationUrl($notifiable)
     {
-        $prefix = config('app.frontend_url').'/(authentication:verify-email)'; // Customize this to your frontend URL
+        $prefix = config('app.frontend_url').'/(authentication:verify-email)';
         $temporarySignedURL = URL::temporarySignedRoute(
             'verification.verify', \Illuminate\Support\Carbon::now()->addMinutes(60), ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]
         );
