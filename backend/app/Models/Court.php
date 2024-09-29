@@ -12,4 +12,5 @@ class Court extends Model
         'name',
         'location'
     ];
+    
 }
