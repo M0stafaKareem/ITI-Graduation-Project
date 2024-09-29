@@ -8,12 +8,13 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\PartyController;
-
 use App\Http\Controllers\StateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourtController;
+use App\Http\Controllers\OpposingLawyerController;
+use App\Http\Controllers\lawyerController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -70,5 +71,11 @@ Route::get('/Cities/{id}', CityController::class.'@show');
 
 // Court 
 Route::apiResource('courts',CourtController::class);
+
+//lawyers
+Route::apiResource('lawyers',lawyerController::class);
+
+//opposing lawyers
+Route::apiResource('opposinglawyers',OpposingLawyerController::class);
 
 
