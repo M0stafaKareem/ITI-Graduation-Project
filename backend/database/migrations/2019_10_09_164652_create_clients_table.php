@@ -38,6 +38,8 @@ class CreateClientsTable extends Migration
                 $table->boolean('gender')->default(0);
                 $table->text('address')->nullable();
                 $table->longText('description')->nullable();
+                $table->softDeletes();
+
                 
 
                 $table->timestamps();

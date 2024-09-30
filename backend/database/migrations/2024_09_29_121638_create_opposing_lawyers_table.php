@@ -22,6 +22,9 @@ return new class extends Migration
             $table->unsignedBigInteger('lawyer_id')->nullable();  
             $table->foreign('lawyer_id')->
             references('id')->on('lawyers')->onDelete('SET NULL'); 
+
+            $table->softDeletes()->nullable();
+
  
         });
     }

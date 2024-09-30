@@ -38,12 +38,12 @@ return new class extends Migration
 				->on('clients')->onDelete('SET NULL');
 
 
-				$table->bigInteger('court_id')->nullable()->unsigned();
+			$table->bigInteger('court_id')->nullable()->unsigned();
             $table->foreign('court_id')->references('id')
                 ->on('courts')->onDelete('SET NULL');
 
 
-
+				$table->softDeletes()->nullable();
 
 			$table->timestamps();
 
