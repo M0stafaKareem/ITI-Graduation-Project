@@ -14,12 +14,12 @@ export class RegisterService {
   }) {
     const api = 'http://localhost:8000/register';
 
-    const token = await fetch( 'http://localhost:8000/sanctum/csrf-cookie', {
+    const token = await fetch('http://localhost:8000/sanctum/csrf-cookie', {
       method: 'GET',
       credentials: 'include',
     });
 
-    const response = await fetch(api, {
+    return await fetch(api, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -27,14 +27,15 @@ export class RegisterService {
         'X-XSRF-Token': this.getCookie('XSRF-TOKEN')!,
       },
       body: JSON.stringify(data),
+    }).then((response) => {
+      if (response.ok) {
+        return true;
+      } else {
+        return false;
+      }
     });
-    if (response.redirected) {
-      return false;
-    } else {
-      return true;
-    }
   }
-  getCookie(name:string): string | undefined {
+  getCookie(name: string): string | undefined {
     const nameLenPlus = name.length + 1;
     return document.cookie
       .split(';')

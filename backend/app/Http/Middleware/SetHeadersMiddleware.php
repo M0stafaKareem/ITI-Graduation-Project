@@ -24,7 +24,7 @@ class SetHeadersMiddleware
         //get the user with that id from db
         $user =User::find($id);
         if (!$user) {
-            throw new \Exception('user not found');  
+            return response()->json(['message' => 'User not found'], 404);
         }
         //set the user in the request
         $request->user = $user;
