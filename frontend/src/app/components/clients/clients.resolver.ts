@@ -21,8 +21,10 @@ export class ClientsResolver implements Resolve<any> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<any> {
+    const searchTerm = route.queryParams['search'] || ''; // Get the search term from query params
+
     return forkJoin({
-      clients: this.clientsService.getClients(),
+      clients: this.clientsService.getClients(searchTerm),
       clientCategories: this.clientsService.getCategories(),
       countries: this.countryService.getCountries(),
     });
