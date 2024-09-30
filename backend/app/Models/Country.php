@@ -10,4 +10,7 @@ class Country extends Model
 {
     use SoftDeletes;
     use HasFactory;
+
+    //table name
+    protected $table = 'countries';
 }

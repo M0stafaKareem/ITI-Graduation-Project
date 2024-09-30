@@ -1,10 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CaseComponent } from './case/case.component';
 import { TableComponent } from '../../shared/table/table.component';
 import { SecondaryNavComponent } from '../../shared/secondary-nav/secondary-nav.component';
 import { CasesService } from '../../shared/services/cases.service';
 import { NgFor, NgIf } from '@angular/common';
-import { ClientsService } from '../../shared/services/clients.service';
 import { ClientComponent } from '../clients/client/client.component';
 import { Case } from '../../shared/models/case.model';
 import { CaseCategory } from '../../shared/models/case.category.model';
@@ -14,6 +13,9 @@ import {
   inputType,
   AddingFormComponent,
 } from '../../shared/adding-form/adding-form.component';
+import { LoadingScreenComponent } from '../../shared/loading-screen/loading-screen.component';
+import { ActivatedRoute } from '@angular/router';
+import { Court } from '../../shared/models/court.model';
 
 @Component({
   selector: 'app-cases',
@@ -26,16 +28,18 @@ import {
     ClientComponent,
     NgIf,
     AddingFormComponent,
+    LoadingScreenComponent,
   ],
   templateUrl: './cases.component.html',
   styleUrl: './cases.component.css',
 })
-export class CasesComponent {
+export class CasesComponent implements OnInit {
   cases?: Array<Case>;
   categories?: Array<CaseCategory>;
   grades?: Array<CaseGrade>;
   clients?: Array<Clients>;
   client!: Clients;
+  courts?: Array<Court>;
   loading: boolean = false;
   isFormVisable: boolean = false;
   formType: 'Add' | 'Update' = 'Add';
@@ -45,33 +49,50 @@ export class CasesComponent {
 
   constructor(
     private caseService: CasesService,
-    private clientService: ClientsService
+    private route: ActivatedRoute
   ) {}
+
+  ngOnInit() {
+    const resolvedData = this.route.snapshot.data['data'];
+    this.cases = resolvedData.cases;
+    this.categories = resolvedData.categories;
+    this.grades = resolvedData.grades;
+    this.clients = resolvedData.clients;
+    this.courts = resolvedData.courts;
+    console.log(this.cases);
+  }
 
   toggleFormVisibility = (caseId?: number): void => {
     this.upaddingCaseId = caseId;
     const targetCase = this.cases?.find((clients) => clients.id === caseId);
+    if (targetCase) {
+      this.formHeader = 'Update Case';
+      this.formType = 'Update';
+    } else {
+      this.formHeader = 'Add New Case';
+      this.formType = 'Add';
+    }
     this.newCasesInputRows = [
       {
-        id: '1',
+        backed_key: 'case_name',
         title: 'Case Name',
         type: 'text',
         value: targetCase ? targetCase.case_name : undefined,
       },
       {
-        id: '2',
+        backed_key: 'case_date',
         title: 'Case Date',
         type: 'date',
         value: targetCase ? targetCase.case_date : undefined,
       },
       {
-        id: '3',
+        backed_key: 'first_session_date',
         title: 'First Session Date',
         type: 'date',
         value: targetCase ? targetCase.first_session_date : undefined,
       },
       {
-        id: '4',
+        backed_key: 'case_category_id',
         title: 'Case Category',
         type: 'select',
         options: this.categories?.map((item) => {
@@ -80,7 +101,7 @@ export class CasesComponent {
         value: targetCase ? '' + targetCase.case_category_id : undefined,
       },
       {
-        id: '5',
+        backed_key: 'case_grade_id',
         title: 'Case Grade',
         type: 'select',
         options: this.grades?.map((item) => {
@@ -89,7 +110,7 @@ export class CasesComponent {
         value: targetCase ? '' + targetCase.case_grade_id : undefined,
       },
       {
-        id: '6',
+        backed_key: 'client_id',
         title: 'Client Name',
         type: 'select',
         options: this.clients?.map((item) => {
@@ -97,114 +118,84 @@ export class CasesComponent {
         }),
         value: targetCase ? '' + targetCase.client_id : undefined,
       },
+      {
+        backed_key: 'court_id',
+        title: 'Court',
+        type: 'select',
+        options: this.courts?.map((item) => {
+          return { id: '' + item.id, value: item.name };
+        }),
+        value: targetCase ? '' + targetCase.court_id : undefined,
+      },
     ];
-    if (targetCase) {
-      this.formHeader = 'Update Client';
-      this.formType = 'Update';
-    }
+
     this.isFormVisable = !this.isFormVisable;
   };
 
-  submitForm = (data: any) => {
-    const caseData = {
-      case_name: data[0],
-      case_date: data[1],
-      first_session_date: data[2],
-      case_category_id: data[3],
-      case_grade_id: data[4],
-      client_id: data[5],
-    };
+  submitForm = async (caseData: Case) => {
+    this.clients?.forEach((item) => {
+      if (item.id == caseData.client_id)
+        caseData = { ...caseData, client: item };
+    });
+    this.courts?.forEach((item) => {
+      if (item.id == caseData.client_id)
+        caseData = { ...caseData, court: item };
+    });
+    console.log(caseData);
+
     if (this.formType === 'Add') {
-      this.addNewCase(caseData);
+      this.addNewCase(caseData).then((result) => {
+        if (result) {
+          this.cases?.push(caseData);
+        } else {
+          console.log('failed to add case');
+        }
+      });
     } else if (this.formType === 'Update') {
-      this.updateCase(this.upaddingCaseId!, caseData);
+      await this.updateCase(this.upaddingCaseId!, caseData).then((result) => {
+        if (result) {
+          this.cases = this.cases?.map((item) => {
+            if (item.id == this.upaddingCaseId) {
+              console.log(caseData);
+              return caseData;
+            }
+            return item;
+          });
+        } else {
+          console.log('failed to update case');
+        }
+      });
     }
-    this.cases?.push(caseData);
     this.toggleFormVisibility();
   };
 
-  ngOnInit() {
-    this.loadCases();
-    this.loadCategories();
-    this.getCaseGrade();
-    this.getClient();
-  }
-
-  addNewCase(newCase: any): void {
-    this.caseService.insertCase(newCase).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (error) => console.error('Error:', error),
+  addNewCase(newCase: any) {
+    return new Promise((resolve) => {
+      this.caseService.insertCase(newCase).subscribe({
+        next: (data) => {
+          console.log(data);
+          resolve(true);
+        },
+        error: (error) => {
+          console.error('Error:', error);
+          resolve(false);
+        },
+      });
     });
   }
 
-  updateCase(caseId: number, updatedCase: any): void {
-    this.caseService.updateCase(caseId, updatedCase).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (error) => console.error('Error:', error),
-    });
-  }
-
-  loadCases(): void {
-    this.caseService.getCases().subscribe({
-      next: (data) => {
-        this.cases = data;
-      },
-      error: (error) => console.error('Error:', error),
-    });
-  }
-
-  loadCategories(): void {
-    this.caseService.getCategories().subscribe({
-      next: (categoriesData) => {
-        this.categories = categoriesData;
-        this.cases = this.cases?.map((caseItem: Case) => ({
-          ...caseItem,
-          categoryName:
-            this.categories?.find(
-              (cat: CaseCategory) => cat.id === caseItem.case_category_id
-            )?.name || 'No Category',
-        }));
-      },
-      error: (error) => console.error('Error:', error),
-    });
-  }
-
-  getCaseGrade(): void {
-    this.caseService.getCaseGrade().subscribe({
-      next: (gradeData) => {
-        this.grades = gradeData;
-        this.cases = this.cases?.map((caseItem: Case) => ({
-          ...caseItem,
-          case_grade:
-            this.grades?.find(
-              (grade: CaseGrade) => grade.id === caseItem.case_grade_id
-            )?.name || 'No Grade',
-        }));
-      },
-      error: (error) => console.error('Error:', error),
-    });
-  }
-
-  getClient(): void {
-    this.clientService.getClients().subscribe({
-      next: (clientsData) => {
-        this.clients = clientsData;
-        this.cases = this.cases?.map((caseItem: Case) => {
-          const foundClient = this.clients?.find(
-            (client: Clients) => client.id === caseItem.client_id
-          );
-
-          return {
-            ...caseItem,
-            client: foundClient,
-          };
-        });
-      },
-      error: (error) => console.error('Error:', error),
+  updateCase(caseId: number, updatedCase: any) {
+    return new Promise((resolve) => {
+      this.caseService.updateCase(caseId, updatedCase).subscribe({
+        next: (data) => {
+          console.log(data);
+          resolve(true);
+        },
+        error: (error) => {
+          console.error('Error:', error);
+          resolve(false);
+        },
+      });
     });
   }
 
@@ -216,6 +207,7 @@ export class CasesComponent {
     } else if (selectedValue === 'Update') {
       this.toggleFormVisibility(caseId);
     }
+    event.target.value = '';
   }
 
   deleteCase(caseId: number): void {

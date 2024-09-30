@@ -8,7 +8,10 @@ import {
   inputType,
   AddingFormComponent,
 } from '../../shared/adding-form/adding-form.component';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ClientCategory } from '../../shared/models/client.category';
 import { CountryService } from '../../shared/services/country.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-clients',
@@ -18,6 +21,7 @@ import { CountryService } from '../../shared/services/country.service';
     TableComponent,
     AddingFormComponent,
     CommonModule,
+    RouterLink,
   ],
   templateUrl: './clients.component.html',
   styleUrls: ['./clients.component.css', '../cases/cases.component.css'],
@@ -30,90 +34,140 @@ export class ClientsComponent implements OnInit {
     code: string;
     phonecode: string;
   }[];
+  countryCities: BehaviorSubject<
+    { id: string; name: string; country_id?: number }[]
+  > = new BehaviorSubject<{ id: string; name: string; country_id?: number }[]>(
+    []
+  );
+
   loading: boolean = false;
   isFormVisible: boolean = false;
   formType: 'Add' | 'Update' = 'Add';
   formHeader: string = 'Add New Client';
   upaddingClientId?: number;
   newClientInputRows!: inputType[];
+  clientCategories!: ClientCategory[];
 
   constructor(
     private clientsService: ClientsService,
-    private countryService: CountryService
+    private countryService: CountryService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.getClients();
-    this.getCountries();
-  }
-
-  getCountries() {
-    this.countryService.getCountries().subscribe({
-      next: (data) => {
-        this.countries = data;
-      },
-      error: (error) => {
-        console.error('Error retrieving countries:', error);
-      },
+    const resolvedData = this.route.snapshot.data['data'];
+    this.clients = resolvedData.clients;
+    this.clientCategories = resolvedData.clientCategories;
+    this.countries = resolvedData.countries;
+    this.countryCities.subscribe((cities) => {
+      const cityInput = this.newClientInputRows
+        ? this.newClientInputRows.find(
+            (input) => input.backed_key === 'city_id'
+          )
+        : '';
+      if (cityInput) {
+        cityInput.options = cities.map((city) => ({
+          id: city.id,
+          value: city.name,
+        }));
+        cityInput.disabled = cities.length === 0;
+        // cityInput.value = '';
+      }
     });
   }
 
-  addNewClient(newClient: any): void {
-    this.clientsService.insertClient(newClient).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (error) => console.error('Error:', error),
+  addNewClient(newClient: Clients) {
+    return new Promise((resolve) => {
+      this.clientsService.insertClient(newClient).subscribe({
+        next: (data) => {
+          console.log(data);
+          resolve(true);
+        },
+        error: (error) => {
+          console.error('Error:', error);
+          resolve(false);
+        },
+      });
     });
   }
 
-  getClients() {
-    this.clientsService.getClients().subscribe({
-      next: (data) => {
-        this.clients = data;
-        console.log(this.clients);
-      },
-      error: (error) => {
-        console.error('Error retrieving clients:', error);
-      },
+  updateClient(clientId: number, updatedClient: any): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.clientsService.updateClient(clientId, updatedClient).subscribe({
+        next: (data) => {
+          console.log(data);
+          resolve(true);
+        },
+        error: (error) => {
+          console.error('Error:', error);
+          resolve(false);
+        },
+      });
     });
+  }
+  checkChangedInput(changedInput: { key: string; value: string }) {
+    if (changedInput.key === 'country_id' && changedInput.value) {
+      this.countryService.getCountryCities(+changedInput.value).subscribe({
+        next: (cities) => {
+          this.countryCities.next(cities);
+        },
+        error: (err) => {
+          console.error('Error fetching cities:', err);
+        },
+      });
+    }
   }
 
   toggleFormVisibility = (clientId?: number) => {
     this.upaddingClientId = clientId;
-    const targetCliet = this.clients?.find(
+    const targetClient = this.clients?.find(
       (clients) => clients.id === clientId
     );
+    if (clientId && targetClient) {
+      this.formHeader = 'Update Client';
+      this.formType = 'Update';
+    } else {
+      this.formHeader = 'Add New Client';
+      this.formType = 'Add';
+      this.countryCities.next([]);
+    }
     this.newClientInputRows = [
       {
-        id: '1',
+        backed_key: 'name',
         title: 'Client Name',
         type: 'text',
-        value: targetCliet ? targetCliet.name : undefined,
+        value: targetClient ? targetClient.name : undefined,
       },
       {
-        id: '2',
+        backed_key: 'country_id',
         title: 'Country',
         type: 'select',
         options: this.countries?.map((item) => {
           return { id: '' + item.id, value: item.name };
         }),
-        value: targetCliet ? '' + targetCliet.country_id : undefined,
+        value: targetClient ? '' + targetClient.country_id : undefined,
       },
       {
-        id: '3',
+        backed_key: 'city_id',
         title: 'City',
-        type: 'text',
-        value: targetCliet ? '' + targetCliet.city_id : undefined,
+        type: 'select',
+        options: this.countryCities.getValue().map((item) => {
+          return { id: '' + item.id, value: item.name };
+        }),
+        disabled: this.countryCities.getValue().length === 0,
+        value: targetClient ? '' + targetClient.city_id : undefined,
       },
       {
-        id: '4',
-        title: 'State',
-        type: 'text',
-        value: targetCliet ? '' + targetCliet.state_id : undefined,
+        backed_key: 'client_category',
+        title: 'Client Category',
+        type: 'select',
+        options: this.clientCategories?.map((item) => {
+          return { id: '' + item.id, value: item.category_name };
+        }),
+        value: targetClient ? '' + targetClient.state_id : undefined,
       },
       {
-        id: '5',
+        backed_key: 'role',
         title: 'Role',
         type: 'select',
         options: [
@@ -124,88 +178,85 @@ export class ClientsComponent implements OnInit {
           { id: 'Witness', value: 'Witness' },
           { id: 'Other', value: 'Other' },
         ],
-        value: targetCliet ? targetCliet.role : undefined,
+        value: targetClient ? targetClient.role : undefined,
       },
       {
-        id: '6',
+        backed_key: 'mobile',
         title: 'Mobile',
         type: 'text',
-        value: targetCliet ? targetCliet.mobile : undefined,
+        value: targetClient ? targetClient.mobile : undefined,
       },
       {
-        id: '7',
+        backed_key: 'email',
         title: 'Email',
         type: 'email',
-        value: targetCliet ? targetCliet.email : undefined,
+        value: targetClient ? targetClient.email : undefined,
       },
       {
-        id: '8',
+        backed_key: 'gender',
         title: 'Gender',
         type: 'select',
         options: [
           { id: '0', value: 'Male' },
           { id: '1', value: 'Female' },
         ],
-        value: targetCliet ? targetCliet.gender : undefined,
+        value: targetClient ? targetClient.gender : undefined,
       },
       {
-        id: '9',
-        title: 'Adress',
+        backed_key: 'address',
+        title: 'Address',
         type: 'text',
-        value: targetCliet ? targetCliet.address : undefined,
+        value: targetClient ? targetClient.address : undefined,
       },
       {
-        id: '10',
+        backed_key: 'description',
         title: 'Description',
         type: 'text',
-        value: targetCliet ? targetCliet.description : undefined,
+        value: targetClient ? targetClient.description : undefined,
       },
     ];
-    if (targetCliet) {
-      this.formHeader = 'Update Client';
-      this.formType = 'Update';
-    }
+
     this.isFormVisible = !this.isFormVisible;
   };
 
-  submitForm = (data: any) => {
-    const clientData: Clients = {
-      name: data[0],
-      country_id: data[1],
-      city_id: data[2],
-      state_id: data[3],
-      role: data[4],
-      mobile: data[5],
-      email: data[6],
-      gender: data[7],
-      address: data[8],
-      description: data[9],
-    };
+  submitForm = async (clientData: Clients) => {
     if (this.formType === 'Add') {
-      this.addNewClient(clientData);
+      this.addNewClient(clientData).then((result) => {
+        if (result) {
+          this.clients?.push(clientData);
+        } else {
+          console.log('failed to add client');
+        }
+      });
     } else if (this.formType === 'Update') {
-      this.updateClient(this.upaddingClientId!, clientData);
+      await this.updateClient(this.upaddingClientId!, clientData).then(
+        (result) => {
+          if (result) {
+            this.clients = this.clients?.map((client) => {
+              if (client.id == this.upaddingClientId) {
+                console.log(clientData);
+                return clientData;
+              }
+              return client;
+            });
+          } else {
+            console.log('failed to update client');
+          }
+        }
+      );
     }
-    this.clients!.push(clientData);
     this.toggleFormVisibility();
   };
-
-  updateClient(clientId: number, updatedClient: any): void {
-    this.clientsService.updateClient(clientId, updatedClient).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (error) => console.error('Error:', error),
-    });
-  }
 
   onActionSelect(event: any, clientId: number): void {
     const selectedValue = event.target.value;
 
     if (selectedValue === 'Delete') {
       this.deleteClient(clientId);
+      event.target.value = '';
     } else if (selectedValue === 'Update') {
       this.toggleFormVisibility(clientId);
+      event.target.value = '';
     }
   }
 

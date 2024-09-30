@@ -27,7 +27,6 @@
         (click)="clientsToggle()"
         class="d-flex justify-content-between nav-list"
         [ngClass]="{ activated: clientsDropDown }"
-        routerLink="#"
       >
         <div>
           <a class="nav-link">
@@ -43,8 +42,10 @@
       </li>
       @if (clientsDropDown) {
       <app-dropdown passedRoute="clients" listName="Clients Lists" />
-      <app-dropdown passedRoute="#" listName="Client Category" />
-      <app-dropdown passedRoute="#" listName="Add Client" />
+      <app-dropdown
+        passedRoute="client-categories"
+        listName="Client Category"
+      />
       }
       <li
         (click)="casesToggle()"
@@ -65,11 +66,11 @@
       </li>
       @if (casesDropDown) {
       <app-dropdown passedRoute="cases" listName="Cases List" />
-      <app-dropdown passedRoute="caseCategories" listName="Case Categories" />
-      <app-dropdown passedRoute="#" listName="Add New Case" />
+      <app-dropdown passedRoute="case-categories" listName="Case Categories" />
+      <app-dropdown passedRoute="case-grades" listName="Case Grades" />
       }
-      <li>
-        <a class="nav-link" routerLink="court" routerLinkActive="activated">
+      <li (click)="closeAllDropdowns()">
+        <a class="nav-link" routerLink="courts" routerLinkActive="activated">
           <i class="fa-solid fa-building-columns"></i>
           Court</a
         >
@@ -79,6 +80,12 @@
           <i class="fa-solid fa-calendar-days"></i>
           Events Calender</a
         >
+      </li>
+      <li (click)="logOut()">
+        <button class="nav-link">
+          <i class="fa-solid fa-sign-out"></i>
+          logout
+        </button>
       </li>
     </ul>
     @if (isSidebarOpen) {

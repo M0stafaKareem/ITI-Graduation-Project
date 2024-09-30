@@ -1,0 +1,40 @@
+<app-single-page-details
+  title="{{ client?.name }}"
+  titleContact="{{ client?.email }}"
+  pageTitle="{{ client?.name }}"
+>
+  <a href="#">
+    @if (client?.gender == '0') {
+    <img
+      src="https://png.pngtree.com/png-vector/20190710/ourlarge/pngtree-business-user-profile-vector-png-image_1541960.jpg"
+      alt=""
+    />
+    } @else {
+    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" />
+    }
+  </a>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="First Name"
+    value="{{ client?.name }}"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Email"
+    value="{{ client?.email }}"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Mobile"
+    value="{{ client?.mobile }}"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Country"
+    value="{{ client?.country_id }}"
+  ></div>
+</app-single-page-details>

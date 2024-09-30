@@ -1,0 +1,48 @@
+<div class="">
+  <app-secondary-nav
+    tableTitle="Client Categories"
+    addNewButton="New Client Category"
+    (btnClicked)="toggleFormVisibility()"
+  />
+
+  <app-adding-form
+    *ngIf="isFormVisible"
+    [formType]="formType"
+    [formHeader]="formHeader"
+    [formInputRows]="newCategoryInputRows"
+    [onFormSubmit]="submitForm"
+    (backdropClicked)="toggleFormVisibility()"
+  ></app-adding-form>
+
+  <app-table
+    firstColumnHeader="Category Name"
+    secondColumnHeader="Description"
+    thirdColumnHeader="Action"
+  >
+    @for (category of categories; track $index) {
+    <tr>
+      <td class="text-center">{{ $index + 1 }}</td>
+      <td>{{ category.category_name }}</td>
+      <td>{{ category.description }}</td>
+      <td>
+        <div class="custom-select">
+          <select
+            name="SELECT"
+            id=""
+            (change)="onActionSelect($event, category.id!)"
+          >
+            <option value="">SELECT</option>
+            <option value="Update">Update</option>
+            <option value="Delete">Delete</option>
+          </select>
+          <i
+            class="fa-solid fa-arrow-down"
+            style="color: var(--mainTextColor)"
+          ></i>
+        </div>
+      </td>
+      <td *ngIf="loading">Deleting...</td>
+    </tr>
+    }
+  </app-table>
+</div>

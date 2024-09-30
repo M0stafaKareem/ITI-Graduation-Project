@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { NgClass } from '@angular/common';
-import { ClientsService } from '../services/clients.service';
+import { LoginService } from '../../login-from/login.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -16,7 +16,7 @@ export class SidebarComponent {
   clientsDropDown: boolean = false;
   casesDropDown: boolean = false;
 
-  constructor(private clientService: ClientsService) {}
+  constructor(private loginService: LoginService) {}
 
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
@@ -34,5 +34,9 @@ export class SidebarComponent {
   closeAllDropdowns() {
     this.clientsDropDown = false;
     this.casesDropDown = false;
+  }
+
+  logOut() {
+    this.loginService.logout();
   }
 }

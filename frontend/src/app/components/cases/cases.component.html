@@ -1,3 +1,8 @@
+@if (loading) {
+<div class="d-flex justify-content-center">
+  <app-loading-screen />
+</div>
+} @else {
 <div class="">
   <app-secondary-nav
     tableTitle="All Cases"
@@ -14,7 +19,6 @@
     [onFormSubmit]="submitForm"
     (backdropClicked)="toggleFormVisibility()"
   ></app-adding-form>
-
   <app-table
     firstColumnHeader="Case"
     secondColumnHeader="Client"
@@ -33,6 +37,7 @@
       <td class="text-center">{{ $index + 1 }}</td>
       <td
         casetd
+        [caseDetail]="['/cases', case.id]"
         [caseName]="case.case_name"
         [caseId]="case.id"
         [caseCategory]="
@@ -43,12 +48,16 @@
       ></td>
       <td
         client-td
+        [userProfile]="['/clients', case.client?.id]"
         [clientName]="case.client?.name"
         [clientMobile]="case.client?.mobile"
         [clientEmail]="case.client?.email"
         [clientAddress]="case.client?.address"
       ></td>
-      <td></td>
+      <td>
+        Court Name : {{ case.court?.name }} <br />
+        Court Location: {{ case.court?.location }}
+      </td>
       <td>
         <div class="custom-select">
           <select
@@ -67,8 +76,8 @@
           ></i>
         </div>
       </td>
-      <td *ngIf="loading">Deleting...</td>
     </tr>
     }
   </app-table>
 </div>
+}

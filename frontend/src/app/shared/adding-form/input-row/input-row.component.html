@@ -1,5 +1,9 @@
 @if (input_Info.type == 'select') {
-<div class="input-group">
+<div
+  class="input-group"
+  [hidden]="input_Info.disabled"
+  [id]="input_Info.backed_key"
+>
   <label for="selectInput">{{ input_Info.title | uppercase }}</label>
   <select id="selectInput" (change)="emmitNewValue($event)">
     <option [value]="null" hidden>
@@ -13,10 +17,14 @@
   </select>
 </div>
 } @else {
-<div class="input-group">
+<div
+  class="input-group"
+  [hidden]="input_Info.disabled"
+  [id]="input_Info.backed_key"
+>
   <label for="input-row">{{ input_Info.title | uppercase }}</label>
   <input
-    [id]="input_Info.id"
+    [id]="input_Info.backed_key"
     [placeholder]="input_Info.title"
     [type]="input_Info.type"
     [value]="input_Info.value ? input_Info.value : ''"

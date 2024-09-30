@@ -30,6 +30,10 @@ class CreateClientsTable extends Migration
                 $table->foreign('city_id')->references('id')
                     ->on('cities')->onDelete('SET NULL');
 
+                $table->unsignedBigInteger('client_category_id')->nullable()->unsigned();
+                $table->foreign('client_category_id')->references('id')
+                    ->on('client_categories')->onDelete('SET NULL');
+
 
                 $table->enum('role', ['Defendant', 'Plaintiff','Accused','Victim','Witness','Other'])->default('Defendant');
 
@@ -38,6 +42,7 @@ class CreateClientsTable extends Migration
                 $table->boolean('gender')->default(0);
                 $table->text('address')->nullable();
                 $table->longText('description')->nullable();
+
                 $table->softDeletes();
 
                 

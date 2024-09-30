@@ -2,3 +2,8 @@ span {
   color: var(--textTablecolor);
   font-weight: bold;
 }
+
+.router:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
