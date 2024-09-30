@@ -1,0 +1,52 @@
+<div class="">
+  <app-secondary-nav
+    tableTitle="Opposite Lawyers"
+    addNewButton="New Lawyer"
+    (btnClicked)="toggleFormVisibility()"
+  />
+
+  <app-adding-form
+    *ngIf="isFormVisible"
+    [formType]="formType"
+    [formHeader]="formHeader"
+    [formInputRows]="newLawyerInputRows"
+    [onFormSubmit]="submitForm"
+    (backdropClicked)="toggleFormVisibility()"
+  ></app-adding-form>
+
+  <app-table
+    firstColumnHeader="Lawyer"
+    secondColumnHeader="Mobile Number"
+    thirdColumnHeader="Address"
+  >
+    <th scope="col" ngProjectAs="fourthColumnHeader">National ID</th>
+    <th scope="col" ngProjectAs="fifthColumnHeader">Action</th>
+    @for (lawyer of lawyers; track $index) {
+    <tr>
+      <td class="text-center">{{ $index + 1 }}</td>
+      <td>{{ lawyer.name }}</td>
+      <td>{{ lawyer.phone_number }}</td>
+      <td>{{ lawyer.address }}</td>
+      <td>{{ lawyer.national_id }}</td>
+      <td>
+        <div class="custom-select">
+          <select
+            name="SELECT"
+            id=""
+            (change)="onActionSelect($event, lawyer.id!)"
+          >
+            <option value="">SELECT</option>
+            <option value="Update">Update</option>
+            <option value="Delete">Delete</option>
+          </select>
+          <i
+            class="fa-solid fa-arrow-down"
+            style="color: var(--mainTextColor)"
+          ></i>
+        </div>
+      </td>
+      <td *ngIf="loading">Deleting...</td>
+    </tr>
+    }
+  </app-table>
+</div>

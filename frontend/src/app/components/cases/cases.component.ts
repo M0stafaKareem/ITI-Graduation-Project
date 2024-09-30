@@ -16,6 +16,7 @@ import {
 import { LoadingScreenComponent } from '../../shared/loading-screen/loading-screen.component';
 import { ActivatedRoute } from '@angular/router';
 import { Court } from '../../shared/models/court.model';
+import { Lawyers } from '../../shared/models/lawyers.model';
 
 @Component({
   selector: 'app-cases',
@@ -40,6 +41,8 @@ export class CasesComponent implements OnInit {
   clients?: Array<Clients>;
   client!: Clients;
   courts?: Array<Court>;
+  lawyers?: Array<Lawyers>;
+  oppositeLawyers?: Array<Lawyers>;
   loading: boolean = false;
   isFormVisable: boolean = false;
   formType: 'Add' | 'Update' = 'Add';
@@ -59,7 +62,8 @@ export class CasesComponent implements OnInit {
     this.grades = resolvedData.grades;
     this.clients = resolvedData.clients;
     this.courts = resolvedData.courts;
-    console.log(this.cases);
+    this.lawyers = resolvedData.lawyers;
+    this.oppositeLawyers = resolvedData.oppositeLawyers;
   }
 
   toggleFormVisibility = (caseId?: number): void => {
@@ -117,6 +121,24 @@ export class CasesComponent implements OnInit {
           return { id: '' + item.id, value: item.name };
         }),
         value: targetCase ? '' + targetCase.client_id : undefined,
+      },
+      {
+        backed_key: 'lawyer_id',
+        title: 'Lawyer Name',
+        type: 'select',
+        options: this.oppositeLawyers?.map((item) => {
+          return { id: '' + item.id, value: item.name };
+        }),
+        value: targetCase ? '' + targetCase.lawyer_id : undefined,
+      },
+      {
+        backed_key: 'opposing_lawyer_id',
+        title: 'Opposite Lawyer Name',
+        type: 'select',
+        options: this.oppositeLawyers?.map((item) => {
+          return { id: '' + item.id, value: item.name };
+        }),
+        value: targetCase ? '' + targetCase.opposing_lawyer_id : undefined,
       },
       {
         backed_key: 'court_id',

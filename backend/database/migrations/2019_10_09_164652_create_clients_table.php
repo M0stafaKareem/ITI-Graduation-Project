@@ -43,7 +43,8 @@ class CreateClientsTable extends Migration
                 $table->text('address')->nullable();
                 $table->longText('description')->nullable();
 
-                
+                $table->softDeletes();
+
                 
 
                 $table->timestamps();

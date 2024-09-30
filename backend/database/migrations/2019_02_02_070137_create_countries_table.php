@@ -19,6 +19,7 @@ class CreateCountriesTable extends Migration
             $table->string('code');
             $table->string('name');
             $table->integer('phonecode');
+            $table->softDeletes();
         });
 
 
@@ -284,5 +285,6 @@ class CreateCountriesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('countries');
+       
     }
 }

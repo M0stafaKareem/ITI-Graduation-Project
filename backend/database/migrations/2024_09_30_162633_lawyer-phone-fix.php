@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('courts', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->string('name');
-            $table->string('location');
-            $table->softDeletes()->nullable();
-
+        Schema::table('lawyers', function (Blueprint $table) {
+            $table->dropUnique('lawyers_phone_number_unique');
+        });
+        Schema::table('opposing_lawyers', function (Blueprint $table) {
+            $table->dropUnique('opposing_lawyers_phone_number_unique');
         });
     }
 
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('courts');
+        //
     }
 };

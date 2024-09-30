@@ -11,13 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('courts', function (Blueprint $table) {
+        Schema::create('opposing_lawyers', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->string('location');
+            $table->string('phone_number')->unique(); 
+            $table->string(column: 'national_id')->unique();
+            $table->string(column: 'address');
+
+            $table->unsignedBigInteger('lawyer_id')->nullable();  
+            $table->foreign('lawyer_id')->
+            references('id')->on('lawyers')->onDelete('SET NULL'); 
+
             $table->softDeletes()->nullable();
 
+ 
         });
     }
 
@@ -26,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('courts');
+        Schema::dropIfExists('opposing_lawyers');
     }
 };

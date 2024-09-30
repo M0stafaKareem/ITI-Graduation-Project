@@ -21,6 +21,10 @@ import { CaseResolver } from './components/cases/case-details/case.details.resol
 import { CourtsResolver } from './components/courts/courts.resolver';
 import { CaseGradeComponent } from './components/cases/case-grade/case-grade.component';
 import { CaseGradeResolver } from './components/cases/case-grade/case.grade.resolver';
+import { LawyersComponent } from './components/lawyers/lawyers/lawyers.component';
+import { LawyersResolver } from './components/lawyers/lawyers/lawyers.resolver';
+import { OppositeLawyersComponent } from './components/lawyers/opposite-lawyers/opposite-lawyers.component';
+import { OppositeLawyersResolver } from './components/lawyers/opposite-lawyers/opposite-lawyers.resolver';
 import { MailConfirmationPageComponent } from './mail-confirmation-page/mail-confirmation-page.component';
 
 export const routes: Routes = [
@@ -59,6 +63,16 @@ export const routes: Routes = [
     resolve: {
       clientCategories: ClientCategoryResolver,
     },
+  },
+  {
+    path: 'lawyers',
+    component: LawyersComponent,
+    resolve: { lawyers: LawyersResolver },
+  },
+  {
+    path: 'opposite-lawyers',
+    component: OppositeLawyersComponent,
+    resolve: { lawyers: OppositeLawyersResolver },
   },
   {
     path: 'cases',

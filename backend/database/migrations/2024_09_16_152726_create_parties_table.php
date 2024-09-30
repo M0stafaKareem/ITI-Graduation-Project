@@ -16,6 +16,8 @@ return new class extends Migration
 			$table->string('involvment')->nullable();
 			
 			$table->timestamps();
+            $table->softDeletes()->nullable();
+
 
 		});
 	}
