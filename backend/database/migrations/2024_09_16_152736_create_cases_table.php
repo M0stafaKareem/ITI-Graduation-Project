@@ -42,8 +42,15 @@ return new class extends Migration
             $table->foreign('court_id')->references('id')
                 ->on('courts')->onDelete('SET NULL');
 
+			$table->bigInteger('lawyer_id')->nullable()->unsigned();
+			$table->foreign('lawyer_id')->references('id')
+				->on('lawyers')->onDelete('SET NULL');
+					
+			$table->bigInteger('opposing_lawyer_id')->nullable()->unsigned();
+			$table->foreign('opposing_lawyer_id')->references('id')
+				->on('opposing_lawyers')->onDelete('SET NULL');	
 
-				$table->softDeletes()->nullable();
+			$table->softDeletes()->nullable();
 
 			$table->timestamps();
 
