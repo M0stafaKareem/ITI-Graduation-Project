@@ -1,67 +1,46 @@
 <div class="d-flex mainSide" [class.sidebar-open]="isSidebarOpen">
-  <div
-    class="sidebar d-flex flex-column flex-shrink-0 text-white bg-transparent"
-    [class.active]="isSidebarOpen"
-  >
-    <a
-      href="/"
-      class="d-flex align-items-center mb-3 mb-md-0 p-3 me-md-auto text-decoration-none"
-      style="color: var(--mainTextColor)"
-    >
+  <div class="sidebar d-flex flex-column flex-shrink-0 text-white bg-transparent" [class.active]="isSidebarOpen">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 p-3 me-md-auto text-decoration-none"
+      style="color: var(--mainTextColor)">
       <span class="fs-4">Sidebar</span>
     </a>
     <hr style="color: var(--mainTextColor)" />
     <ul class="nav nav-pills flex-column mb-auto">
-      <li
-        class="nav-list"
-        routerLink="dashboard"
-        routerLinkActive="activated"
-        (click)="closeAllDropdowns()"
-      >
+      <li class="nav-list" routerLink="dashboard" routerLinkActive="activated" (click)="closeAllDropdowns()">
         <a class="nav-link">
           <i class="fa-solid fa-table-cells"></i>
           Dashboard
         </a>
       </li>
-      <li
-        (click)="clientsToggle()"
-        class="d-flex justify-content-between nav-list"
-        [ngClass]="{ activated: clientsDropDown }"
-      >
+      <li (click)="clientsToggle()" class="d-flex justify-content-between nav-list"
+        [ngClass]="{ activated: clientsDropDown }">
         <div>
           <a class="nav-link">
             <i class="fa-solid fa-users"></i>
-            Clients</a
-          >
+            Clients</a>
         </div>
         <div class="arrowDown p-2">
           @if (clientsDropDown) {
-          <i class="fa-solid fa-chevron-down"></i>
-          } @else {<i class="fa-solid fa-chevron-up"></i> }
+          <i class="fa-solid fa-chevron-up"></i>
+          } @else {<i class="fa-solid fa-chevron-down"></i>
+          }
         </div>
       </li>
       @if (clientsDropDown) {
       <app-dropdown passedRoute="clients" listName="Clients Lists" />
-      <app-dropdown
-        passedRoute="client-categories"
-        listName="Client Category"
-      />
+      <app-dropdown passedRoute="client-categories" listName="Client Category" />
       }
-      <li
-        (click)="casesToggle()"
-        [ngClass]="{ activated: casesDropDown }"
-        class="d-flex justify-content-between nav-list"
-      >
+      <li (click)="casesToggle()" [ngClass]="{ activated: casesDropDown }"
+        class="d-flex justify-content-between nav-list">
         <div>
           <a class="nav-link">
             <i class="fa-solid fa-suitcase"></i>
-            Cases</a
-          >
+            Cases</a>
         </div>
         <div class="arrowDown p-2">
           @if (casesDropDown) {
-          <i class="fa-solid fa-chevron-down"></i>
-          } @else {<i class="fa-solid fa-chevron-up"></i> }
+          <i class="fa-solid fa-chevron-up"></i>
+          } @else {<i class="fa-solid fa-chevron-down"></i> }
         </div>
       </li>
       @if (casesDropDown) {
@@ -72,14 +51,12 @@
       <li (click)="closeAllDropdowns()">
         <a class="nav-link" routerLink="courts" routerLinkActive="activated">
           <i class="fa-solid fa-building-columns"></i>
-          Court</a
-        >
+          Court</a>
       </li>
       <li (click)="closeAllDropdowns()">
         <a class="nav-link" routerLink="calender" routerLinkActive="activated">
           <i class="fa-solid fa-calendar-days"></i>
-          Events Calender</a
-        >
+          Events Calender</a>
       </li>
       <li (click)="logOut()">
         <button class="nav-link">
@@ -89,22 +66,16 @@
       </li>
     </ul>
     @if (isSidebarOpen) {
-    <button
-      class="btn btn-danger close-sidebar d-md-none"
-      (click)="toggleSidebar()"
-      style="position: fixed; top: 10px; left: 230px; z-index: 1001"
-    >
+    <button class="btn btn-danger close-sidebar d-md-none" (click)="toggleSidebar()"
+      style="position: fixed; top: 10px; left: 230px; z-index: 1001">
       <i class="fa fa-times"></i>
     </button>
     }
   </div>
 
   @if (!isSidebarOpen) {
-  <button
-    class="btn btn-primary toggle-sidebar d-md-none"
-    (click)="toggleSidebar()"
-    style="position: fixed; top: 10px; left: 10px; z-index: 1001"
-  >
+  <button class="btn btn-primary toggle-sidebar d-md-none" (click)="toggleSidebar()"
+    style="position: fixed; top: 10px; left: 10px; z-index: 1001">
     <i class="fa fa-bars"></i>
   </button>
   }
