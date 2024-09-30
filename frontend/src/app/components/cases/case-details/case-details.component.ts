@@ -5,6 +5,7 @@ import { SinglePageDetailsComponent } from '../../../shared/single-page-details/
 import { RowInfoComponent } from '../../../shared/single-page-details/row-info/row-info.component';
 import { CaseCategory } from '../../../shared/models/case.category.model';
 import { Clients } from '../../../shared/models/clients.model';
+import { Lawyers } from '../../../shared/models/lawyers.model';
 
 @Component({
   selector: 'app-case-details',
@@ -20,6 +21,8 @@ export class CaseDetailsComponent {
   case?: Case;
   client?: Clients;
   category?: CaseCategory;
+  lawyer?: Lawyers;
+  oppositeLawyer?: Lawyers;
 
   constructor(private route: ActivatedRoute) {}
 
@@ -28,6 +31,7 @@ export class CaseDetailsComponent {
     this.case = resolvedData.case;
     this.client = resolvedData.client;
     this.category = resolvedData.category;
-    console.log(this.case);
+    this.lawyer = resolvedData.lawyer;
+    this.oppositeLawyer = resolvedData.oppositeLawyer;
   }
 }

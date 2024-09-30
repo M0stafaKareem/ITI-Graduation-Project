@@ -24,14 +24,26 @@
   <div
     bio-row
     ngProjectAs="rowInfo"
-    label="Reference"
-    value="Lawyer Name"
+    label="Lawyer"
+    value="{{ lawyer?.name }}"
   ></div>
   <div
     bio-row
     ngProjectAs="rowInfo"
-    label="Reference Mobile"
-    value="Lawyer Number"
+    label="Lawyer Mobile"
+    value="{{ lawyer?.phone_number }}"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Opposite Lawyer"
+    value="{{ oppositeLawyer?.name }}"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Opposite Lawyer Number"
+    value="{{ lawyer?.phone_number }}"
   ></div>
   <div
     bio-row

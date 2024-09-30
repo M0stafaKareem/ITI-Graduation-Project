@@ -75,6 +75,36 @@
           Court</a
         >
       </li>
+      <li
+        (click)="lawyersToggle()"
+        [ngClass]="{ activated: lawyersDropDown }"
+        class="d-flex justify-content-between nav-list"
+      >
+        <div>
+          <a class="nav-link">
+            <i class="fa-solid fa-user-tie"></i>
+            Lawyers</a
+          >
+        </div>
+        <div class="arrowDown p-2">
+          @if (lawyersDropDown) {
+          <i class="fa-solid fa-chevron-down"></i>
+          } @else {<i class="fa-solid fa-chevron-up"></i> }
+        </div>
+      </li>
+      @if (lawyersDropDown) {
+      <app-dropdown passedRoute="lawyers" listName="Lawyers List" />
+      <app-dropdown
+        passedRoute="opposite-lawyers"
+        listName="Opposite Lawyers"
+      />
+      }
+      <li (click)="closeAllDropdowns()">
+        <a class="nav-link" routerLink="courts" routerLinkActive="activated">
+          <i class="fa-solid fa-building-columns"></i>
+          Court</a
+        >
+      </li>
       <li (click)="closeAllDropdowns()">
         <a class="nav-link" routerLink="calender" routerLinkActive="activated">
           <i class="fa-solid fa-calendar-days"></i>

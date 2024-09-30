@@ -10,6 +10,7 @@ import { Clients } from '../../../shared/models/clients.model';
 import { CaseCategory } from '../../../shared/models/case.category.model';
 import { CasesService } from '../../../shared/services/cases.service';
 import { ClientsService } from '../../../shared/services/clients.service';
+import { LawyersService } from '../../../shared/services/lawyers.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,8 @@ import { ClientsService } from '../../../shared/services/clients.service';
 export class CaseResolver implements Resolve<any> {
   constructor(
     private caseService: CasesService,
-    private clientsService: ClientsService
+    private clientsService: ClientsService,
+    private lawyersService: LawyersService
   ) {}
 
   resolve(
@@ -32,6 +34,10 @@ export class CaseResolver implements Resolve<any> {
           case: this.caseService.getCaseById(caseId),
           client: this.clientsService.getClientById(caseData.client_id),
           category: this.caseService.getCategoryById(caseData.case_category_id),
+          lawyer: this.lawyersService.getLawyerById(caseData.lawyer_id),
+          oppositeLawyer: this.lawyersService.getOppositeLawyerById(
+            caseData.opposing_lawyer_id
+          ),
         });
       })
     );

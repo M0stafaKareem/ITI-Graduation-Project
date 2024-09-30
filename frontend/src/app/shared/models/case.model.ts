@@ -1,5 +1,6 @@
 import { Clients } from './clients.model';
 import { Court } from './court.model';
+import { Lawyers } from './lawyers.model';
 
 export interface Case {
   id?: number;
@@ -16,4 +17,8 @@ export interface Case {
   categoryName?: string;
   court_id: number;
   court?: Court;
+  lawyer: Lawyers;
+  oppositeLawyer: Lawyers;
+  lawyer_id: number;
+  opposing_lawyer_id: number;
 }
