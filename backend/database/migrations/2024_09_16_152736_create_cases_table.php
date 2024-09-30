@@ -41,11 +41,12 @@ return new class extends Migration
 			$table->bigInteger('court_id')->nullable()->unsigned();
             $table->foreign('court_id')->references('id')
                 ->on('courts')->onDelete('SET NULL');
-
+             // relate to lawyer table 
 			$table->bigInteger('lawyer_id')->nullable()->unsigned();
 			$table->foreign('lawyer_id')->references('id')
 				->on('lawyers')->onDelete('SET NULL');
-					
+				// relate to opposing lawyer table 
+	
 			$table->bigInteger('opposing_lawyer_id')->nullable()->unsigned();
 			$table->foreign('opposing_lawyer_id')->references('id')
 				->on('opposing_lawyers')->onDelete('SET NULL');	
