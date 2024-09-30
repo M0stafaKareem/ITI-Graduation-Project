@@ -12,8 +12,7 @@ class OpposingLawyerController extends Controller
      */
     public function index()
     {
-        $opposingLawyers = OpposingLawyer::all();
-        return $opposingLawyers;
+        return OpposingLawyer::all();
     }
 
     /**
