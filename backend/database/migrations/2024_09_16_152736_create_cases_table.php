@@ -51,7 +51,7 @@ return new class extends Migration
 			$table->foreign('opposing_lawyer_id')->references('id')
 				->on('opposing_lawyers')->onDelete('SET NULL');	
 
-			$table->softDeletes()->nullable();
+			$table->softDeletes();
 
 			$table->timestamps();
 
