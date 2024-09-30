@@ -1,3 +1,5 @@
+// app.routes.ts
+
 import { Routes } from '@angular/router';
 import { ClientsComponent } from './components/clients/clients.component';
 import { CasesComponent } from './components/cases/cases.component';
@@ -23,8 +25,27 @@ import { LawyersComponent } from './components/lawyers/lawyers/lawyers.component
 import { LawyersResolver } from './components/lawyers/lawyers/lawyers.resolver';
 import { OppositeLawyersComponent } from './components/lawyers/opposite-lawyers/opposite-lawyers.component';
 import { OppositeLawyersResolver } from './components/lawyers/opposite-lawyers/opposite-lawyers.resolver';
+import { MailConfirmationPageComponent } from './mail-confirmation-page/mail-confirmation-page.component';
 
 export const routes: Routes = [
+  {
+    path: '',
+    component: LoginFromComponent,
+    title: 'Login',
+    outlet: 'authentication',
+  },
+  {
+    path: 'register',
+    component: RegisterFromComponent,
+    title: 'Register',
+    outlet: 'authentication',
+  },
+  {
+    path: 'verify-email',
+    component: MailConfirmationPageComponent,
+    title: 'Mail Confirmation',
+    outlet: 'authentication',
+  },
   {
     path: 'clients',
     component: ClientsComponent,
@@ -85,8 +106,6 @@ export const routes: Routes = [
     },
   },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'calender', component: EventCalendarComponent },
+  { path: 'calendar', component: EventCalendarComponent },
   { path: 'court', component: CourtsComponent },
-  { path: 'register', component: RegisterFromComponent, title: 'Register' },
-  { path: '', component: LoginFromComponent, title: 'Login' },
 ];

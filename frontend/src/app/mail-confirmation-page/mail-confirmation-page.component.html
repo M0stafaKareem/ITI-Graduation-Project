@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mail Confirmation</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
+    />
+  </head>
+  <body>
+    @if (queryParams.url) {
+    <h1>Email Confirmation</h1>
+    <p>{{ backendResponse }}</p>
+    @if (backEndStatusCode === 404) {
+    <p>Please Register Again, To get a new confirmation Link</p>
+    <a>
+      <button type="button" (click)="redirectToRegister()">Register</button>
+    </a>
+    }@else {
+    <a routerLink="" routerLinkActive="router-link-active">Login</a>
+    } }@else {
+    <p>Verification link sent, Please Check your Email</p>
+    <a href="https://mail.google.com/">
+      <button type="button">Gmail</button>
+    </a>
+    }
+  </body>
+</html>

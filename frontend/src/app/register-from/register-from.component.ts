@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RegisterService } from './register.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-from',
@@ -13,7 +14,10 @@ import { RegisterService } from './register.service';
   ],
 })
 export class RegisterFromComponent {
-  constructor(private registerService: RegisterService) {}
+  constructor(
+    private registerService: RegisterService,
+    private router: Router
+  ) {}
 
   enteredFirstName = '';
   enteredLastName = '';
@@ -29,7 +33,7 @@ export class RegisterFromComponent {
       password_confirmation: this.enteredConfirmPassword,
     };
     if (await this.registerService.registerUser(userData))
-      console.log('registration successful');
+      this.router.navigate([{ outlets: { authentication: ['verify-email'] } }]);
     else console.log('registration failed, Enter a Valid Data');
   }
 }

@@ -30,7 +30,7 @@
         <i class="zmdi zmdi-lock"></i>
       </div>
       <div class="actions">
-        <a routerLink="/register">
+        <a [routerLink]="[{ outlets: { authentication: ['register'] } }]">
           <button type="button">Register</button>
         </a>
         <button type="button" login (click)="onLoginHandler()">
