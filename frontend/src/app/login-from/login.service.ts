@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, interval } from 'rxjs';
+import { BehaviorSubject, interval, Observable } from 'rxjs';
+import { InitiateRequestService } from '../shared/services/initiate-request.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -7,7 +8,7 @@ export class LoginService {
   private loginStatus = new BehaviorSubject<boolean>(false);
   private token: string | null = null;
 
-  constructor() {
+  constructor(private httpClient: InitiateRequestService) {
     const storedToken = sessionStorage.getItem('access_token');
     if (storedToken) {
       this.token = storedToken;
@@ -22,14 +23,16 @@ export class LoginService {
   }
 
   async verifyCredentials(email: string, password: string): Promise<boolean> {
-    const api = 'http://localhost:8000/api/login';
+    const api = 'http://localhost:8000/login';
 
     try {
       const response = await fetch(api, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-XSRF-Token': this.httpClient.getXsrfToken!,
         },
+        credentials: 'include',
         body: JSON.stringify({ email, password }),
       });
 
@@ -48,6 +51,10 @@ export class LoginService {
 
     this.loginStatus.next(false);
     return false;
+  }
+
+  verifyEmail(url: string): Observable<any> {
+    return this.httpClient.get(url);
   }
 
   logout(): void {

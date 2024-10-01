@@ -18,6 +18,7 @@ class CreateStatesTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('country_id');
+            $table->softDeletes();
         });
 
 

@@ -15,6 +15,7 @@ export class SidebarComponent {
   isSidebarOpen: boolean = false;
   clientsDropDown: boolean = false;
   casesDropDown: boolean = false;
+  lawyersDropDown: boolean = false;
 
   constructor(private loginService: LoginService) {}
 
@@ -29,11 +30,18 @@ export class SidebarComponent {
   casesToggle() {
     this.casesDropDown = !this.casesDropDown;
     this.clientsDropDown = false;
+    this.lawyersDropDown = false;
   }
 
   closeAllDropdowns() {
     this.clientsDropDown = false;
     this.casesDropDown = false;
+  }
+
+  lawyersToggle() {
+    this.lawyersDropDown = !this.lawyersDropDown;
+    this.casesDropDown = false;
+    this.clientsDropDown = false;
   }
 
   logOut() {

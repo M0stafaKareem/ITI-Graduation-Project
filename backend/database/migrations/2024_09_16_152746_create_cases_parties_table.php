@@ -23,9 +23,8 @@ return new class extends Migration
 
 
 			$table->string('name');
+            $table->softDeletes();
 
-
-			
 			$table->timestamps();
 
 		});

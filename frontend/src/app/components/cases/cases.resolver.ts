@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
 import { CasesService } from '../../shared/services/cases.service';
 import { ClientsService } from '../../shared/services/clients.service';
 import { CourtService } from '../../shared/services/court.service';
+import { LawyersService } from '../../shared/services/lawyers.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,8 @@ export class CasesResolver implements Resolve<any> {
   constructor(
     private caseService: CasesService,
     private clientService: ClientsService,
-    private courtService: CourtService
+    private courtService: CourtService,
+    private lawyerService: LawyersService
   ) {}
 
   resolve(
@@ -31,9 +33,11 @@ export class CasesResolver implements Resolve<any> {
       grades: this.caseService.getCaseGrade(),
       clients: this.clientService.getClients(),
       courts: this.courtService.getCourts(),
+      lawyers: this.lawyerService.getLawyers(),
+      oppositeLawyers: this.lawyerService.getOppositeLawyers(),
     }).pipe(
       map((data) => {
-        const { cases, categories, grades, clients, courts } = data;
+        const { cases, categories, grades, clients, courts, lawyers, oppositeLawyers } = data;
         const enrichedCases = cases.map((caseItem: any) => ({
           ...caseItem,
           categoryName:
@@ -47,6 +51,11 @@ export class CasesResolver implements Resolve<any> {
             null,
           court:
             courts.find((court: any) => court.id === caseItem.court_id) || null,
+          lawyer:
+            lawyers.find((lawyer: any) => lawyer.id === caseItem.lawyer_id) || null,
+          oppositeLawyer:
+            oppositeLawyers.find((oppositeLawyer: any) => oppositeLawyer.id === caseItem.opposing_lawyer_id) || null,
+
         }));
         return {
           cases: enrichedCases,
@@ -54,6 +63,8 @@ export class CasesResolver implements Resolve<any> {
           grades,
           clients,
           courts,
+          lawyers,
+          oppositeLawyers,
         };
       })
     );

@@ -19,8 +19,9 @@ class CreateLawyersTable extends Migration
             $table->string('phone_number')->unique(); 
             $table->string('nation_id')->unique();  
             $table->string('address'); 
-            $table->timestamps();  
-        });
+            $table->softDeletes();
+
+            $table->timestamps();});
     }
 
     /**

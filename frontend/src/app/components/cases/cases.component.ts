@@ -16,6 +16,7 @@ import {
 import { LoadingScreenComponent } from '../../shared/loading-screen/loading-screen.component';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { Court } from '../../shared/models/court.model';
+import { Lawyers } from '../../shared/models/lawyers.model';
 
 @Component({
   selector: 'app-cases',
@@ -40,13 +41,14 @@ export class CasesComponent implements OnInit {
   clients?: Array<Clients>;
   client!: Clients;
   courts?: Array<Court>;
+  lawyers?: Array<Lawyers>;
+  oppositeLawyers?: Array<Lawyers>;
   loading: boolean = false;
   isFormVisable: boolean = false;
   formType: 'Add' | 'Update' = 'Add';
   formHeader: string = 'Add New Case';
   upaddingCaseId?: number;
   newCasesInputRows!: inputType[];
-  
 
   constructor(
     private caseService: CasesService,
@@ -61,7 +63,8 @@ export class CasesComponent implements OnInit {
     this.grades = resolvedData.grades;
     this.clients = resolvedData.clients;
     this.courts = resolvedData.courts;
-    console.log(this.cases);
+    this.lawyers = resolvedData.lawyers;
+    this.oppositeLawyers = resolvedData.oppositeLawyers;
     // Subscribe to query param changes
     this.route.queryParams.subscribe((params) => {
       const searchTerm = params['search'] || '';
@@ -126,6 +129,24 @@ export class CasesComponent implements OnInit {
         value: targetCase ? '' + targetCase.client_id : undefined,
       },
       {
+        backed_key: 'lawyer_id',
+        title: 'Lawyer Name',
+        type: 'select',
+        options: this.oppositeLawyers?.map((item) => {
+          return { id: '' + item.id, value: item.name };
+        }),
+        value: targetCase ? '' + targetCase.lawyer_id : undefined,
+      },
+      {
+        backed_key: 'opposing_lawyer_id',
+        title: 'Opposite Lawyer Name',
+        type: 'select',
+        options: this.oppositeLawyers?.map((item) => {
+          return { id: '' + item.id, value: item.name };
+        }),
+        value: targetCase ? '' + targetCase.opposing_lawyer_id : undefined,
+      },
+      {
         backed_key: 'court_id',
         title: 'Court',
         type: 'select',
@@ -184,12 +205,12 @@ export class CasesComponent implements OnInit {
       queryParamsHandling: 'merge', // Merge with other query params
     });
   }
-    // Function to fetch clients based on the search term
-    fetchCases(searchTerm: string) {
-      this.caseService.getCases(searchTerm).subscribe((cases) => {
-        this.cases = cases;
-      });
-    }
+  // Function to fetch clients based on the search term
+  fetchCases(searchTerm: string) {
+    this.caseService.getCases(searchTerm).subscribe((cases) => {
+      this.cases = cases;
+    });
+  }
 
   addNewCase(newCase: any) {
     return new Promise((resolve) => {
