@@ -26,8 +26,9 @@ export class CasesResolver implements Resolve<any> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<any> {
+    const searchTerm = route.queryParams['search'] || '';
     return forkJoin({
-      cases: this.caseService.getCases(),
+      cases: this.caseService.getCases(searchTerm),
       categories: this.caseService.getCategories(),
       grades: this.caseService.getCaseGrade(),
       clients: this.clientService.getClients(),

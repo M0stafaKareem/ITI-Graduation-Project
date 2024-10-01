@@ -8,7 +8,7 @@ import {
   inputType,
   AddingFormComponent,
 } from '../../shared/adding-form/adding-form.component';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink, Router  } from '@angular/router';
 import { ClientCategory } from '../../shared/models/client.category';
 import { CountryService } from '../../shared/services/country.service';
 import { BehaviorSubject } from 'rxjs';
@@ -51,12 +51,18 @@ export class ClientsComponent implements OnInit {
   constructor(
     private clientsService: ClientsService,
     private countryService: CountryService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     const resolvedData = this.route.snapshot.data['data'];
-    this.clients = resolvedData.clients;
+    this.clients = resolvedData?.clients || []; 
+    // Subscribe to query param changes
+    this.route.queryParams.subscribe((params) => {
+      const searchTerm = params['search'] || '';
+      this.fetchClients(searchTerm);
+    });
     this.clientCategories = resolvedData.clientCategories;
     this.countries = resolvedData.countries;
     this.countryCities.subscribe((cities) => {
@@ -75,6 +81,23 @@ export class ClientsComponent implements OnInit {
       }
     });
   }
+  // Function to fetch clients based on the search term
+  fetchClients(searchTerm: string) {
+    this.clientsService.getClients(searchTerm).subscribe((clients) => {
+      this.clients = clients;
+    });
+  }
+
+  handleSearch(searchTerm: string) {
+    // Update query params with search term
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { search: searchTerm }, // Update search query param
+      queryParamsHandling: 'merge', // Merge with other query params
+    });
+  }
+
+  
 
   addNewClient(newClient: Clients) {
     return new Promise((resolve) => {
