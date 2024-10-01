@@ -17,7 +17,6 @@ export class InitiateRequestService {
   }
 
   async getTokenFromSanctum() {
-    console.log('GET TOKEN SANCTUM   ' + this.xsrfToken);
     this.xsrfToken
       ? null
       : await fetch('http://localhost:8000/sanctum/csrf-cookie', {
@@ -43,7 +42,6 @@ export class InitiateRequestService {
 
   // HTTP GET request with headers
   get(url: string): Observable<any> {
-    console.log('GET    ' + this.xsrfToken);
     let headers = new HttpHeaders();
     headers = headers.append('X-XSRF-TOKEN', this.xsrfToken || '');
     return this.http.get<any>(url, { headers, withCredentials: true });
@@ -51,8 +49,6 @@ export class InitiateRequestService {
 
   // HTTP POST request with headers
   post(url: string, data: any): Observable<any> {
-    console.log('POST   ' + this.xsrfToken);
-
     let headers = new HttpHeaders();
     headers = headers.append('X-XSRF-TOKEN', this.xsrfToken || '');
     headers = headers.append('Content-Type', 'application/json');

@@ -1,18 +1,19 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { LoginService } from '../login-from/login.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-mail-confirmation-page',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, CommonModule],
   templateUrl: './mail-confirmation-page.component.html',
   styleUrl: './mail-confirmation-page.component.css',
 })
 export class MailConfirmationPageComponent {
   queryParams: any = undefined;
-  backendResponse: string = '';
-  backEndStatusCode!: number;
+  backendResponse: string = 'Please Verify Your Email Address';
+  backEndStatusCode: number | null = null;
 
   constructor(
     private routerLink: ActivatedRoute,
@@ -25,7 +26,6 @@ export class MailConfirmationPageComponent {
     this.routerLink.queryParams.subscribe((params) => {
       this.queryParams = params;
       const response = this.loginService.verifyEmail(this.queryParams.url);
-      console.log(response);
     });
 
     return new Promise((resolve) => {
@@ -36,8 +36,7 @@ export class MailConfirmationPageComponent {
           resolve(true);
         },
         error: (response) => {
-          console.error('Error:', response);
-          this.backendResponse = response.error.message;
+          this.backendResponse = response.error ? response.error.message : '';
           this.backEndStatusCode = response.status;
           if (this.backEndStatusCode == 404) {
             this.backendResponse = 'Confirmation link is Expired';
@@ -50,5 +49,11 @@ export class MailConfirmationPageComponent {
 
   redirectToRegister() {
     this.router.navigate([{ outlets: { authentication: ['register'] } }]);
+  }
+  redirectToLogin() {
+    this.router.navigate(['']);
+  }
+  redirectToGmail() {
+    location.href = 'https://mail.google.com';
   }
 }
