@@ -23,10 +23,10 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  // title = 'frontend';
-  // isLoggedIn$: Observable<boolean>;
+  title = 'frontend';
+  isLoggedIn$: Observable<boolean>;
 
-  // constructor(private loginService: LoginService) {
-  //   this.isLoggedIn$ = this.loginService.isLoggedIn;
-  // }
+  constructor(private loginService: LoginService) {
+    this.isLoggedIn$ = this.loginService.isLoggedIn;
+  }
 }

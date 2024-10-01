@@ -69,12 +69,7 @@
       <app-dropdown passedRoute="case-categories" listName="Case Categories" />
       <app-dropdown passedRoute="case-grades" listName="Case Grades" />
       }
-      <li (click)="closeAllDropdowns()">
-        <a class="nav-link" routerLink="courts" routerLinkActive="activated">
-          <i class="fa-solid fa-building-columns"></i>
-          Court</a
-        >
-      </li>
+
       <li
         (click)="lawyersToggle()"
         [ngClass]="{ activated: lawyersDropDown }"

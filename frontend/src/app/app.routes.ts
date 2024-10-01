@@ -106,6 +106,6 @@ export const routes: Routes = [
     },
   },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'calendar', component: EventCalendarComponent },
+  { path: 'calender', component: EventCalendarComponent },
   { path: 'court', component: CourtsComponent },
 ];

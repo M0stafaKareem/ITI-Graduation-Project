@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, interval, Observable } from 'rxjs';
+import { InitiateRequestService } from '../shared/services/initiate-request.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -8,7 +8,7 @@ export class LoginService {
   private loginStatus = new BehaviorSubject<boolean>(false);
   private token: string | null = null;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: InitiateRequestService) {
     const storedToken = sessionStorage.getItem('access_token');
     if (storedToken) {
       this.token = storedToken;
@@ -25,17 +25,12 @@ export class LoginService {
   async verifyCredentials(email: string, password: string): Promise<boolean> {
     const api = 'http://localhost:8000/login';
 
-    const token = await fetch( 'http://localhost:8000/sanctum/csrf-cookie', {
-      method: 'GET',
-      credentials: 'include',
-    });
-
     try {
       const response = await fetch(api, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-XSRF-Token': this.getCookie('XSRF-TOKEN')!,
+          'X-XSRF-Token': this.httpClient.getXsrfToken!,
         },
         credentials: 'include',
         body: JSON.stringify({ email, password }),
@@ -60,19 +55,6 @@ export class LoginService {
 
   verifyEmail(url: string): Observable<any> {
     return this.httpClient.get(url);
-  }
-
-  getCookie(name:string): string | undefined {
-    const nameLenPlus = name.length + 1;
-    return document.cookie
-      .split(';')
-      .map((c) => c.trim())
-      .filter((cookie) => {
-        return cookie.substring(0, nameLenPlus) === `${name}=`;
-      })
-      .map((cookie) => {
-        return decodeURIComponent(cookie.substring(nameLenPlus));
-      })[0];
   }
 
   logout(): void {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LoginService } from './login.service';
 import { FormsModule } from '@angular/forms';
 
@@ -17,7 +17,7 @@ export class LoginFromComponent {
   enteredEmail: string = '';
   enteredPassword: string = '';
 
-  constructor(private loginService: LoginService) {}
+  constructor(private loginService: LoginService, private router: Router) {}
   async onLoginHandler() {
     if (
       await this.loginService.verifyCredentials(
@@ -26,7 +26,7 @@ export class LoginFromComponent {
       )
     ) {
       console.log('Login successful');
-      location.href = '/dashboard';
+      this.router.navigate(['/dashboard']);
     } else {
       console.log('Invalid credentials');
     }
