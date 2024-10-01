@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="isLoggedIn$ | async; else loginForm">
   <div class="main-wrapper">
     <app-sidebar></app-sidebar>
     <div class="main-content">
