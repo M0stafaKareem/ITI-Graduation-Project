@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Case } from '../models/case.model';
@@ -14,9 +14,15 @@ export class CasesService {
 
   constructor(public httpClient: HttpClient) {}
 
-  getCases(): Observable<any> {
-    return this.httpClient.get(this.getCasesURL);
-  }
+
+  getCases(searchTerm: string = ''): Observable<Case[]> {
+    let params = new HttpParams();
+    if (searchTerm) {
+      console.log(searchTerm);
+      params = params.set('search', searchTerm);  // Set search query param if provided
+    } 
+    console.log(params);
+    return this.httpClient.get<Case[]>(this.getCasesURL, { params });}
 
   getCaseById(id: number): Observable<Case> {
     return this.httpClient.get<Case>(`${this.getCasesURL}/${id}`);

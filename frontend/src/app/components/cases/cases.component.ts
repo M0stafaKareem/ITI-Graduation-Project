@@ -14,7 +14,7 @@ import {
   AddingFormComponent,
 } from '../../shared/adding-form/adding-form.component';
 import { LoadingScreenComponent } from '../../shared/loading-screen/loading-screen.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { Court } from '../../shared/models/court.model';
 
 @Component({
@@ -46,10 +46,12 @@ export class CasesComponent implements OnInit {
   formHeader: string = 'Add New Case';
   upaddingCaseId?: number;
   newCasesInputRows!: inputType[];
+  
 
   constructor(
     private caseService: CasesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -60,6 +62,11 @@ export class CasesComponent implements OnInit {
     this.clients = resolvedData.clients;
     this.courts = resolvedData.courts;
     console.log(this.cases);
+    // Subscribe to query param changes
+    this.route.queryParams.subscribe((params) => {
+      const searchTerm = params['search'] || '';
+      this.fetchCases(searchTerm);
+    });
   }
 
   toggleFormVisibility = (caseId?: number): void => {
@@ -168,6 +175,21 @@ export class CasesComponent implements OnInit {
     }
     this.toggleFormVisibility();
   };
+
+  handleSearch(searchTerm: string) {
+    // Update query params with search term
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { search: searchTerm }, // Update search query param
+      queryParamsHandling: 'merge', // Merge with other query params
+    });
+  }
+    // Function to fetch clients based on the search term
+    fetchCases(searchTerm: string) {
+      this.caseService.getCases(searchTerm).subscribe((cases) => {
+        this.cases = cases;
+      });
+    }
 
   addNewCase(newCase: any) {
     return new Promise((resolve) => {
