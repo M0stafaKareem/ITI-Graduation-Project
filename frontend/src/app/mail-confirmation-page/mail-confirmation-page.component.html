@@ -1,218 +1,54 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mail Confirmation</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
-    />
-  </head>
-  <body>
-    @if (queryParams.url) {
-    <h1>Email Confirmation</h1>
-    <p>{{ backendResponse }}</p>
-    @if (backEndStatusCode === 404) {
-    <p>Please Register Again, To get a new confirmation Link</p>
-    <a>
-      <button type="button" (click)="redirectToRegister()">Register</button>
-    </a>
-    }@else {
-    <a routerLink="" routerLinkActive="router-link-active">Login</a>
-    } }@else {
-    <p>Verification link sent, Please Check your Email</p>
-    <a href="https://mail.google.com/">
-      <button type="button">Gmail</button>
-    </a>
-    }
-  </body>
-</html> -->
+<!-- src/app/email-confirmation/email-confirmation.component.html -->
 
-<body style="background-color: #e9ecef">
-  <table border="0" cellpadding="0" cellspacing="0" width="100%">
-    <!-- start hero -->
-    <tr>
-      <td>
-        <table>
-          <tr>
-            <td>
-              <h1>Confirm Your Email Address</h1>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <!-- end hero -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 text-center">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div *ngIf="!backendResponse" class="mb-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Verifying...</span>
+            </div>
+            <h5 class="mt-3">Please Verify Your Email Address</h5>
+            <button class="btn btn-primary mt-3" (click)="redirectToGmail()">
+              Go to Gmail
+            </button>
+          </div>
 
-    <!-- start copy block -->
-    <tr>
-      <td align="center" bgcolor="#e9ecef">
-        <!--[if (gte mso 9)|(IE)]>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
-        <tr>
-        <td align="center" valign="top" width="600">
-        <![endif]-->
-        <table
-          border="0"
-          cellpadding="0"
-          cellspacing="0"
-          width="100%"
-          style="max-width: 600px"
-        >
-          <!-- start copy -->
-          <tr>
-            <td
-              align="left"
-              bgcolor="#ffffff"
-              style="
-                padding: 24px;
-                font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
-                font-size: 16px;
-                line-height: 24px;
-              "
-            >
-              <p style="margin: 0">
-                Tap the button below to confirm your email address. If you
-                didn't create an account with
-                <a href="https://sendgrid.com">Paste</a>, you can safely delete
-                this email.
-              </p>
-            </td>
-          </tr>
-          <!-- end copy -->
+          <div
+            *ngIf="backendResponse === 'Email address verified.'"
+            class="mb-4"
+          >
+            <i class="fa-solid fa-circle-check text-success fs-1"></i>
 
-          <!-- start button -->
-          <tr>
-            <td align="left" bgcolor="#ffffff">
-              <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                  <td align="center" bgcolor="#ffffff" style="padding: 12px">
-                    <table border="0" cellpadding="0" cellspacing="0">
-                      <tr>
-                        <td
-                          align="center"
-                          bgcolor="#1a82e2"
-                          style="border-radius: 6px"
-                        >
-                          <a
-                            href="https://sendgrid.com"
-                            target="_blank"
-                            style="
-                              display: inline-block;
-                              padding: 16px 36px;
-                              font-family: 'Source Sans Pro', Helvetica, Arial,
-                                sans-serif;
-                              font-size: 16px;
-                              color: #ffffff;
-                              text-decoration: none;
-                              border-radius: 6px;
-                            "
-                            >Do Something Sweet</a
-                          >
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-          <!-- end button -->
+            <h3 class="mt-3">Email Verified Successfully!</h3>
+            <p>{{ backendResponse }}</p>
+            <button class="btn btn-primary mt-3" (click)="redirectToLogin()">
+              Go to Login
+            </button>
+          </div>
 
-          <!-- start copy -->
-          <tr>
-            <td
-              align="left"
-              bgcolor="#ffffff"
-              style="
-                padding: 24px;
-                font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
-                font-size: 16px;
-                line-height: 24px;
-              "
-            >
-              <p style="margin: 0">
-                If that doesn't work, copy and paste the following link in your
-                browser:
-              </p>
-              <p style="margin: 0">
-                <a href="https://sendgrid.com" target="_blank"
-                  >https://same-link-as-button.url/xxx-xxx-xxxx</a
-                >
-              </p>
-            </td>
-          </tr>
-          <!-- end copy -->
-
-          <!-- start copy -->
-          <tr>
-            <td
-              align="left"
-              bgcolor="#ffffff"
-              style="
-                padding: 24px;
-                font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
-                font-size: 16px;
-                line-height: 24px;
-                border-bottom: 3px solid #d4dadf;
-              "
-            >
-              <p style="margin: 0">
-                Cheers,<br />
-                Paste
-              </p>
-            </td>
-          </tr>
-          <!-- end copy -->
-        </table>
-        <!--[if (gte mso 9)|(IE)]>
-        </td>
-        </tr>
-        </table>
-        <![endif]-->
-      </td>
-    </tr>
-    <!-- end copy block -->
-
-    <!-- start footer -->
-    <tr>
-      <td align="center" bgcolor="#e9ecef" style="padding: 24px">
-        <!--[if (gte mso 9)|(IE)]>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
-        <tr>
-        <td align="center" valign="top" width="600">
-        <![endif]-->
-        <table
-          border="0"
-          cellpadding="0"
-          cellspacing="0"
-          width="100%"
-          style="max-width: 600px"
-        >
-          <!-- start permission -->
-          <tr>
-            <td
-              align="center"
-              bgcolor="#e9ecef"
-              style="
-                padding: 12px 24px;
-                font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
-                font-size: 14px;
-                line-height: 20px;
-                color: #666;
-              "
-            >
-              <p style="margin: 0">
-                You received this email because we received a request for
-                [type_of_action] for your account. If you didn't request
-                [type_of_action] you can safely delete this email.
-              </p>
-            </td>
-          </tr>
-          <!-- end permission -->
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
+          <div
+            *ngIf="backEndStatusCode === 409 || backEndStatusCode === 404"
+            class="mb-4"
+          >
+            <i class="fa-solid fa-circle-xmark text-danger fs-1"></i>
+            <h3 class="mt-3">Verification Failed</h3>
+            <p>{{ backendResponse }}</p>
+            <div class="mt-3">
+              <button
+                class="btn btn-secondary me-2"
+                (click)="redirectToRegister()"
+              >
+                Register
+              </button>
+              <button class="btn btn-primary" (click)="redirectToLogin()">
+                Go to Login
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

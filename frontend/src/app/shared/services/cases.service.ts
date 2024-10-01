@@ -13,18 +13,19 @@ export class CasesService {
   categoriesApiUrl = 'http://127.0.0.1:8000/api/CaseCategories';
   CaseGradeUrl = 'http://127.0.0.1:8000/api/CaseGrades/';
 
-  constructor(private httpClient: InitiateRequestService) {}
+  constructor(
+    private httpClient: InitiateRequestService,
+    private http: HttpClient
+  ) {}
 
   // Case-related API calls
 
   getCases(searchTerm: string = ''): Observable<Case[]> {
     let params = new HttpParams();
     if (searchTerm) {
-      console.log(searchTerm);
-      params = params.set('search', searchTerm); // Set search query param if provided
+      params = params.set('search', searchTerm);
     }
-    console.log(params);
-    return this.httpClient.get<Case[]>(this.getCasesURL, { params });
+    return this.http.get<Case[]>(this.getCasesURL, { params });
   }
 
   getCaseById(id: number): Observable<Case> {
