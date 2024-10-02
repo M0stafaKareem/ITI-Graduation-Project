@@ -16,6 +16,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourtController;
 use App\Http\Controllers\OpposingLawyerController;
 use App\Http\Controllers\lawyerController;
+use App\Http\Controllers\TaskController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -77,5 +78,8 @@ Route::apiResource('lawyers',lawyerController::class);
 
 //opposing lawyers
 Route::apiResource('opposinglawyers',OpposingLawyerController::class);
+
+//Tasks for To Do List 
+Route::apiResource('tasks',TaskController::class);
 
 
