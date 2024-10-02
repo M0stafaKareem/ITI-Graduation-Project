@@ -33,6 +33,11 @@ class User extends Authenticatable  implements MustVerifyEmail
         'password',
     ];
 
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
