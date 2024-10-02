@@ -17,6 +17,8 @@ use App\Http\Controllers\CourtController;
 use App\Http\Controllers\OpposingLawyerController;
 use App\Http\Controllers\lawyerController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\EventController;
+
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -81,5 +83,8 @@ Route::apiResource('opposinglawyers',OpposingLawyerController::class);
 
 //Tasks for To Do List 
 Route::apiResource('tasks',TaskController::class);
+
+//event route
+Route::apiResource('events',EventController::class);
 
 
