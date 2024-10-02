@@ -26,17 +26,19 @@ import { LawyersResolver } from './components/lawyers/lawyers/lawyers.resolver';
 import { OppositeLawyersComponent } from './components/lawyers/opposite-lawyers/opposite-lawyers.component';
 import { OppositeLawyersResolver } from './components/lawyers/opposite-lawyers/opposite-lawyers.resolver';
 import { MailConfirmationPageComponent } from './mail-confirmation-page/mail-confirmation-page.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: LoginFromComponent,
+    component: LoginComponent,
     title: 'Login',
     outlet: 'authentication',
   },
   {
     path: 'register',
-    component: RegisterFromComponent,
+    component: RegisterComponent,
     title: 'Register',
     outlet: 'authentication',
   },
