@@ -14,7 +14,7 @@ import {
   AddingFormComponent,
 } from '../../shared/adding-form/adding-form.component';
 import { LoadingScreenComponent } from '../../shared/loading-screen/loading-screen.component';
-import { ActivatedRoute, RouterLink, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Court } from '../../shared/models/court.model';
 import { Lawyers } from '../../shared/models/lawyers.model';
 
@@ -65,6 +65,7 @@ export class CasesComponent implements OnInit {
     this.courts = resolvedData.courts;
     this.lawyers = resolvedData.lawyers;
     this.oppositeLawyers = resolvedData.oppositeLawyers;
+
     // Subscribe to query param changes
     this.route.queryParams.subscribe((params) => {
       const searchTerm = params['search'] || '';
@@ -169,7 +170,6 @@ export class CasesComponent implements OnInit {
       if (item.id == caseData.client_id)
         caseData = { ...caseData, court: item };
     });
-    console.log(caseData);
 
     if (this.formType === 'Add') {
       this.addNewCase(caseData).then((result) => {
@@ -184,7 +184,6 @@ export class CasesComponent implements OnInit {
         if (result) {
           this.cases = this.cases?.map((item) => {
             if (item.id == this.upaddingCaseId) {
-              console.log(caseData);
               return caseData;
             }
             return item;

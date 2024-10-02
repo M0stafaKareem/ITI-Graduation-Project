@@ -102,7 +102,10 @@ export class ClientCategoryComponent {
     if (this.formType === 'Add') {
       this.addNewCategory(categoryData).then((result) => {
         if (result) {
-          this.categories?.push(categoryData);
+          this.categories?.push({
+            ...categoryData,
+            id: this.categories.length,
+          });
         } else {
           console.log('failed to add client');
         }
@@ -113,7 +116,10 @@ export class ClientCategoryComponent {
           if (result) {
             this.categories = this.categories?.map((category) => {
               if (category.id == this.upaddingClientId) {
-                return category;
+                return {
+                  ...category,
+                  id: this.categories![this.categories!.length].id! + 1,
+                };
               }
               return category;
             });

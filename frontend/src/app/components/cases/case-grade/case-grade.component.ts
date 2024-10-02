@@ -52,7 +52,7 @@ export class CaseGradeComponent implements OnInit {
 
   updateGrade(gradeId: number, updatedGrade: CaseGrade) {
     return new Promise((resolve) => {
-      this.caseService.updateCategory(gradeId, updatedGrade).subscribe({
+      this.caseService.updateCaseGrade(gradeId, updatedGrade).subscribe({
         next: (data) => {
           console.log(data);
           resolve(true);
@@ -78,7 +78,7 @@ export class CaseGradeComponent implements OnInit {
     this.newGradeInputRows = [
       {
         backed_key: 'name',
-        title: 'Category Name',
+        title: 'Grade',
         type: 'text',
         value: targetGrade ? targetGrade.name : undefined,
       },
@@ -126,14 +126,14 @@ export class CaseGradeComponent implements OnInit {
     const selectedValue = event.target.value;
 
     if (selectedValue === 'Delete') {
-      this.deleteCategory(gradeId);
+      this.deleteGrade(gradeId);
     } else if (selectedValue === 'Update') {
       this.toggleFormVisibility(gradeId);
     }
     event.target.value = '';
   }
 
-  deleteCategory(gradeId: number): void {
+  deleteGrade(gradeId: number): void {
     if (confirm('Are you sure you want to delete this Grade?')) {
       this.loading = true;
       this.caseService.deleteCaseGrade(gradeId).subscribe({
@@ -141,13 +141,13 @@ export class CaseGradeComponent implements OnInit {
           console.log('deleting');
 
           this.grades = this.grades?.filter(
-            (category: CaseGrade) => category.id !== gradeId
+            (item: CaseGrade) => item.id !== gradeId
           );
 
           this.loading = false;
         },
         error: (error) => {
-          console.error('Error deleting Category:', error);
+          console.error('Error deleting Case Grade:', error);
           this.loading = false;
         },
       });

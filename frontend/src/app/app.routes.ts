@@ -1,5 +1,3 @@
-// app.routes.ts
-
 import { Routes } from '@angular/router';
 import { ClientsComponent } from './components/clients/clients.component';
 import { CasesComponent } from './components/cases/cases.component';
@@ -26,6 +24,7 @@ import { LawyersResolver } from './components/lawyers/lawyers/lawyers.resolver';
 import { OppositeLawyersComponent } from './components/lawyers/opposite-lawyers/opposite-lawyers.component';
 import { OppositeLawyersResolver } from './components/lawyers/opposite-lawyers/opposite-lawyers.resolver';
 import { MailConfirmationPageComponent } from './mail-confirmation-page/mail-confirmation-page.component';
+import { TodoListComponent } from './components/todo-list/todo-list.component';
 
 export const routes: Routes = [
   {
@@ -108,4 +107,5 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'calender', component: EventCalendarComponent },
   { path: 'court', component: CourtsComponent },
+  { path: 'todo-list', component: TodoListComponent },
 ];
