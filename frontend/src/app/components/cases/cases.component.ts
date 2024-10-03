@@ -14,8 +14,10 @@ import {
   AddingFormComponent,
 } from '../../shared/adding-form/adding-form.component';
 import { LoadingScreenComponent } from '../../shared/loading-screen/loading-screen.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Court } from '../../shared/models/court.model';
+import { Lawyers } from '../../shared/models/lawyers.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-cases',
@@ -40,6 +42,8 @@ export class CasesComponent implements OnInit {
   clients?: Array<Clients>;
   client!: Clients;
   courts?: Array<Court>;
+  lawyers?: Array<Lawyers>;
+  oppositeLawyers?: Array<Lawyers>;
   loading: boolean = false;
   isFormVisable: boolean = false;
   formType: 'Add' | 'Update' = 'Add';
@@ -49,7 +53,9 @@ export class CasesComponent implements OnInit {
 
   constructor(
     private caseService: CasesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
+    private toaster: ToastrService
   ) {}
 
   ngOnInit() {
@@ -59,7 +65,14 @@ export class CasesComponent implements OnInit {
     this.grades = resolvedData.grades;
     this.clients = resolvedData.clients;
     this.courts = resolvedData.courts;
-    console.log(this.cases);
+    this.lawyers = resolvedData.lawyers;
+    this.oppositeLawyers = resolvedData.oppositeLawyers;
+
+    // Subscribe to query param changes
+    this.route.queryParams.subscribe((params) => {
+      const searchTerm = params['search'] || '';
+      this.fetchCases(searchTerm);
+    });
   }
 
   toggleFormVisibility = (caseId?: number): void => {
@@ -119,6 +132,24 @@ export class CasesComponent implements OnInit {
         value: targetCase ? '' + targetCase.client_id : undefined,
       },
       {
+        backed_key: 'lawyer_id',
+        title: 'Lawyer Name',
+        type: 'select',
+        options: this.oppositeLawyers?.map((item) => {
+          return { id: '' + item.id, value: item.name };
+        }),
+        value: targetCase ? '' + targetCase.lawyer_id : undefined,
+      },
+      {
+        backed_key: 'opposing_lawyer_id',
+        title: 'Opposite Lawyer Name',
+        type: 'select',
+        options: this.oppositeLawyers?.map((item) => {
+          return { id: '' + item.id, value: item.name };
+        }),
+        value: targetCase ? '' + targetCase.opposing_lawyer_id : undefined,
+      },
+      {
         backed_key: 'court_id',
         title: 'Court',
         type: 'select',
@@ -141,7 +172,6 @@ export class CasesComponent implements OnInit {
       if (item.id == caseData.client_id)
         caseData = { ...caseData, court: item };
     });
-    console.log(caseData);
 
     if (this.formType === 'Add') {
       this.addNewCase(caseData).then((result) => {
@@ -156,7 +186,6 @@ export class CasesComponent implements OnInit {
         if (result) {
           this.cases = this.cases?.map((item) => {
             if (item.id == this.upaddingCaseId) {
-              console.log(caseData);
               return caseData;
             }
             return item;
@@ -169,15 +198,30 @@ export class CasesComponent implements OnInit {
     this.toggleFormVisibility();
   };
 
+  handleSearch(searchTerm: string) {
+    // Update query params with search term
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { search: searchTerm }, // Update search query param
+      queryParamsHandling: 'merge', // Merge with other query params
+    });
+  }
+  // Function to fetch clients based on the search term
+  fetchCases(searchTerm: string) {
+    this.caseService.getCases(searchTerm).subscribe((cases) => {
+      this.cases = cases;
+    });
+  }
+
   addNewCase(newCase: any) {
     return new Promise((resolve) => {
       this.caseService.insertCase(newCase).subscribe({
         next: (data) => {
-          console.log(data);
+          this.toaster.success(data.message);
           resolve(true);
         },
         error: (error) => {
-          console.error('Error:', error);
+          this.toaster.error(error.error.message, 'Error');
           resolve(false);
         },
       });
@@ -188,11 +232,11 @@ export class CasesComponent implements OnInit {
     return new Promise((resolve) => {
       this.caseService.updateCase(caseId, updatedCase).subscribe({
         next: (data) => {
-          console.log(data);
+          this.toaster.success(data.message);
           resolve(true);
         },
         error: (error) => {
-          console.error('Error:', error);
+          this.toaster.error(error.error.message, 'Error');
           resolve(false);
         },
       });
@@ -218,11 +262,11 @@ export class CasesComponent implements OnInit {
           this.cases = this.cases?.filter(
             (caseItem: Case) => caseItem.id !== caseId
           );
-
+          this.toaster.success('Case deleted successfully');
           this.loading = false;
         },
         error: (error) => {
-          console.error('Error deleting case:', error);
+          this.toaster.error('Error deleting case:', error.error.message);
           this.loading = false;
         },
       });

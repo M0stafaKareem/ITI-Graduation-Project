@@ -11,8 +11,13 @@ export class SecondaryNavComponent {
   @Input() addNewButton!: string;
   @Input() btnClickHandler!: Function;
   @Output() btnClicked = new EventEmitter();
+  @Output() search: EventEmitter<string> = new EventEmitter();
 
   handleClick() {
     this.btnClicked.emit();
+  }
+  onSearch(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.search.emit(inputElement.value);
   }
 }

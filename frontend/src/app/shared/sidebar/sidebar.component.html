@@ -36,8 +36,9 @@
         </div>
         <div class="arrowDown p-2">
           @if (clientsDropDown) {
-          <i class="fa-solid fa-chevron-down"></i>
-          } @else {<i class="fa-solid fa-chevron-up"></i> }
+          <i class="fa-solid fa-chevron-up"></i>
+          } @else {<i class="fa-solid fa-chevron-down"></i>
+          }
         </div>
       </li>
       @if (clientsDropDown) {
@@ -60,14 +61,39 @@
         </div>
         <div class="arrowDown p-2">
           @if (casesDropDown) {
-          <i class="fa-solid fa-chevron-down"></i>
-          } @else {<i class="fa-solid fa-chevron-up"></i> }
+          <i class="fa-solid fa-chevron-up"></i>
+          } @else {<i class="fa-solid fa-chevron-down"></i> }
         </div>
       </li>
       @if (casesDropDown) {
       <app-dropdown passedRoute="cases" listName="Cases List" />
       <app-dropdown passedRoute="case-categories" listName="Case Categories" />
       <app-dropdown passedRoute="case-grades" listName="Case Grades" />
+      }
+
+      <li
+        (click)="lawyersToggle()"
+        [ngClass]="{ activated: lawyersDropDown }"
+        class="d-flex justify-content-between nav-list"
+      >
+        <div>
+          <a class="nav-link">
+            <i class="fa-solid fa-user-tie"></i>
+            Lawyers</a
+          >
+        </div>
+        <div class="arrowDown p-2">
+          @if (lawyersDropDown) {
+          <i class="fa-solid fa-chevron-down"></i>
+          } @else {<i class="fa-solid fa-chevron-up"></i> }
+        </div>
+      </li>
+      @if (lawyersDropDown) {
+      <app-dropdown passedRoute="lawyers" listName="Lawyers List" />
+      <app-dropdown
+        passedRoute="opposite-lawyers"
+        listName="Opposite Lawyers"
+      />
       }
       <li (click)="closeAllDropdowns()">
         <a class="nav-link" routerLink="courts" routerLinkActive="activated">
@@ -79,6 +105,13 @@
         <a class="nav-link" routerLink="calender" routerLinkActive="activated">
           <i class="fa-solid fa-calendar-days"></i>
           Events Calender</a
+        >
+      </li>
+      <li (click)="closeAllDropdowns()">
+        <a class="nav-link" routerLink="todo-list" routerLinkActive="activated">
+          <i class="fa-solid fa-tasks"></i>
+
+          Todo List</a
         >
       </li>
       <li (click)="logOut()">

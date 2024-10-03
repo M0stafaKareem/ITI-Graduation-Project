@@ -1,0 +1,21 @@
+@if (isFormOpen) {
+<app-new-task-form [userId]="selectedUser.id" (cancel)="closeForm()" />
+}
+
+<div id="tasks">
+  <header>
+    <h2>{{ selectedUser.name }}</h2>
+    <menu>
+      <button (click)="openForm()">New Task</button>
+    </menu>
+  </header>
+  <ul>
+    @for (task of filteredTasks; track $index) {
+    <li>
+      <app-task [task]="task" />
+    </li>
+    }@empty {
+    <p>This User is currently Idle</p>
+    }
+  </ul>
+</div>

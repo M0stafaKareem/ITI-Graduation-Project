@@ -11,12 +11,23 @@ use Illuminate\Http\Request;
 
 class ClientsController extends Controller
 {
-    public function index()
+  
+    public function index(Request $request)
     {
         $Clients = Client::all();
+        // Extract the search term from the query parameters
+        $searchTerm = $request->query('search');
+        if(!empty($searchTerm)){
+            $Clients = Client::when($searchTerm, function ($query, $searchTerm) {
+                $query->where('name', 'like', "%{$searchTerm}%")
+                      ->orWhere('email', 'like', "%{$searchTerm}%")
+                      ->orWhere('mobile', 'like', "%{$searchTerm}%")
+                      ->orWhere('address', 'like', "%{$searchTerm}%");
+            })->get();
+        }
+
         return $Clients;
     }
-
 
     public function store(Request $request)
     {

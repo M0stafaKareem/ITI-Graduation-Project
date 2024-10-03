@@ -9,6 +9,7 @@
     addNewButton="New Case"
     addingRoute="add-case"
     (btnClicked)="toggleFormVisibility()"
+    (search)="handleSearch($event)"
   />
 
   <app-adding-form
@@ -19,6 +20,7 @@
     [onFormSubmit]="submitForm"
     (backdropClicked)="toggleFormVisibility()"
   ></app-adding-form>
+
   <app-table
     firstColumnHeader="Case"
     secondColumnHeader="Client"

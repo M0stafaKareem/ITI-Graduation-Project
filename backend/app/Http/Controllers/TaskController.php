@@ -29,8 +29,10 @@ class TaskController extends Controller
         try{
             $request->validate([
                 'title' => 'required',
+            'user_id' => 'required',
                 'description' => 'required',
                 'is_completed' => 'required',
+            'due_date' => 'required',
     
             ]);
              Task::create($request->all());
@@ -69,9 +71,10 @@ class TaskController extends Controller
 
             $request->validate([
               'title' => 'required',
+        'user_id' => 'required',
               'description' => 'required',
               'is_completed' => 'required',
-                  
+              'due_date' => 'required',
               ]) ;
               $task->update($request->all());
                return response()->json(['message' => 'task updated successfully.']);

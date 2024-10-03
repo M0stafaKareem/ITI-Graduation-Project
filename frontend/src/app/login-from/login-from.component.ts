@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LoginService } from './login.service';
 import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login-from',
@@ -17,7 +18,11 @@ export class LoginFromComponent {
   enteredEmail: string = '';
   enteredPassword: string = '';
 
-  constructor(private loginService: LoginService) {}
+  constructor(
+    private loginService: LoginService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
   async onLoginHandler() {
     if (
       await this.loginService.verifyCredentials(
@@ -25,9 +30,15 @@ export class LoginFromComponent {
         this.enteredPassword
       )
     ) {
+      this.toastr.success('Welcome', 'login Success', {
+        positionClass: 'toast-bottom-right',
+      });
       console.log('Login successful');
-      location.href = '/dashboard';
+      this.router.navigate(['/dashboard']);
     } else {
+      this.toastr.error('Invalid credentials', 'login failed', {
+        positionClass: 'toast-bottom-right',
+      });
       console.log('Invalid credentials');
     }
   }

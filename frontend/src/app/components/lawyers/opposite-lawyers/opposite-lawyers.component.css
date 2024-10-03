@@ -1,0 +1,7 @@
+td:not(:first-child) {
+  color: var(--textTablecolor);
+}
+
+th {
+  color: var(--mainTextColor);
+}

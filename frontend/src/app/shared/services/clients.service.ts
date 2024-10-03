@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Clients } from '../models/clients.model';
@@ -12,8 +12,13 @@ export class ClientsService {
   clientCategoryUrl = 'http://127.0.0.1:8000/api/ClientCategories';
   constructor(private httpClient: HttpClient) {}
 
-  getClients(): Observable<Clients[]> {
-    return this.httpClient.get<Clients[]>(this.clientsUrl);
+  getClients(searchTerm: string = ''): Observable<Clients[]> {
+    let params = new HttpParams();
+    if (searchTerm) {
+      params = params.set('search', searchTerm);  // Set search query param if provided
+    }
+
+    return this.httpClient.get<Clients[]>(this.clientsUrl, { params });
   }
 
   getClientById(id: number): Observable<Clients> {
