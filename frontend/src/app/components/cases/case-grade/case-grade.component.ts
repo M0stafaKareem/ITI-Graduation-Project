@@ -9,6 +9,7 @@ import {
 } from '../../../shared/adding-form/adding-form.component';
 import { ActivatedRoute } from '@angular/router';
 import { CaseGrade } from '../../../shared/models/case.grade.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-case-grade',
@@ -28,7 +29,8 @@ export class CaseGradeComponent implements OnInit {
 
   constructor(
     private caseService: CasesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toaster: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -39,12 +41,12 @@ export class CaseGradeComponent implements OnInit {
     return new Promise((resolve) => {
       this.caseService.insertCaseGrade(newGrade).subscribe({
         next: (data) => {
-          console.log(data);
+          this.toaster.success(data.message);
           resolve(true);
         },
         error: (error) => {
-          console.error('Error:', error);
-          resolve(true);
+          this.toaster.error(error.error.message, 'Error');
+          resolve(false);
         },
       });
     });
@@ -54,11 +56,11 @@ export class CaseGradeComponent implements OnInit {
     return new Promise((resolve) => {
       this.caseService.updateCaseGrade(gradeId, updatedGrade).subscribe({
         next: (data) => {
-          console.log(data);
+          this.toaster.success(data.message);
           resolve(true);
         },
         error: (error) => {
-          console.error('Error:', error);
+          this.toaster.error(error.error.message, 'Error');
           resolve(false);
         },
       });
@@ -147,7 +149,7 @@ export class CaseGradeComponent implements OnInit {
           this.loading = false;
         },
         error: (error) => {
-          console.error('Error deleting Case Grade:', error);
+          this.toaster.error(error.error.message, 'Error deleting Case Grade:');
           this.loading = false;
         },
       });

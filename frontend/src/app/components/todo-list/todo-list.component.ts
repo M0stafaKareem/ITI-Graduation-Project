@@ -4,6 +4,7 @@ import { UserComponent } from './user/user.component';
 import { DUMMY_USERS } from './dummy-users';
 import { TasksComponent } from './tasks/tasks.component';
 import { User } from './user/user.model';
+import { LawyersService } from '../../shared/services/lawyers.service';
 
 @Component({
   selector: 'app-todo-list',
@@ -13,8 +14,26 @@ import { User } from './user/user.model';
   styleUrl: './todo-list.component.css',
 })
 export class TodoListComponent {
-  usersArray = DUMMY_USERS;
+  usersArray: User[] = [];
   selectedUser?: User;
+
+  constructor(private lawyerService: LawyersService) {
+    this.getLawyers();
+  }
+
+  getLawyers() {
+    this.lawyerService.getLawyers().subscribe((data) =>
+      data.map((user) =>
+        this.usersArray.push({
+          id: '' + user.id,
+          name: user.name,
+          avatar:
+            user.avatar ||
+            `assets/users/user-${Math.floor(Math.random() * 6) + 1}.jpg`,
+        })
+      )
+    );
+  }
 
   selectedUserHandler(selectedUser: User) {
     this.selectedUser = selectedUser;

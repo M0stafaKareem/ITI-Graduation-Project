@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { TaskComponent } from './task/task.component';
-import { Task } from './task.model';
 import { User } from '../user/user.model';
 import { NewTaskFormComponent } from './new-task-form/new-task-form.component';
 import { TasksService } from './tasks.service';
+import { TodoItem } from '../../../shared/models/todo-item.model';
 
 @Component({
   selector: 'app-tasks',
@@ -18,7 +18,11 @@ export class TasksComponent {
 
   constructor(private tasksService: TasksService) {}
 
-  get filteredTasks(): Task[] {
+  ngOnInit() {
+    this.tasksService.getAllTasks();
+  }
+
+  get filteredTasks(): TodoItem[] {
     return this.tasksService.getUserTasks(this.selectedUser.id);
   }
   onCompleteHandler(taskId: string): void {

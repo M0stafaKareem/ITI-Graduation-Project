@@ -7,4 +7,5 @@ export interface Lawyers {
   created_at: string;
   updated_at: string;
   national_id: string;
+  avatar?: string;
 }

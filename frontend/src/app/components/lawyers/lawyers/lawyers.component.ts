@@ -9,6 +9,7 @@ import {
 import { TableComponent } from '../../../shared/table/table.component';
 import { LawyersService } from '../../../shared/services/lawyers.service';
 import { NgIf } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-lawyers',
@@ -27,7 +28,8 @@ export class LawyersComponent implements OnInit {
   lawyers!: Lawyers[];
   constructor(
     private route: ActivatedRoute,
-    private lawyerService: LawyersService
+    private lawyerService: LawyersService,
+    private toaster: ToastrService
   ) {}
 
   ngOnInit() {
@@ -39,11 +41,11 @@ export class LawyersComponent implements OnInit {
     return new Promise((resolve) => {
       this.lawyerService.insertLawyer(newLawyer).subscribe({
         next: (data) => {
-          console.log(data);
+          this.toaster.success('Lawyer added successfully');
           resolve(true);
         },
         error: (error) => {
-          console.error('Error:', error);
+          this.toaster.error(error.error.message, 'Error!');
           resolve(true);
         },
       });
@@ -54,11 +56,11 @@ export class LawyersComponent implements OnInit {
     return new Promise((resolve) => {
       this.lawyerService.updateLawyer(lawyerId, updatedLawyer).subscribe({
         next: (data) => {
-          console.log(data);
+          this.toaster.success('Lawyer updated successfully');
           resolve(true);
         },
         error: (error) => {
-          console.error('Error:', error);
+          this.toaster.error(error.error.message, 'Error!');
           resolve(false);
         },
       });
@@ -159,7 +161,7 @@ export class LawyersComponent implements OnInit {
           this.loading = false;
         },
         error: (error) => {
-          console.error('Error deleting Category:', error);
+          this.toaster.error('Error deleting Category');
           this.loading = false;
         },
       });

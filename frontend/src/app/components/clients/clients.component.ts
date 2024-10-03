@@ -8,10 +8,11 @@ import {
   inputType,
   AddingFormComponent,
 } from '../../shared/adding-form/adding-form.component';
-import { ActivatedRoute, RouterLink, Router  } from '@angular/router';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { ClientCategory } from '../../shared/models/client.category';
 import { CountryService } from '../../shared/services/country.service';
 import { BehaviorSubject } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-clients',
@@ -52,12 +53,13 @@ export class ClientsComponent implements OnInit {
     private clientsService: ClientsService,
     private countryService: CountryService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toaster: ToastrService
   ) {}
 
   ngOnInit(): void {
     const resolvedData = this.route.snapshot.data['data'];
-    this.clients = resolvedData?.clients || []; 
+    this.clients = resolvedData?.clients || [];
     // Subscribe to query param changes
     this.route.queryParams.subscribe((params) => {
       const searchTerm = params['search'] || '';
@@ -97,17 +99,15 @@ export class ClientsComponent implements OnInit {
     });
   }
 
-  
-
   addNewClient(newClient: Clients) {
     return new Promise((resolve) => {
       this.clientsService.insertClient(newClient).subscribe({
         next: (data) => {
-          console.log(data);
+          this.toaster.success('Client added successfully', 'Success!');
           resolve(true);
         },
         error: (error) => {
-          console.error('Error:', error);
+          this.toaster.error(error.error.message, 'Error');
           resolve(false);
         },
       });
@@ -122,7 +122,7 @@ export class ClientsComponent implements OnInit {
           resolve(true);
         },
         error: (error) => {
-          console.error('Error:', error);
+          this.toaster.error(error.error.message, 'Error');
           resolve(false);
         },
       });
@@ -135,7 +135,7 @@ export class ClientsComponent implements OnInit {
           this.countryCities.next(cities);
         },
         error: (err) => {
-          console.error('Error fetching cities:', err);
+          this.toaster.error('Error fetching cities:', err);
         },
       });
     }
@@ -295,7 +295,7 @@ export class ClientsComponent implements OnInit {
           this.loading = false;
         },
         error: (error) => {
-          console.error('Error deleting case:', error);
+          this.toaster.error(error, 'Error deleting case:');
           this.loading = false;
         },
       });

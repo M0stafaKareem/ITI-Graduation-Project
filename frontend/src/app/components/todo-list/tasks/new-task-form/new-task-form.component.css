@@ -70,15 +70,15 @@ button[type="button"]:active {
   color: #d0c2e1;
 }
 
-button[type="submit"] {
+button[confirm] {
   background-color: #112d4e;
   color: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
 }
 
-button[type="submit"]:hover,
-button[type="submit"]:active {
+button[confirm]:hover,
+button[confirm]:active {
   background-color: #112d4e80;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
 }

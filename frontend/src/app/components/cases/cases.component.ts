@@ -17,6 +17,7 @@ import { LoadingScreenComponent } from '../../shared/loading-screen/loading-scre
 import { ActivatedRoute, Router } from '@angular/router';
 import { Court } from '../../shared/models/court.model';
 import { Lawyers } from '../../shared/models/lawyers.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-cases',
@@ -53,7 +54,8 @@ export class CasesComponent implements OnInit {
   constructor(
     private caseService: CasesService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toaster: ToastrService
   ) {}
 
   ngOnInit() {
@@ -215,11 +217,11 @@ export class CasesComponent implements OnInit {
     return new Promise((resolve) => {
       this.caseService.insertCase(newCase).subscribe({
         next: (data) => {
-          console.log(data);
+          this.toaster.success(data.message);
           resolve(true);
         },
         error: (error) => {
-          console.error('Error:', error);
+          this.toaster.error(error.error.message, 'Error');
           resolve(false);
         },
       });
@@ -230,11 +232,11 @@ export class CasesComponent implements OnInit {
     return new Promise((resolve) => {
       this.caseService.updateCase(caseId, updatedCase).subscribe({
         next: (data) => {
-          console.log(data);
+          this.toaster.success(data.message);
           resolve(true);
         },
         error: (error) => {
-          console.error('Error:', error);
+          this.toaster.error(error.error.message, 'Error');
           resolve(false);
         },
       });
@@ -260,11 +262,11 @@ export class CasesComponent implements OnInit {
           this.cases = this.cases?.filter(
             (caseItem: Case) => caseItem.id !== caseId
           );
-
+          this.toaster.success('Case deleted successfully');
           this.loading = false;
         },
         error: (error) => {
-          console.error('Error deleting case:', error);
+          this.toaster.error('Error deleting case:', error.error.message);
           this.loading = false;
         },
       });

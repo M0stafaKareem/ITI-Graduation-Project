@@ -9,6 +9,7 @@ import {
   AddingFormComponent,
 } from '../../../shared/adding-form/adding-form.component';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-case-category',
@@ -28,7 +29,8 @@ export class CaseCategoryComponent implements OnInit {
 
   constructor(
     private caseService: CasesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toaster: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -39,11 +41,11 @@ export class CaseCategoryComponent implements OnInit {
     return new Promise((resolve) => {
       this.caseService.insertCategory(newCategory).subscribe({
         next: (data) => {
-          console.log(data);
+          this.toaster.success('successfully added');
           resolve(true);
         },
         error: (error) => {
-          console.error('Error:', error);
+          this.toaster.error(error.error.message, 'Error');
           resolve(true);
         },
       });
@@ -54,11 +56,11 @@ export class CaseCategoryComponent implements OnInit {
     return new Promise((resolve) => {
       this.caseService.updateCategory(categoryId, updatedCategory).subscribe({
         next: (data) => {
-          console.log(data);
+          this.toaster.success('successfully updated ');
           resolve(true);
         },
         error: (error) => {
-          console.error('Error:', error);
+          this.toaster.error(error.error.message, 'Error');
           resolve(false);
         },
       });
@@ -149,7 +151,7 @@ export class CaseCategoryComponent implements OnInit {
           this.loading = false;
         },
         error: (error) => {
-          console.error('Error deleting Category:', error);
+          this.toaster.error(error.error.message, 'Error');
           this.loading = false;
         },
       });
