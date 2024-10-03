@@ -16,6 +16,10 @@ class Lawyer extends Model
     {
         return $this->hasMany(OpposingLawyer::class, 'lawyer_id');
     }
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
     use SoftDeletes;
     use HasFactory;
 }

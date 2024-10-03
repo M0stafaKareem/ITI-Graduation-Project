@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('description')->nullable();
             $table->string('guest_name')->nullable();
-            $table->dateTime('event_date')->nullable();
+            $table->string('guest_email')->nullable();
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->softDeletes();

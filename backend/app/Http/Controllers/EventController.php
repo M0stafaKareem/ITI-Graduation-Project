@@ -29,8 +29,8 @@ class EventController extends Controller
 
             $request->validate([
                 'title' => 'required',
-                'description' => 'required',
-                'event_date'=>'required',
+                'end_date' => 'required',
+                'start_date'=>'required',
                
             ]);
     
@@ -69,13 +69,13 @@ class EventController extends Controller
             
             $request->validate([
                 'title' => 'required',
-                'description' => 'required',
-                'event_date'=>'required',
+                'end_date' => 'required',
+                'start_date'=>'required',
             ]);
             $event = Event::findOrFail($id);
             $event->update($request->all());
             return response()->json(['message' => 'event updated successfully.']);
-            
+
         }catch(ValidationException $e) {
             return response()->
             json(['message'=> 'validaition failed ' 
