@@ -22,5 +22,6 @@ class Client extends Model
         'gender',
         'address',
         'description',
+        'client_category_id',
     ];
 }
