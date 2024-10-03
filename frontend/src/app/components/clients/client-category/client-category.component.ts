@@ -10,6 +10,7 @@ import {
 import { ClientsService } from '../../../shared/services/clients.service';
 import { TableComponent } from '../../../shared/table/table.component';
 import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-nav.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-client-category',
@@ -32,7 +33,8 @@ export class ClientCategoryComponent {
 
   constructor(
     private clientSerivce: ClientsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toaster: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -43,11 +45,11 @@ export class ClientCategoryComponent {
     return new Promise((resolve) => {
       this.clientSerivce.insertCategory(newCategory).subscribe({
         next: (data) => {
-          console.log(data);
+          this.toaster.success('Added new category', 'Success');
           resolve(true);
         },
         error: (error) => {
-          console.error('Error:', error);
+          this.toaster.error(error.error.message);
           resolve(false);
         },
       });
@@ -62,7 +64,7 @@ export class ClientCategoryComponent {
           return resolve(true);
         },
         error: (error) => {
-          console.error('Error:', error);
+          this.toaster.error(error.error.message);
           return resolve(false);
         },
       });
@@ -102,7 +104,10 @@ export class ClientCategoryComponent {
     if (this.formType === 'Add') {
       this.addNewCategory(categoryData).then((result) => {
         if (result) {
-          this.categories?.push(categoryData);
+          this.categories?.push({
+            ...categoryData,
+            id: this.categories.length,
+          });
         } else {
           console.log('failed to add client');
         }
@@ -113,7 +118,10 @@ export class ClientCategoryComponent {
           if (result) {
             this.categories = this.categories?.map((category) => {
               if (category.id == this.upaddingClientId) {
-                return category;
+                return {
+                  ...category,
+                  id: this.categories![this.categories!.length].id! + 1,
+                };
               }
               return category;
             });
@@ -149,7 +157,7 @@ export class ClientCategoryComponent {
           this.loading = false;
         },
         error: (error) => {
-          console.error('Error deleting Category:', error);
+          this.toaster.error('Error deleting Category');
           this.loading = false;
         },
       });

@@ -7,6 +7,7 @@ import { SecondaryNavComponent } from '../../shared/secondary-nav/secondary-nav.
 import { AddingFormComponent } from '../../shared/adding-form/adding-form.component';
 import { NgIf } from '@angular/common';
 import { CourtService } from '../../shared/services/court.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-courts',
@@ -26,7 +27,8 @@ export class CourtsComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private courtService: CourtService
+    private courtService: CourtService,
+    private toaster: ToastrService
   ) {}
   ngOnInit(): void {
     this.courts = this.route.snapshot.data['courts'];
@@ -93,12 +95,12 @@ export class CourtsComponent {
     return new Promise((resolve) => {
       this.courtService.insertCourt(newCourt).subscribe({
         next: (data) => {
-          console.log(data);
+          this.toaster.success('Court added successfully');
           resolve(true);
         },
         error: (error) => {
-          console.error('Error:', error);
-          resolve(true);
+          this.toaster.error(error.error.message, 'Error');
+          resolve(false);
         },
       });
     });
@@ -108,11 +110,11 @@ export class CourtsComponent {
     return new Promise((resolve) => {
       this.courtService.updateCourt(courtId, updatedCourt).subscribe({
         next: (data) => {
-          console.log(data);
+          this.toaster.success(data.message);
           resolve(true);
         },
         error: (error) => {
-          console.error('Error:', error);
+          this.toaster.error(error.error.message, 'Error');
           resolve(false);
         },
       });
@@ -144,7 +146,7 @@ export class CourtsComponent {
           this.loading = false;
         },
         error: (error) => {
-          console.error('Error deleting Category:', error);
+          this.toaster.error('Error deleting Category');
           this.loading = false;
         },
       });

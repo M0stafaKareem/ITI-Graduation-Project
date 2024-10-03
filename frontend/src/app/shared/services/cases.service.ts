@@ -11,7 +11,7 @@ import { InitiateRequestService } from './initiate-request.service';
 export class CasesService {
   getCasesURL = 'http://127.0.0.1:8000/api/Cases';
   categoriesApiUrl = 'http://127.0.0.1:8000/api/CaseCategories';
-  CaseGradeUrl = 'http://127.0.0.1:8000/api/CaseGrades/';
+  CaseGradeUrl = 'http://127.0.0.1:8000/api/CaseGrades';
 
   constructor(
     private httpClient: InitiateRequestService,

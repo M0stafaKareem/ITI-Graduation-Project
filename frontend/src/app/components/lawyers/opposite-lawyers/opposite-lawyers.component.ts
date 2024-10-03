@@ -9,6 +9,7 @@ import { LawyersService } from '../../../shared/services/lawyers.service';
 import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-nav.component';
 import { TableComponent } from '../../../shared/table/table.component';
 import { NgIf } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-opposite-lawyers',
@@ -30,7 +31,8 @@ export class OppositeLawyersComponent {
   lawyers!: Lawyers[];
   constructor(
     private route: ActivatedRoute,
-    private oppositeLawyerService: LawyersService
+    private oppositeLawyerService: LawyersService,
+    private toaster: ToastrService
   ) {}
 
   ngOnInit() {
@@ -42,11 +44,11 @@ export class OppositeLawyersComponent {
     return new Promise((resolve) => {
       this.oppositeLawyerService.insertOppositeLawyer(newLawyer).subscribe({
         next: (data) => {
-          console.log(data);
+          this.toaster.success(' Added Successfully!');
           resolve(true);
         },
         error: (error) => {
-          console.error('Error:', error);
+          this.toaster.error(error.error.message, 'Error');
           resolve(true);
         },
       });
@@ -59,11 +61,11 @@ export class OppositeLawyersComponent {
         .updateOppositeLawyer(lawyerId, updatedLawyer)
         .subscribe({
           next: (data) => {
-            console.log(data);
+            this.toaster.success('');
             resolve(true);
           },
           error: (error) => {
-            console.error('Error:', error);
+            this.toaster.error(error.error.message, 'Error');
             resolve(false);
           },
         });
