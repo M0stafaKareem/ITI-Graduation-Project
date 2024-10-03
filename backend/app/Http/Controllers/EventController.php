@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Event;
+use Illuminate\Validation\ValidationException;
 
 class EventController extends Controller
 {
@@ -12,7 +13,11 @@ class EventController extends Controller
      */
     public function index()
     {
-        return Event::all();
+        try{
+            return Event::all();
+        }catch (\Exception $e) {
+            return response()->json(['error'=> 'event not found '] , 404); 
+        }
     }
 
     /**
@@ -20,24 +25,39 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'event_date'=>'required',
-           
-        ]);
+        try{
 
-        Event::create($request->all());
-        return response()->json(['message' => 'event created successfully.']);
+            $request->validate([
+                'title' => 'required',
+                'description' => 'required',
+                'event_date'=>'required',
+               
+            ]);
+    
+            Event::create($request->all());
+            return response()->json(['message' => 'event created successfully.']);
+
+        }catch (ValidationException $e) {
+            return response()->
+            json(['message'=> 'validaition failed' 
+              ,'errors'=> $e->errors()], 404);
+        }catch (\Exception $e) {
+            return response()->json(['error'=> 'event not created '] , 404);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show( $id)
     {
-        $event = Event::findOrFail($id);
-        return $event;
+        try{
+
+            $event = Event::findOrFail($id);
+            return $event;
+        }catch (\Exception $e) {
+            return response()->json(['error'=> 'event not found '] , 404);
+        }
     }
 
     /**
@@ -45,14 +65,24 @@ class EventController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'event_date'=>'required',
-        ]);
-        $event = Event::findOrFail($id);
-        $event->update($request->all());
-        return response()->json(['message' => 'event updated successfully.']);
+        try{
+            
+            $request->validate([
+                'title' => 'required',
+                'description' => 'required',
+                'event_date'=>'required',
+            ]);
+            $event = Event::findOrFail($id);
+            $event->update($request->all());
+            return response()->json(['message' => 'event updated successfully.']);
+            
+        }catch(ValidationException $e) {
+            return response()->
+            json(['message'=> 'validaition failed ' 
+              ,'errors'=> $e->errors()], 404);
+        }catch (\Exception $e) {
+            return response()->json(['error'=> 'event not updated '] , 404);
+        }
     }
 
     /**
@@ -60,8 +90,13 @@ class EventController extends Controller
      */
     public function destroy(string $id)
     {
-        $event = Event::findOrFail($id);
-        $event->delete();
-        return response()->json(['message' => 'event deleted successfully.']);
+        try{
+
+            $event = Event::findOrFail($id);
+            $event->delete();
+            return response()->json(['message' => 'event deleted successfully.']);
+     }  catch (\Exception $e) {
+        return response()->json(['error'=> 'event not deleted '] , 404);
+     } 
     }
 }

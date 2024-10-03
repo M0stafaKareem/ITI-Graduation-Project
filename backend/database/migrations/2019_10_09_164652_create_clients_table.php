@@ -15,7 +15,7 @@ class CreateClientsTable extends Migration
     {
         if (!Schema::hasTable('clients')) {
             Schema::create('clients', function (Blueprint $table) {
-                $table->bigIncrements('id');
+                $table->id();
                 $table->string('name');
 
                 $table->unsignedBigInteger('country_id')->nullable();
@@ -30,7 +30,7 @@ class CreateClientsTable extends Migration
                 $table->foreign('city_id')->references('id')
                     ->on('cities')->onDelete('SET NULL');
 
-                $table->unsignedBigInteger('client_category_id')->nullable()->unsigned();
+                $table->unsignedBigInteger('client_category_id')->nullable();
                 $table->foreign('client_category_id')->references('id')
                     ->on('client_categories')->onDelete('SET NULL');
 
@@ -44,9 +44,6 @@ class CreateClientsTable extends Migration
                 $table->longText('description')->nullable();
 
                 $table->softDeletes();
-
-                
-
                 $table->timestamps();
             });
         }

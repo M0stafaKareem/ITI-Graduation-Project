@@ -16,8 +16,12 @@ return new class extends Migration
             $table->timestamps();
             $table->string('title');
             $table->string('description')->nullable();
-            $table->dateTime('event_date');
+            $table->string('guest_name')->nullable();
+            $table->dateTime('event_date')->nullable();
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
             $table->softDeletes();
+            
         });
     }
 

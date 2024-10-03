@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('location');
             $table->softDeletes()->nullable();
-
         });
     }
 
