@@ -86,5 +86,7 @@ Route::apiResource('tasks',TaskController::class);
 
 //event route
 Route::apiResource('events',EventController::class);
+//session route
+Route::apiResource('sessions',App\Http\Controllers\SessionController::class);
 
 
