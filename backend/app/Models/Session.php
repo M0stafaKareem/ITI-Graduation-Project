@@ -16,5 +16,7 @@ class Session extends Model
         'session_date',
         'circle',
         'session_result' ,
-        'court_decision'];
+        'court_decision',
+        'is_completed'
+    ];
 }

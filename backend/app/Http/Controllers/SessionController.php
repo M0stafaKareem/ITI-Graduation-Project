@@ -32,7 +32,9 @@ class SessionController extends Controller
                 'session_name' => 'required',
                 'session_date' => 'required',
                 'circle' => 'required',
-                'session_result'=>'required'
+                'session_result'=>'required',
+                'is_completed'=>'required'
+
             ]);
             $request = Session::create($request->all());
             return response()->json(['message' => 'session created successfully' ],200);
@@ -69,7 +71,8 @@ class SessionController extends Controller
                 'session_name' => 'required',
                 'session_date' => 'required',
                 'circle' => 'required',
-                'session_result'=>'required'
+                'session_result'=>'required',
+                'is_completed'=>'required'
             ]);
             $session = Session::findOrFail($id);
             $session->update($request->all());
