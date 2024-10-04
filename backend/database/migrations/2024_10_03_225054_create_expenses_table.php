@@ -11,19 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-       
+        Schema::create('expenses', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+        });
     }
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('lawyers', function (Blueprint $table) {
-            $table->dropUnique('lawyers_phone_number_unique');
-        });
-        Schema::table('opposing_lawyers', function (Blueprint $table) {
-            $table->dropUnique('opposing_lawyers_phone_number_unique');
-        });
+        Schema::dropIfExists('expenses');
     }
-   
 };

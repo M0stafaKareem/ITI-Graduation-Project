@@ -18,8 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('description');
             $table->boolean('is_completed')->default(false);
-            $table->softDeletes();
-            
+            $table->softDeletes();  
         });
     }
 
