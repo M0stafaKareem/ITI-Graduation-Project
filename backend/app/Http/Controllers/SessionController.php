@@ -29,11 +29,10 @@ class SessionController extends Controller
 
             $request->validate([
                 'session_number' => 'required',
-                'session_name' => 'required',
                 'session_date' => 'required',
-                'circle' => 'required',
-                'session_result'=>'required',
-                'is_completed'=>'required'
+                'session_events'=>'required',
+                'is_completed'=>'required',
+                'session_requirements'=>'required'
 
             ]);
             $request = Session::create($request->all());
@@ -68,11 +67,11 @@ class SessionController extends Controller
 
             $request->validate([
                 'session_number' => 'required',
-                'session_name' => 'required',
                 'session_date' => 'required',
-                'circle' => 'required',
-                'session_result'=>'required',
-                'is_completed'=>'required'
+                'session_events'=>'required',
+                'is_completed'=>'required',
+                'session_requirements'=>'required'
+
             ]);
             $session = Session::findOrFail($id);
             $session->update($request->all());

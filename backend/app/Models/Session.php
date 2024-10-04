@@ -12,11 +12,10 @@ class Session extends Model
     use HasFactory;
     protected $fillable=[
         'session_number',
-        'session_name',
         'session_date',
-        'circle',
-        'session_result' ,
+        'session_events' ,
         'court_decision',
-        'is_completed'
+        'is_completed',
+        'session_requirements'
     ];
 }

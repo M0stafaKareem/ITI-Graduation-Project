@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('tasks', function (Blueprint $table) {
-            $table->bigInteger('lawyer_id')->nullable()->unsigned();
-            $table->foreign('lawyer_id')
-            ->references('id')
-            ->on('lawyers')->onDelete('SET NULL');
+        Schema::table('sessions', function (Blueprint $table) {
+            //
         });
     }
 
@@ -24,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('tasks', function (Blueprint $table) {
+        Schema::table('sessions', function (Blueprint $table) {
             //
         });
     }
