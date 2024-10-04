@@ -14,17 +14,22 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    align-items: normal;
 }
 
 .logo {
     max-width: 150px;
-    margin-bottom: 40px;
+    margin: auto;
 }
 
 h2 {
     color: #467576;
-    margin-bottom: 20px;
+    margin: auto;
+    text-align: center;
+    font-weight: bold;
+    font-size: 30px;
+    margin-top: 5px;
+
 }
 
 .form-group {
@@ -84,6 +89,8 @@ input:focus {
     height: 100%;
     object-fit: cover;
 }
+
+
 
 /* Media Queries */
 @media screen and (max-width: 768px) {
