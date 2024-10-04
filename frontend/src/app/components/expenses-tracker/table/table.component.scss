@@ -1,0 +1,34 @@
+.table-data {
+  @apply w-1/5 text-center p-2 text-[15px] h-[52px] text-customHsl-text
+    border-2 border-solid border-white;
+  .btn {
+    @apply m-auto;
+  }
+
+  .row-data {
+    @apply w-full;
+    &:nth-child(odd) {
+      @apply bg-customHsl-blueopacity;
+    }
+  }
+  .red-opacity {
+    &:nth-child(odd) {
+      @apply bg-customHsl-accentopacity;
+    }
+  }
+  .blue-opacity {
+    &:nth-child(odd) {
+      @apply bg-customHsl-blueopacity;
+    }
+  }
+
+  .amber-opacity {
+    &:nth-child(odd) {
+      @apply bg-customHsl-amberopacity;
+    }
+  }
+
+  th {
+    @apply text-2xl;
+  }
+}

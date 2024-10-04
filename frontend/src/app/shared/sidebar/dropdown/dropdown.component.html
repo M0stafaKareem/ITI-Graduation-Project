@@ -1,5 +1,10 @@
 <div class="drop-container">
-  <li routerLink="{{ passedRoute }}" routerLinkActive="activated">
+  <li
+    routerLink="{{ passedRoute }}"
+    routerLinkActive="activated"
+    class="d-flex align-items-center"
+  >
+    <ng-content></ng-content>
     <a class="nav-link drop-list"> {{ listName }}</a>
   </li>
 </div>
