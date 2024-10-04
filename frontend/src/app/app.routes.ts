@@ -25,8 +25,10 @@ import { MailConfirmationPageComponent } from './mail-confirmation-page/mail-con
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { TodoListComponent } from './components/todo-list/todo-list.component';
-import { ExpensesTrackerComponent } from './components/expenses-tracker/expenses-tracker.component';
-import { BudgetDetailsComponent } from './components/expenses-tracker/budget-details/budget-details.component';
+import { ExpensesTrackerComponent } from './components/Finance/expenses-tracker/expenses-tracker.component';
+import { BudgetDetailsComponent } from './components/Finance/budget-details/budget-details.component';
+import { IncomesTrackerComponent } from './components/Finance/incomes-tracker/incomes-tracker.component';
+import { IncomeDetailsComponent } from './components/Finance/incomes-tracker/income-details/income-details.component';
 
 export const routes: Routes = [
   {
@@ -112,4 +114,6 @@ export const routes: Routes = [
   { path: 'todo-list', component: TodoListComponent },
   { path: 'expense-tracker', component: ExpensesTrackerComponent },
   { path: 'details/:id', component: BudgetDetailsComponent },
+  { path: 'incomes-tracker', component: IncomesTrackerComponent },
+  { path: 'incomes-tracker/details/:id', component: IncomeDetailsComponent },
 ];

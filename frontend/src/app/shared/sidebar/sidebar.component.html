@@ -87,8 +87,10 @@
         </div>
         <div class="arrowDown p-2">
           @if (lawyersDropDown) {
+          <i class="fa-solid fa-chevron-up"></i>
+          } @else {
           <i class="fa-solid fa-chevron-down"></i>
-          } @else {<i class="fa-solid fa-chevron-up"></i> }
+          }
         </div>
       </li>
       @if (lawyersDropDown) {
@@ -131,15 +133,17 @@
         </div>
         <div class="arrowDown p-2">
           @if (financeDropDown) {
+          <i class="fa-solid fa-chevron-up"></i>
+          } @else {
           <i class="fa-solid fa-chevron-down"></i>
-          } @else {<i class="fa-solid fa-chevron-up"></i> }
+          }
         </div>
       </li>
       @if (financeDropDown) {
       <app-dropdown passedRoute="expense-tracker" listName="Expences Tracker">
         <i class="fa-solid fa-coins ms-4"></i>
       </app-dropdown>
-      <app-dropdown passedRoute="Incomes Tracker " listName="incomes-tracker">
+      <app-dropdown passedRoute="incomes-tracker" listName="incomes-tracker">
         <i class="fa-solid fa-hand-holding-dollar ms-4"></i>
       </app-dropdown>
       }

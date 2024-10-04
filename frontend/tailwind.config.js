@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/app/components/expenses-tracker/**/*.{html,ts}"],
+  content: ["./src/app/components/Finance/**/*.{html,ts}"],
   theme: {
     extend: {
       colors: {
