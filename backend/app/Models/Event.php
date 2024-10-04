@@ -15,6 +15,7 @@ class Event extends Model
     'description',
     'guest_email',
     'guest_name',
-    'start_date',
-    'end_date'];
+    'start',
+    'backgroundColor',
+    'end'];
 }
