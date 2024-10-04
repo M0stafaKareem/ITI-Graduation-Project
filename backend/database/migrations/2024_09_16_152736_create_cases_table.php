@@ -13,7 +13,7 @@ return new class extends Migration
 		Schema::create('cases', function (Blueprint $table) {
 			$table->bigIncrements('id');
 
-			
+			$table->timestamps();
 
 			$table->string('case_name', 200)->nullable();
 			// $table->bigInteger('case_no', 200)->nullable();
@@ -57,7 +57,6 @@ return new class extends Migration
 
 			$table->softDeletes();
 
-			$table->timestamps();
 
 		});
 	}

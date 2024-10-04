@@ -13,14 +13,10 @@ return new class extends Migration
     {
         Schema::dropIfExists('sessions');
         Schema::create('sessions', function (Blueprint $table) {
-            $table->id();
+			$table->id();   
             $table->timestamps();
-            $table->integer('session_number');
-            $table->string('session_name');
             $table->date('session_date');
-            $table->string('circle')->nullable();
-            $table->string('session_result')->nullable();
-            $table->string('court_decision')->nullable();
+            $table->string(column: 'court_decision')->nullable();
             $table->softDeletes();
         });
     }
