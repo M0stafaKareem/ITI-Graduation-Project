@@ -7,18 +7,22 @@ import {
   inputType,
   AddingFormComponent,
 } from '../../../shared/adding-form/adding-form.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { CaseGrade } from '../../../shared/models/case.grade.model';
 import { ToastrService } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-case-grade',
   standalone: true,
-  imports: [TableComponent, SecondaryNavComponent, NgIf, AddingFormComponent],
+  imports: [TableComponent, SecondaryNavComponent, NgIf, AddingFormComponent, CommonModule, RouterLink],
   templateUrl: './case-grade.component.html',
   styleUrls: ['./case-grade.component.css', '../cases.component.css'],
 })
 export class CaseGradeComponent implements OnInit {
+  checkChangedInput($event: any) {
+    throw new Error('Function not implemented.');
+  }
   grades?: CaseGrade[];
   loading: boolean = false;
   isFormVisible: boolean = false;
@@ -30,13 +34,36 @@ export class CaseGradeComponent implements OnInit {
   constructor(
     private caseService: CasesService,
     private route: ActivatedRoute,
+    private router: Router,
     private toaster: ToastrService
   ) {}
 
   ngOnInit(): void {
+    const resolveData = this.route.snapshot.data['data'];
+    this.grades = resolveData?.grades || [];
+    // subscribe to query param changes
+    this.route.queryParams.subscribe((params) => {
+      const searchTerm = params['search'] || '';
+      this.fetchGrades(searchTerm);
+    });
     this.grades = this.route.snapshot.data['grades'];
   }
 
+      // Function to fetch clients based on the search term
+  fetchGrades(searchTerm: string) {
+    this.caseService.getCaseGrade(searchTerm).subscribe((grades) => {
+      this.grades = grades;
+    });
+  }
+
+  handleSearch(searchTerm: string) {
+    // Update query params with search term
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { search: searchTerm },
+      queryParamsHandling: 'merge',
+    });
+  }
   addNewGrade(newGrade: CaseGrade) {
     return new Promise((resolve) => {
       this.caseService.insertCaseGrade(newGrade).subscribe({

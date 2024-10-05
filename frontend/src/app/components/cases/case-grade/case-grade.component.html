@@ -1,24 +1,12 @@
 <div class="">
-  <app-secondary-nav
-    tableTitle="Case Grades"
-    addNewButton="New Case Grade"
-    (btnClicked)="toggleFormVisibility()"
-  />
+  <app-secondary-nav tableTitle="Case Grades" addNewButton="New Case Grade" (btnClicked)="toggleFormVisibility()"
+    (search)="handleSearch($event)" />
 
-  <app-adding-form
-    *ngIf="isFormVisible"
-    [formType]="formType"
-    [formHeader]="formHeader"
-    [formInputRows]="newGradeInputRows"
-    [onFormSubmit]="submitForm"
-    (backdropClicked)="toggleFormVisibility()"
-  ></app-adding-form>
+  <app-adding-form *ngIf="isFormVisible" [formType]="formType" [formHeader]="formHeader"
+    [formInputRows]="newGradeInputRows" [onFormSubmit]="submitForm" (backdropClicked)="toggleFormVisibility()"
+    (inputChanged)="checkChangedInput($event)"></app-adding-form>
 
-  <app-table
-    firstColumnHeader="Grade Name"
-    secondColumnHeader="Description"
-    thirdColumnHeader="Action"
-  >
+  <app-table firstColumnHeader="Grade Name" secondColumnHeader="Description" thirdColumnHeader="Action">
     @for (category of grades; track $index) {
     <tr>
       <td class="text-center">{{ $index + 1 }}</td>
@@ -26,19 +14,12 @@
       <td>{{ category.description }}</td>
       <td>
         <div class="custom-select">
-          <select
-            name="SELECT"
-            id=""
-            (change)="onActionSelect($event, category.id!)"
-          >
+          <select name="SELECT" id="" (change)="onActionSelect($event, category.id!)">
             <option value="">SELECT</option>
             <option value="Update">Update</option>
             <option value="Delete">Delete</option>
           </select>
-          <i
-            class="fa-solid fa-arrow-down"
-            style="color: var(--mainTextColor)"
-          ></i>
+          <i class="fa-solid fa-arrow-down" style="color: var(--mainTextColor)"></i>
         </div>
       </td>
       <td *ngIf="loading">Deleting...</td>

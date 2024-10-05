@@ -5,6 +5,7 @@ import { Case } from '../models/case.model';
 import { CaseCategory } from '../models/case.category.model';
 import { InitiateRequestService } from './initiate-request.service';
 import { ClientCategory } from '../models/client.category';
+import { CaseGrade } from '../models/case.grade.model';
 
 @Injectable({
   providedIn: 'root',
@@ -82,8 +83,14 @@ export class CasesService {
   }
 
   // Case Grade-related API calls
-  getCaseGrade(): Observable<any[]> {
-    return this.httpClient.get(this.CaseGradeUrl);
+  getCaseGrade(searchTerm: string = ''): Observable<CaseGrade[]> {
+    let params = new HttpParams();
+    if (searchTerm) {
+      params = params.set('search', searchTerm);
+    }
+
+    return this.http.get<CaseGrade[]>(this.CaseGradeUrl, { params });
+    // return this.httpClient.get(this.CaseGradeUrl);
   }
 
   insertCaseGrade(newGrade: any): Observable<any> {
