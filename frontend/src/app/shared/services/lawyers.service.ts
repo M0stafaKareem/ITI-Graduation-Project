@@ -43,8 +43,12 @@ export class LawyersService {
     });
   }
 
-  getOppositeLawyers(): Observable<Lawyers[]> {
-    return this.httpClient.get<Lawyers[]>(`${this.oppositeLawyersUrl}`);
+  getOppositeLawyers(searchTerm: string = ''): Observable<Lawyers[]> {
+    let params = new HttpParams();
+    if (searchTerm) {
+      params = params.set('search', searchTerm);
+    }
+    return this.httpClient.get<Lawyers[]>(`${this.oppositeLawyersUrl}`, { params });
   }
 
   getOppositeLawyerById(id: number): Observable<Lawyers> {

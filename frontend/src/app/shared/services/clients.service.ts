@@ -25,8 +25,12 @@ export class ClientsService {
     return this.httpClient.get<Clients>(`${this.clientsUrl}/${id}`);
   }
 
-  getCategories(): Observable<ClientCategory[]> {
-    return this.httpClient.get<ClientCategory[]>(`${this.clientCategoryUrl}`);
+  getCategories(searchTerm: string = ''): Observable<ClientCategory[]> {
+    let params = new HttpParams();
+    if (searchTerm) {
+      params = params.set('search', searchTerm); // Set search query param if provided
+    }
+    return this.httpClient.get<ClientCategory[]>(`${this.clientCategoryUrl}`, { params });
   }
 
   deleteCategory(categoryId: any) {

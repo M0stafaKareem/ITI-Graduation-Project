@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import {
   inputType,
   AddingFormComponent,
 } from '../../../shared/adding-form/adding-form.component';
+import { CommonModule } from '@angular/common';
 import { Lawyers } from '../../../shared/models/lawyers.model';
 import { LawyersService } from '../../../shared/services/lawyers.service';
 import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-nav.component';
@@ -14,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-opposite-lawyers',
   standalone: true,
-  imports: [SecondaryNavComponent, AddingFormComponent, TableComponent, NgIf],
+  imports: [SecondaryNavComponent, AddingFormComponent, TableComponent, NgIf, CommonModule, RouterLink],
   templateUrl: './opposite-lawyers.component.html',
   styleUrls: [
     './opposite-lawyers.component.css',
@@ -22,6 +23,9 @@ import { ToastrService } from 'ngx-toastr';
   ],
 })
 export class OppositeLawyersComponent {
+checkChangedInput($event: any) {
+throw new Error('Method not implemented.');
+}
   loading: boolean = false;
   isFormVisible: boolean = false;
   formType: 'Add' | 'Update' = 'Add';
@@ -32,14 +36,40 @@ export class OppositeLawyersComponent {
   constructor(
     private route: ActivatedRoute,
     private oppositeLawyerService: LawyersService,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private router: Router
+    
   ) {}
 
-  ngOnInit() {
-    this.lawyers = this.route.snapshot.data['lawyers'];
-    console.log(this.lawyers);
+  ngOnInit(): void {
+    const resolverData = this.route.snapshot.data['data'];
+    this.lawyers = resolverData?.oppositeLawyers || [];
+    // subscribe to query param changes
+    this.route.queryParams.subscribe((params) => {
+      const searchTerm = params['search'] || '';
+      this.fetchLawyers(searchTerm);
+    });
+
+    this.lawyers = this.route.snapshot.data['oppositeLawyers'];
+
   }
 
+  fetchLawyers(searchTerm: string) {
+    this.oppositeLawyerService
+      .getOppositeLawyers(searchTerm)
+      .subscribe((lawyers) => {
+        this.lawyers = lawyers;
+      });
+  }
+
+  handleSearch(searchTerm: string) {
+    // Update query params to trigger resolver re-execution
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { search: searchTerm },
+      queryParamsHandling: 'merge',
+    });
+  }
   addNewOppositeLawyer(newLawyer: Lawyers) {
     return new Promise((resolve) => {
       this.oppositeLawyerService.insertOppositeLawyer(newLawyer).subscribe({

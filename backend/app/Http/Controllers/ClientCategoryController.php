@@ -7,12 +7,24 @@ use Illuminate\Http\Request;
 
 class ClientCategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // Get all client categories
         $ClientCategory = ClientCategory::all();
+
+        // Extract the search term from the query parameters
+        $searchTerm = $request->query('search');
+
+        // If there's a search term, filter the results based on it
+        if (!empty($searchTerm)) {
+            $ClientCategory = ClientCategory::when($searchTerm, function ($query, $searchTerm) {
+                $query->where('category_name', 'like', "%{$searchTerm}%")
+                      ->orWhere('description', 'like', "%{$searchTerm}%");
+            })->get();
+        }
+
         return $ClientCategory;
     }
-
 
     public function store(Request $request)
     {
