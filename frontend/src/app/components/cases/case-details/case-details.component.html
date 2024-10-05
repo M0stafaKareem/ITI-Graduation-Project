@@ -1,5 +1,70 @@
+<div class="">
+  <app-secondary-nav
+    tableTitle="CASE SESSIONS"
+    addNewButton="New Case Session"
+    (btnClicked)="toggleFormVisibility()"
+  />
+
+  <app-adding-form
+    *ngIf="isFormVisible"
+    [formType]="formType"
+    [formHeader]="formHeader"
+    [formInputRows]="newSessionInputRows"
+    [onFormSubmit]="submitForm"
+    (backdropClicked)="toggleFormVisibility()"
+  ></app-adding-form>
+
+  <app-table
+    firstColumnHeader="Date"
+    secondColumnHeader="Happened"
+    thirdColumnHeader="Requirements"
+  >
+    <th
+      scope="col"
+      style="color: var(--mainTextColor)"
+      ngProjectAs="fourthColumnHeader"
+    >
+      Court Decision
+    </th>
+    <th
+      scope="col"
+      style="color: var(--mainTextColor)"
+      ngProjectAs="fifthColumnHeader"
+    >
+      Action
+    </th>
+    @for (session of sessions; track $index) {
+    <tr>
+      <td class="text-center">{{ $index + 1 }}</td>
+      <td>{{ session.session_date }}</td>
+      <td>{{ session.happened }}</td>
+      <td>{{ session.requirements }}</td>
+      <td>{{ session.court_decision }}</td>
+      <td>
+        <div class="custom-select">
+          <select
+            name="SELECT"
+            id=""
+            (change)="onActionSelect($event, session.id!)"
+          >
+            <option value="">SELECT</option>
+            <option value="Update">Update</option>
+            <option value="Delete">Delete</option>
+          </select>
+          <i
+            class="fa-solid fa-arrow-down"
+            style="color: var(--mainTextColor)"
+          ></i>
+        </div>
+      </td>
+      <td *ngIf="loading">Deleting...</td>
+    </tr>
+    }
+  </app-table>
+</div>
+<hr />
 <app-single-page-details
-  title="{{ case?.case_name }}"
+  title="Case: {{ case?.case_name }}"
   titleContact="Case NO : {{ case?.id }}"
   pageTitle="{{ case?.case_name }}"
 >
@@ -63,34 +128,60 @@
     label="Next Hearing Date:"
     value="{{ case?.first_session_date }}"
   ></div>
-  <div ngProjectAs="secondSection" class="container bootstrap snippets bootdey">
-    <hr />
-    <h1>Client</h1>
-    <div class="row">
-      <div
-        bio-row
-        ngProjectAs="rowInfo"
-        label="Name"
-        value="{{ client?.name }}"
-      ></div>
-      <div
-        bio-row
-        ngProjectAs="rowInfo"
-        label="Number"
-        value="{{ client?.mobile }}"
-      ></div>
-      <div
-        bio-row
-        ngProjectAs="rowInfo"
-        label="Email"
-        value="{{ client?.email }}"
-      ></div>
-      <div
-        bio-row
-        ngProjectAs="rowInfo"
-        label="Address"
-        value="{{ client?.address }}"
-      ></div>
-    </div>
-  </div>
+  <hr />
+</app-single-page-details>
+<hr />
+<app-single-page-details
+  title="Client: {{ client?.name }}"
+  titleContact="Client Email : {{ client?.email }}"
+  pageTitle="{{ client?.name }}"
+>
+  <a href="#">
+    @if (client?.gender == '0') {
+    <img
+      src="https://png.pngtree.com/png-vector/20190710/ourlarge/pngtree-business-user-profile-vector-png-image_1541960.jpg"
+      alt=""
+    />
+    } @else {
+    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" />
+    }
+  </a>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Client Name"
+    value="{{ client?.name }}"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Client Number"
+    value="{{ client?.mobile }}"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Client Email"
+    value="{{ client?.email }}"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Client Address"
+    value="{{ client?.address }}"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Client Role"
+    value="{{ client?.role }}"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Client Gender"
+    value="{{ client?.gender == '0' ? 'Male' : 'Female' }}"
+  ></div>
+
+  <hr />
 </app-single-page-details>

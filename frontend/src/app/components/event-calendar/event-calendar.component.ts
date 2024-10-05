@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Calendar } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import * as bootstrap from 'bootstrap';
 import moment from 'moment';
+import { CalendarEventsService } from '../../shared/services/calendar-events.service';
 
 @Component({
   selector: 'app-event-calendar',
@@ -13,15 +14,29 @@ import moment from 'moment';
   templateUrl: './event-calendar.component.html',
   styleUrl: './event-calendar.component.css',
 })
-export class EventCalendarComponent {
+export class EventCalendarComponent implements OnInit {
   calendarOptions: any;
   myModal: any;
   dangerAlert: any;
   close: any;
   calendar: any;
-  myEvents: any[] = JSON.parse(localStorage.getItem('events')!) || [];
+  myEvents: any[] = [];
+  selectedEvent: any = null;
+
+  constructor(private eventsService: CalendarEventsService) {}
 
   ngOnInit() {
+    this.loadEvents();
+  }
+
+  loadEvents() {
+    this.eventsService.loadEvents().subscribe((events) => {
+      this.myEvents = JSON.parse(JSON.stringify(events));
+
+      this.calendar?.removeAllEvents();
+      this.calendar?.addEventSource(this.myEvents);
+      console.log(this.myEvents);
+    });
     this.initCalendar();
   }
 
@@ -34,7 +49,7 @@ export class EventCalendarComponent {
         customButton: {
           text: 'Add Event',
           click: () => {
-            this.showModal(); // Show modal to add an event
+            this.showModal();
           },
         },
       },
@@ -44,20 +59,20 @@ export class EventCalendarComponent {
       },
       editable: true,
       selectable: true,
-      unselectAuto: false,
+      unselectAuto: true,
       displayEventTime: false,
       events: this.myEvents,
       eventClick: (info: any) => {
-        this.selectedEvent = info.event; // Store the clicked event
-        this.showDeleteModal(); // Show modal with delete option
+        this.selectedEvent = info.event;
+        this.showDeleteModal();
       },
       eventDrop: (info: any) => this.updateEvent(info),
     });
 
     this.calendar.render();
+    console.log(this.calendar);
   }
 
-  // To generate unique event IDs
   uuidv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
       const r = (Math.random() * 16) | 0;
@@ -65,29 +80,17 @@ export class EventCalendarComponent {
     });
   }
 
-  // Update event when dragged or dropped
   updateEvent(info: any) {
-    const eventIndex = this.myEvents.findIndex(
-      (event) => event.id === info.event.id
-    );
     const updatedEvent = {
-      ...this.myEvents[eventIndex],
+      id: info.event.id,
+      title: info.event.title,
       start: moment(info.event.start).format('YYYY-MM-DD'),
       end: moment(info.event.end).format('YYYY-MM-DD'),
     };
 
-    this.myEvents.splice(eventIndex, 1, updatedEvent);
-    localStorage.setItem('events', JSON.stringify(this.myEvents));
+    this.eventsService.updateEvent(updatedEvent);
   }
 
-  editEvent(eventId: string) {
-    const eventToEdit = this.myEvents.find((event) => event.id === eventId);
-    if (eventToEdit) {
-      this.showModal(eventToEdit); // Populate the modal with event data
-    }
-  }
-
-  // Submit event form
   onSubmitEvent(formValues: any) {
     if (!formValues.title || !formValues.startDate || !formValues.endDate) {
       this.showError('Please fill in all the required fields.');
@@ -105,13 +108,16 @@ export class EventCalendarComponent {
       start: formValues.startDate,
       end: moment(formValues.endDate).add(1, 'day').format('YYYY-MM-DD'),
       backgroundColor: formValues.color,
+      description: formValues.description,
       allDay: false,
     };
 
     this.myEvents.push(newEvent);
     this.calendar.addEvent(newEvent);
-    localStorage.setItem('events', JSON.stringify(this.myEvents));
 
+    this.eventsService.createEvent(newEvent).subscribe((response: any) => {
+      this.loadEvents();
+    });
     this.myModal.hide();
   }
 
@@ -125,33 +131,27 @@ export class EventCalendarComponent {
     this.myModal = new bootstrap.Modal(document.getElementById('form')!);
 
     if (event) {
-      // Get the elements and perform null checks
       const titleInput = document.getElementById(
-        'title'
-      ) as HTMLInputElement | null;
+        'event-title'
+      ) as HTMLInputElement;
       const startDateInput = document.getElementById(
-        'startDate'
-      ) as HTMLInputElement | null;
+        'start-date'
+      ) as HTMLInputElement;
       const endDateInput = document.getElementById(
-        'endDate'
-      ) as HTMLInputElement | null;
+        'end-date'
+      ) as HTMLInputElement;
       const colorInput = document.getElementById(
-        'color'
-      ) as HTMLInputElement | null;
+        'event-color'
+      ) as HTMLInputElement;
+      const descriptionInput = document.getElementById(
+        'description'
+      ) as HTMLInputElement;
 
-      // Only set the values if the elements exist
-      if (titleInput) {
-        titleInput.value = event.title;
-      }
-      if (startDateInput) {
-        startDateInput.value = event.start;
-      }
-      if (endDateInput) {
-        endDateInput.value = event.end;
-      }
-      if (colorInput) {
-        colorInput.value = event.backgroundColor;
-      }
+      titleInput.value = event.title;
+      startDateInput.value = event.startDate;
+      endDateInput.value = event.endDate;
+      colorInput.value = event.backgroundColor;
+      descriptionInput.value = event.description;
     }
 
     this.myModal.show();
@@ -161,37 +161,30 @@ export class EventCalendarComponent {
     this.myModal.hide();
   }
 
-  selectedEvent: any = null; // Store the clicked event
-
-  // Show modal to confirm event deletion
   showDeleteModal() {
     this.myModal = new bootstrap.Modal(
       document.getElementById('deleteEventModal')!
     );
     this.myModal.show();
   }
-
-  // Delete the selected event
   deleteSelectedEvent() {
     if (this.selectedEvent) {
-      // Remove event from calendar
       const event = this.calendar.getEventById(this.selectedEvent.id);
       if (event) {
         event.remove();
       }
 
-      // Remove event from local storage
+      this.eventsService.deleteEvent(this.selectedEvent);
+
       const eventIndex = this.myEvents.findIndex(
         (event) => event.id === this.selectedEvent.id
       );
       if (eventIndex > -1) {
-        this.myEvents.splice(eventIndex, 1); // Remove from array
-        localStorage.setItem('events', JSON.stringify(this.myEvents)); // Update localStorage
+        this.myEvents.splice(eventIndex, 1);
       }
 
-      // Hide modal
       this.myModal.hide();
-      this.selectedEvent = null; // Clear the selected event
+      this.selectedEvent = null;
     }
   }
 }
