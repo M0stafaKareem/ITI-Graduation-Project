@@ -18,4 +18,6 @@ class Session extends Model
         'court_decision',
         'requirements'
     ];
+    //table
+    protected $table = 'Csessions';
 }
