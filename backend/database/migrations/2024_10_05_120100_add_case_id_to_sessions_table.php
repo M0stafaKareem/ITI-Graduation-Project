@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('cases', function (Blueprint $table) {
-
-            $table->bigInteger('session_id')->nullable()->unsigned();
-			$table->foreign('session_id')->references('id')
-				->on('sessions')->onDelete('SET NULL');	
-
+        
+        
+        Schema::table('sessions', function (Blueprint $table) {
+            
         });
     }
 
@@ -25,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('cases', function (Blueprint $table) {
+        Schema::table('sessions', function (Blueprint $table) {
             //
         });
     }

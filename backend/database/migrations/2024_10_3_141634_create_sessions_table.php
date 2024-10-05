@@ -17,7 +17,14 @@ return new class extends Migration
             $table->timestamps();
             $table->date('session_date');
             $table->string(column: 'court_decision')->nullable();
+            $table->string('session_events')->nullable();
+            $table->string('session_requirements')->nullable();
+            $table->boolean('is_completed')->default(false);
             $table->softDeletes();
+            $table->bigInteger('case_id')->unsigned()->nullable();
+            $table->foreign('case_id')
+            ->references('id')->on('cases')
+            ->onDelete('SET NULL');
         });
     }
 
