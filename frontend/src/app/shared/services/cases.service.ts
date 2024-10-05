@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Case } from '../models/case.model';
 import { CaseCategory } from '../models/case.category.model';
 import { InitiateRequestService } from './initiate-request.service';
+import { ClientCategory } from '../models/client.category';
 
 @Injectable({
   providedIn: 'root',
@@ -49,8 +50,12 @@ export class CasesService {
   }
 
   // Category-related API calls
-  getCategories(): Observable<any[]> {
-    return this.httpClient.get(this.categoriesApiUrl);
+  getCategories(searchTerm: string = ''): Observable<CaseCategory[]> {
+    let params = new HttpParams();
+    if (searchTerm) {
+      params = params.set('search', searchTerm);
+    }
+    return this.http.get<CaseCategory[]>(this.categoriesApiUrl, { params });
   }
 
   getCategoryById(id: number): Observable<CaseCategory> {
