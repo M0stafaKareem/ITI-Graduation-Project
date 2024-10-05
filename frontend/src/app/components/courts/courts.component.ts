@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { Court } from '../../shared/models/court.model';
 import { TableComponent } from '../../shared/table/table.component';
 import { SecondaryNavComponent } from '../../shared/secondary-nav/secondary-nav.component';
@@ -8,15 +8,25 @@ import { AddingFormComponent } from '../../shared/adding-form/adding-form.compon
 import { NgIf } from '@angular/common';
 import { CourtService } from '../../shared/services/court.service';
 import { ToastrService } from 'ngx-toastr';
+import { inputType } from '../../shared/adding-form/adding-form.component';
 
 @Component({
   selector: 'app-courts',
   standalone: true,
-  imports: [TableComponent, SecondaryNavComponent, AddingFormComponent, NgIf],
+  imports: [TableComponent,
+    SecondaryNavComponent,
+    AddingFormComponent,
+    NgIf,
+    RouterLink,
+    CommonModule
+  ],
   templateUrl: './courts.component.html',
   styleUrls: ['./courts.component.css', '../cases/cases.component.css'],
 })
 export class CourtsComponent {
+checkChangedInput($event: any) {
+throw new Error('Method not implemented.');
+}
   courts?: Court[];
   formType: any;
   formHeader: any;
@@ -27,13 +37,35 @@ export class CourtsComponent {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private courtService: CourtService,
     private toaster: ToastrService
   ) {}
   ngOnInit(): void {
-    this.courts = this.route.snapshot.data['courts'];
-    console.log(this.courts);
+    const resolvedData = this.route.snapshot.data['data'];
+    this.courts = resolvedData?.courts || [];
+    this.route.queryParams.subscribe((params) => {
+      const searchTerm = params['search'] || '';
+      this.fetchCourts(searchTerm);
+    })
   }
+
+  // Function to fetch clients based on the search term
+  fetchCourts(searchTerm: string) {
+    this.courtService.getCourts(searchTerm).subscribe((courts) => {
+      this.courts = courts;
+    });
+  }
+  
+  handleSearch(searchTerm: string) {
+    // Update query params with search term
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { search: searchTerm }, // Update search query param
+      queryParamsHandling: 'merge', // Merge with other query params
+    });
+  }
+
   toggleFormVisibility = (courtId?: number) => {
     this.upaddingCourtId = courtId;
     const targetCourt = this.courts?.find((court) => court.id === courtId);

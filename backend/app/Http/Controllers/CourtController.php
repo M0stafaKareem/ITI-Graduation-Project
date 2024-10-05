@@ -7,13 +7,24 @@ use Illuminate\Http\Request;
 
 class CourtController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function index(Request $request)
     {
-        $courts= Court::all();
-        return $courts ;
+        // Get all courts
+        $courts = Court::all();
+
+        // Extract the search term from the query parameters
+        $searchTerm = $request->query('search');
+
+        // Apply the search filter if the search term is provided
+        if (!empty($searchTerm)) {
+            $courts = Court::when($searchTerm, function ($query, $searchTerm) {
+                $query->where('name', 'like', "%{$searchTerm}%")
+                    ->orWhere('location', 'like', "%{$searchTerm}%");
+            })->get();
+        }
+
+        return $courts;
     }
 
     /**
@@ -56,6 +67,6 @@ class CourtController extends Controller
     public function destroy(Court $court)
     {
         $court->delete();
-        return "deleted successfuly";
+        return "deleted successfully";
     }
 }
