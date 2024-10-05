@@ -16,6 +16,7 @@ class Session extends Model
         'session_events' ,
         'court_decision',
         'is_completed',
-        'session_requirements'
+        'session_requirements',
+        'case_id'
     ];
 }
