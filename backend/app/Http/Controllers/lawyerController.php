@@ -10,12 +10,24 @@ class lawyerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $lawyers = Lawyer::all();
+
+        // Extract the search term from the query parameters
+        $searchTerm = $request->query('search');
+    
+        if (!empty($searchTerm)) {
+            $lawyers = Lawyer::when($searchTerm, function ($query, $searchTerm) {
+                $query->where('name', 'like', "%{$searchTerm}%")
+                      ->orWhere('phone_number', 'like', "%{$searchTerm}%")
+                      ->orWhere('nation_id', 'like', "%{$searchTerm}%")
+                      ->orWhere('address', 'like', "%{$searchTerm}%");
+            })->get();
+        }
+    
         return $lawyers;
     }
-
     /**
      * Store a newly created resource in storage.
      */
