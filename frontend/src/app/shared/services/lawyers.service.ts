@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Lawyers } from '../models/lawyers.model';
@@ -11,8 +11,16 @@ export class LawyersService {
   oppositeLawyersUrl = 'http://127.0.0.1:8000/api/opposinglawyers';
   constructor(private httpClient: HttpClient) {}
 
-  getLawyers(): Observable<Lawyers[]> {
-    return this.httpClient.get<Lawyers[]>(this.lawyersUrl);
+  // getLawyers(): Observable<Lawyers[]> {
+  //   return this.httpClient.get<Lawyers[]>(this.lawyersUrl);
+  // }
+
+  getLawyers(searchTerm: string = ''): Observable<Lawyers[]> {
+    let params = new HttpParams();
+    if (searchTerm) {
+      params = params.set('search', searchTerm);
+    }
+    return this.httpClient.get<Lawyers[]>(this.lawyersUrl, { params });
   }
 
   getLawyerById(id: number): Observable<Lawyers> {
