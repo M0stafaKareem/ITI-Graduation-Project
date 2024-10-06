@@ -35,7 +35,6 @@ export class EventCalendarComponent implements OnInit {
 
       this.calendar?.removeAllEvents();
       this.calendar?.addEventSource(this.myEvents);
-      console.log(this.myEvents);
     });
     this.initCalendar();
   }
@@ -70,7 +69,6 @@ export class EventCalendarComponent implements OnInit {
     });
 
     this.calendar.render();
-    console.log(this.calendar);
   }
 
   uuidv4() {

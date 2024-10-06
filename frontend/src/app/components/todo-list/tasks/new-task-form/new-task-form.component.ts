@@ -27,7 +27,7 @@ export class NewTaskFormComponent {
   onConfirm() {
     const newTask: TodoItem = {
       id: Math.random().toString(36).substring(2, 9),
-      user_id: this.userId,
+      lawyer_id: this.userId,
       title: this.enteredTitle,
       description: this.enteredSummary,
       is_completed: false,

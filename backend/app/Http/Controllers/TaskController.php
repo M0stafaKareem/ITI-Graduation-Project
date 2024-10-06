@@ -29,7 +29,7 @@ class TaskController extends Controller
         try {
             $request->validate([
                 'title' => 'required',
-                'user_id' => 'required',
+                'lawyer_id' => 'required',
                 'description' => 'required',
                 'is_completed' => 'required',
                 'due_date' => 'required',
@@ -43,7 +43,8 @@ class TaskController extends Controller
                     'message' => 'validaition failed ',
                     'errors' => $e->errors()
                 ], 404);
-        } catch (\Exception $e) {
+        } catch (\Exception $e) {            dd($e) ;
+
             return response()->json(['error' => 'task not created '], 404);
         }
     }
@@ -70,7 +71,7 @@ class TaskController extends Controller
 
             $request->validate([
                 'title' => 'required',
-                'user_id' => 'required',
+                'lawyer_id' => 'required',
                 'description' => 'required',
                 'is_completed' => 'required',
                 'due_date' => 'required',
