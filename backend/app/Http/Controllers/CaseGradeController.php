@@ -7,12 +7,24 @@ use Illuminate\Http\Request;
 
 class CaseGradeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // Get all case grades
         $CaseGrades = CaseGrade::all();
+
+        // Extract the search term from the query parameters
+        $searchTerm = $request->query('search');
+
+        // If there's a search term, filter the results based on it
+        if (!empty($searchTerm)) {
+            $CaseGrades = CaseGrade::when($searchTerm, function ($query, $searchTerm) {
+                $query->where('name', 'like', "%{$searchTerm}%")
+                ->orWhere('description', 'like', "%{$searchTerm}%");
+            })->get();
+        }
+
         return $CaseGrades;
     }
-
 
     public function store(Request $request)
     {
@@ -21,14 +33,13 @@ class CaseGradeController extends Controller
             'description' => 'nullable',
         ]);
 
-        $CaseGrade= CaseGrade::create($request->all());
+        $CaseGrade = CaseGrade::create($request->all());
 
         return $CaseGrade;
     }
 
     public function show($id)
     {
-        
         $CaseGrade = CaseGrade::find($id);
         if (!$CaseGrade) {
             return 'CaseGrade not found.';
@@ -36,11 +47,8 @@ class CaseGradeController extends Controller
         return $CaseGrade;
     }
 
-
-
     public function update(Request $request, $id)
     {
-    
         $request->validate([
             'name' => 'required',
             'description' => 'nullable',
@@ -61,12 +69,10 @@ class CaseGradeController extends Controller
     {
         $CaseGrade = CaseGrade::find($id);
         if ($CaseGrade) {
-             $CaseGrade->delete();
+            $CaseGrade->delete();
 
             return 'CaseGrade deleted successfully.';
         }
         return 'CaseGrade not found.';
-
-       
     }
 }

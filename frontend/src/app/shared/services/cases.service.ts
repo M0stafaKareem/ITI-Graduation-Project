@@ -4,6 +4,8 @@ import { finalize, Observable } from 'rxjs';
 import { Case } from '../models/case.model';
 import { CaseCategory } from '../models/case.category.model';
 import { InitiateRequestService } from './initiate-request.service';
+import { ClientCategory } from '../models/client.category';
+import { CaseGrade } from '../models/case.grade.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable({
@@ -59,10 +61,14 @@ export class CasesService {
       .pipe(finalize(() => this.spinner.hide()));
   }
 
-  getCategories(): Observable<any[]> {
+  getCategories(searchTerm: string = ''): Observable<CaseCategory[]> {
+    let params = new HttpParams();
+    if (searchTerm) {
+      params = params.set('search', searchTerm);
+    }
     this.spinner.show();
-    return this.httpClient
-      .get(this.categoriesApiUrl)
+    return this.http
+      .get<CaseCategory[]>(this.categoriesApiUrl, { params })
       .pipe(finalize(() => this.spinner.hide()));
   }
 
@@ -95,9 +101,15 @@ export class CasesService {
   }
 
   // Case Grade-related API calls
-  getCaseGrade(): Observable<any[]> {
+  getCaseGrade(searchTerm: string = ''): Observable<CaseGrade[]> {
     this.spinner.show();
-    return this.httpClient
+    let params = new HttpParams();
+    if (searchTerm) {
+      params = params.set('search', searchTerm);
+    }
+
+    return this.http.get<CaseGrade[]>(this.CaseGradeUrl, { params });
+    // return this.httpClient
       .get(this.CaseGradeUrl)
       .pipe(finalize(() => this.spinner.hide()));
   }
