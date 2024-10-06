@@ -108,9 +108,8 @@ export class CasesService {
       params = params.set('search', searchTerm);
     }
 
-    return this.http.get<CaseGrade[]>(this.CaseGradeUrl, { params });
-    // return this.httpClient
-      .get(this.CaseGradeUrl)
+    return this.http
+      .get<CaseGrade[]>(this.CaseGradeUrl, { params })
       .pipe(finalize(() => this.spinner.hide()));
   }
 
