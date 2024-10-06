@@ -1,0 +1,33 @@
+.services-container {
+    display: flex;
+    /* Use flexbox for alignment */
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0;
+    /* Add top and bottom margin */
+}
+
+.line {
+    flex: 1;
+    /* Allow lines to take equal space */
+    height: 2px;
+    /* Set line height */
+    background-color: black;
+    /* Change line color to black */
+    margin: 0 0.5rem;
+    max-width: 100px;
+    /* Set a maximum width for the lines */
+}
+
+.services-title {
+    font-size: 2rem;
+    /* Adjust title size */
+    font-weight: bold;
+    /* Make title bold */
+    text-transform: uppercase;
+    /* Uppercase letters */
+    color: black;
+    /* Change text color to black */
+    text-align: center;
+    /* Center align text */
+}
