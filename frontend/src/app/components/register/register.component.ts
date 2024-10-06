@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterService } from './register.service';
 import { Router } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, ReactiveFormsModule, NgIf],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
+  errors: { [key: string]: string } = {};
   constructor(
     private registerService: RegisterService,
     private router: Router
@@ -23,15 +25,22 @@ export class RegisterComponent {
   enteredConfirmPassword = '';
 
   async onRegisterHandler() {
+    console.log('hi');
+
     const userData = {
       name: `${this.enteredFirstName} ${this.enteredLastName}`,
       email: this.enteredEmail,
       password: this.enteredPassword,
       password_confirmation: this.enteredConfirmPassword,
     };
-    if (await this.registerService.registerUser(userData))
-      this.router.navigate([{ outlets: { authentication: ['verify-email'] } }]);
-    else console.log('registration failed, Enter a Valid Data');
-  }
+    this.errors = {};
 
+    const result = await this.registerService.registerUser(userData);
+
+    if (result.success) {
+      this.router.navigate([{ outlets: { authentication: ['verify-email'] } }]);
+    } else {
+      this.errors = result.errors;
+    }
+  }
 }

@@ -6,74 +6,97 @@
     <div class="image-holder">
       <img src="assets/registrationFrom/lawyerMain.jpeg" alt="" />
     </div>
-    <form action="">
+    <form [formGroup]="registrationForm" (ngSubmit)="onRegisterHandler()">
       <h3>Registration Form</h3>
+
       <div class="form-group">
         <input
           type="text"
           placeholder="First Name"
-          name="First Name"
+          formControlName="firstName"
           class="form-control"
-          [(ngModel)]="enteredFirstName"
         />
+        <div
+          *ngIf="
+            registrationForm.get('firstName')?.touched &&
+            registrationForm.get('firstName')?.invalid
+          "
+          class="error-message"
+        >
+          First Name is required
+        </div>
+
         <input
           type="text"
           placeholder="Last Name"
-          name="Last Name"
+          formControlName="lastName"
           class="form-control"
-          [(ngModel)]="enteredLastName"
         />
+        <div
+          *ngIf="
+            registrationForm.get('lastName')?.touched &&
+            registrationForm.get('lastName')?.invalid
+          "
+          class="error-message"
+        >
+          Last Name is required
+        </div>
       </div>
-      <!-- <div class="form-wrapper">
-        <input type="text" 
-          placeholder="Username"
-          name="Username"
-         class="form-control" />
-        <i class="zmdi zmdi-account"></i>
-      </div> -->
       <div class="form-wrapper">
         <input
-          type="text"
+          type="email"
           placeholder="Email Address"
-          name="Email Address"
+          formControlName="email"
           class="form-control"
-          [(ngModel)]="enteredEmail"
         />
-        <i class="zmdi zmdi-email"></i>
+        <div
+          *ngIf="
+            registrationForm.get('email')?.touched &&
+            registrationForm.get('email')?.invalid
+          "
+          class="error-message"
+        >
+          Please enter a valid email address
+        </div>
       </div>
-      <!-- <div class="form-wrapper">
-        <select name="" id="" class="form-control">
-          <option value="" disabled selected>Gender</option>
-          <option value="male">Male</option>
-          <option value="femal">Female</option>
-          <option value="other">Other</option>
-        </select>
-        <i class="zmdi zmdi-caret-down" style="font-size: 17px"></i>
-      </div> -->
+
       <div class="form-wrapper">
         <input
           type="password"
           placeholder="Password"
-          name="Password"
+          formControlName="password"
           class="form-control"
-          [(ngModel)]="enteredPassword"
         />
-        <i class="zmdi zmdi-lock"></i>
+        <div
+          *ngIf="
+            registrationForm.get('password')?.touched &&
+            registrationForm.get('password')?.invalid
+          "
+          class="error-message"
+        >
+          Password must be at least 6 characters long
+        </div>
       </div>
+
       <div class="form-wrapper">
         <input
           type="password"
           placeholder="Confirm Password"
-          name="Confirm Password"
+          formControlName="confirmPassword"
           class="form-control"
-          [(ngModel)]="enteredConfirmPassword"
         />
-        <i class="zmdi zmdi-lock"></i>
+        <div
+          *ngIf="
+            registrationForm.get('confirmPassword')?.touched &&
+            registrationForm.hasError('mismatch')
+          "
+          class="error-message"
+        >
+          Passwords must match
+        </div>
       </div>
-      <button type="button" (click)="onRegisterHandler()">
-        Register
-        <i class="zmdi zmdi-arrow-right"></i>
-      </button>
+
+      <button type="submit">Register</button>
     </form>
   </div>
 </div>

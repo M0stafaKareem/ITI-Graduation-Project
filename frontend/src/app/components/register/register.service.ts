@@ -33,13 +33,14 @@ export class RegisterService {
         'X-XSRF-Token': this.httpClient.getXsrfToken!,
       },
       body: JSON.stringify(data),
-    }).then((response) => {
+    }).then(async (response) => {
       if (response.ok) {
         this.spinner.hide();
-        return true;
+        return { success: true };
       } else {
         this.spinner.hide();
-        return false;
+        const errorData = await response.json();
+        return { success: false, errors: errorData.errors };
       }
     });
   }

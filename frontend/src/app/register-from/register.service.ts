@@ -12,15 +12,15 @@ export class RegisterService {
     email: string;
     password: string;
     password_confirmation: string;
-  }) {
+  }): Promise<{ success: boolean; errors?: any }> {
     const api = 'http://localhost:8000/register';
 
-    const token = await fetch('http://localhost:8000/sanctum/csrf-cookie', {
+    await fetch('http://localhost:8000/sanctum/csrf-cookie', {
       method: 'GET',
       credentials: 'include',
     });
 
-    return await fetch(api, {
+    const response = await fetch(api, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -28,12 +28,13 @@ export class RegisterService {
         'X-XSRF-Token': this.httpClient.getXsrfToken!,
       },
       body: JSON.stringify(data),
-    }).then((response) => {
-      if (response.ok) {
-        return true;
-      } else {
-        return false;
-      }
     });
+
+    if (response.ok) {
+      return { success: true };
+    } else {
+      const errorData = await response.json();
+      return { success: false, errors: errorData.errors };
+    }
   }
 }
