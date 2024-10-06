@@ -1,0 +1,135 @@
+<div class="home-container px-10 flex flex-col gap-x-8 gap-y-8">
+  <h1 class="fs-1 fw-bold">EXPENCES TRACKER</h1>
+
+  <div class="input-container flex w-full gap-x-8 mt-6">
+    <!-- Budget Form -->
+    <app-form-wrapper [formGroup]="budgetForm" class="w-1/2">
+      <div class="input-form flex flex-col gap-y-4">
+        <h3 class="font-bold text-2xl">Create Budget</h3>
+
+        <div class="text-inputs flex flex-col gap-y-2">
+          <label class="text-[19px] font-bold">Budget Name</label>
+          <input
+            formControlName="name"
+            type="text"
+            class="input-select"
+            placeholder="Budget name"
+          />
+        </div>
+
+        <div class="text-inputs flex flex-col gap-y-2">
+          <label class="text-[19px] font-bold">Amount</label>
+          <input
+            formControlName="budget"
+            type="number"
+            class="input-select"
+            placeholder="e.g EGP120"
+          />
+        </div>
+
+        <button
+          tabindex="-1"
+          [disabled]="budgetForm.invalid"
+          (click)="addBudget()"
+          class="btn bg-customHsl-text hover:bg-slate-600 text-white border-none w-fit text-[19px]"
+        >
+          Create Budget
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            width="20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </app-form-wrapper>
+    <!-- Expense Form  -->
+    <app-form-wrapper [formGroup]="expenseForm" class="w-1/2">
+      <div class="input-form flex flex-col gap-y-4">
+        <h3 class="font-bold text-2xl">Add new Expense</h3>
+
+        <div class="text-input-container flex gap-x-6">
+          <div class="text-inputs flex flex-col gap-y-2">
+            <label class="text-[19px] font-bold">Expense Name</label>
+            <input
+              formControlName="name"
+              type="text"
+              class="input-select"
+              placeholder="e.g Coffee"
+            />
+          </div>
+
+          <div class="text-inputs flex flex-col gap-y-2">
+            <label class="text-[19px] font-bold">Amount</label>
+            <input
+              formControlName="amount"
+              type="number"
+              class="input-select"
+              placeholder="e.g EGP120"
+            />
+          </div>
+        </div>
+
+        <div class="text-inputs flex flex-col gap-y-2">
+          <label class="text-[19px] font-bold">Budget Category</label>
+
+          <select formControlName="budgetCategoryId" class="input-select">
+            <option [value]="null" hidden>Please Select a Category</option>
+            @for (item of budgetCategories; track $index) {
+            <option value="{{ item.id }}">{{ item.name }}</option>
+            }
+          </select>
+        </div>
+
+        <button
+          tabindex="-1"
+          (click)="addExpense()"
+          class="btn bg-customHsl-text hover:bg-slate-600 text-white border-none w-fit text-[19px]"
+        >
+          Add Expense
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            width="20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </app-form-wrapper>
+  </div>
+
+  @if (budgetCards && budgetCards.length > 0 ){
+  <div class="d-flex flex-column gap-3">
+    <h2 class="mini-title fs-2">Existing Budgets</h2>
+    <div class="flex w-full flex-wrap gap-4" id="cards-container">
+      @for (item of budgetCards; track $index) {
+      <app-budget-card class="budget-card" [config]="item"></app-budget-card>
+      }
+    </div>
+  </div>
+  } @if (expenseTableData && expenseTableData.length > 0 ){
+  <div class="d-flex flex-column gap-4 mb-5">
+    <h2 class="mini-title fs-2">Recent Expenses</h2>
+    <app-table
+      class="mb-5"
+      (removeRow)="handleDelete($event)"
+      [data]="expenseTableData"
+    ></app-table>
+  </div>
+
+  }
+</div>

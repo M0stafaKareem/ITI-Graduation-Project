@@ -1,0 +1,15 @@
+@import "../global.css";
+
+.home-container {
+  height: 92vh;
+  overflow-y: scroll;
+}
+
+.home-container::-webkit-scrollbar {
+  display: none;
+}
+
+#cards-container {
+  max-height: 500px;
+  overflow-y: scroll;
+}

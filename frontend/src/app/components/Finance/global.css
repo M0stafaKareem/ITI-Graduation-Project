@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer components {
+  .btn {
+    @apply flex gap-x-2 border-2 items-center rounded-md
+        outline-none hover:no-underline py-2 px-4
+        cursor-pointer;
+  }
+
+  .input-select {
+    @apply w-full border-customHsl-bkg border-2
+        py-2 px-4 rounded-[4px] text-[16px] border-solid
+        border-customHsl-muted outline-none;
+    border-radius: 5px;
+  }
+
+  .btn {
+    &:disabled {
+      background: grey;
+      cursor: auto;
+    }
+  }
+
+  .btn-warning {
+    @apply border-solid border-customHsl-warning w-fit
+        text-customHsl-warning bg-customHsl-warningopacity 
+        hover:bg-customHsl-warning hover:text-white;
+  }
+
+  .text-inputs {
+    @apply w-full;
+  }
+
+  .input-form,
+  .text-input-container {
+    @apply w-full;
+  }
+
+  .red-text {
+    @apply text-red-700;
+  }
+
+  .red-bg {
+    @apply bg-red-700;
+  }
+
+  .red-border {
+    @apply border-red-700;
+  }
+
+  .amber-text {
+    @apply text-amber-700;
+  }
+
+  .amber-bg {
+    @apply bg-amber-700;
+  }
+
+  .amber-border {
+    @apply border-amber-700;
+  }
+
+  .blue-text {
+    @apply text-blue-500;
+  }
+
+  .blue-bg {
+    @apply bg-blue-500;
+  }
+
+  .blue-border {
+    @apply border-blue-500;
+  }
+}

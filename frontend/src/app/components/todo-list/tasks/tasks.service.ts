@@ -31,7 +31,7 @@ export class TasksService {
 
   getUserTasks(userId: string): TodoItem[] {
     return this.tasks
-      ? this.tasks.filter((task) => task.user_id == userId)
+      ? this.tasks.filter((task) => task.lawyer_id == userId)
       : [];
   }
 

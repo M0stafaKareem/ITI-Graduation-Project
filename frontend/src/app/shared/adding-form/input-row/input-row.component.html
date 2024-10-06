@@ -6,9 +6,7 @@
 >
   <label for="selectInput">{{ input_Info.title | uppercase }}</label>
   <select id="selectInput" (change)="emmitNewValue($event)">
-    <option [value]="null" hidden>
-      Please Select an {{ input_Info.title }}
-    </option>
+    <option [value]="null" hidden>Please Select {{ input_Info.title }}</option>
     @for (item of input_Info.options; track $index) {
     <option [value]="item.id" [selected]="item.id == input_Info.value">
       {{ item.value }}

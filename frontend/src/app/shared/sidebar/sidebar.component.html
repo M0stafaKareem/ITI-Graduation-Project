@@ -1,4 +1,7 @@
-<div class="d-flex mainSide" [class.sidebar-open]="isSidebarOpen">
+<div
+  class="d-flex position-sticky mainSide"
+  [class.sidebar-open]="isSidebarOpen"
+>
   <div
     class="sidebar d-flex flex-column flex-shrink-0 text-white bg-transparent"
     [class.active]="isSidebarOpen"
@@ -85,7 +88,9 @@
         <div class="arrowDown p-2">
           @if (lawyersDropDown) {
           <i class="fa-solid fa-chevron-up"></i>
-          } @else {<i class="fa-solid fa-chevron-down"></i> }
+          } @else {
+          <i class="fa-solid fa-chevron-down"></i>
+          }
         </div>
       </li>
       @if (lawyersDropDown) {
@@ -114,6 +119,35 @@
           Todo List</a
         >
       </li>
+
+      <li
+        (click)="financeToggle()"
+        [ngClass]="{ activated: financeDropDown }"
+        class="d-flex justify-content-between nav-list"
+      >
+        <div>
+          <a class="nav-link">
+            <i class="fa-solid fa-user-tie"></i>
+            Finance</a
+          >
+        </div>
+        <div class="arrowDown p-2">
+          @if (financeDropDown) {
+          <i class="fa-solid fa-chevron-up"></i>
+          } @else {
+          <i class="fa-solid fa-chevron-down"></i>
+          }
+        </div>
+      </li>
+      @if (financeDropDown) {
+      <app-dropdown passedRoute="expense-tracker" listName="Expences Tracker">
+        <i class="fa-solid fa-coins ms-4"></i>
+      </app-dropdown>
+      <app-dropdown passedRoute="incomes-tracker" listName="incomes-tracker">
+        <i class="fa-solid fa-hand-holding-dollar ms-4"></i>
+      </app-dropdown>
+      }
+
       <li (click)="logOut()">
         <button class="nav-link">
           <i class="fa-solid fa-sign-out"></i>

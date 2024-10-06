@@ -1,0 +1,71 @@
+<div class="budget-detail-container w-full h-full flex flex-col gap-y-8 p-6">
+  <h2 class="text-5xl font-bold">
+    <span class="{{ uiService.generateTailwindClass('white', 'text') }}">{{
+      budgetCard.name
+    }}</span>
+    Overview
+  </h2>
+
+  <div class="flex w-full gap-x-8">
+    <app-budget-card
+      [isDelete]="true"
+      [config]="budgetCard"
+      class="budget-card w-[40%]"
+    ></app-budget-card>
+
+    <app-form-wrapper class="flex-1">
+      <div [formGroup]="expenseForm" class="input-form flex flex-col gap-y-4">
+        <h3 class="font-bold text-2xl">Add New Payment</h3>
+        <div class="text-input-container w-full flex gap-x-6">
+          <div class="text-inputs flex-1 flex flex-col gap-y-2">
+            <label class="text-[19px] font-bold">Details</label>
+            <input
+              formControlName="name"
+              type="text"
+              class="input-select"
+              placeholder="e.g Coffee"
+            />
+          </div>
+
+          <div class="text-inputs flex flex-1 flex-col gap-y-2">
+            <label class="text-[19px] font-bold">Amount</label>
+            <input
+              formControlName="amount"
+              type="number"
+              class="input-select"
+              placeholder="e.g, EGP120"
+            />
+          </div>
+        </div>
+
+        <button
+          (click)="addExpense()"
+          class="btn bg-customHsl-text text-white border-none w-fit text-[19px] hover:bg-slate-600"
+          tabindex="-1"
+        >
+          Add Payment
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            width="20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </app-form-wrapper>
+  </div>
+
+  @if ( expenseTableData && expenseTableData.length > 0) {
+  <app-table
+    [data]="expenseTableData"
+    (removeRow)="handleAction($event)"
+  ></app-table>
+  }
+</div>

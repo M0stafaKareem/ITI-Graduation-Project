@@ -3,8 +3,6 @@ import { ClientsComponent } from './components/clients/clients.component';
 import { CasesComponent } from './components/cases/cases.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CourtsComponent } from './components/courts/courts.component';
-import { LoginFromComponent } from './login-from/login-from.component';
-import { RegisterFromComponent } from './register-from/register-from.component';
 import { EventCalendarComponent } from './components/event-calendar/event-calendar.component';
 import { CaseCategoryComponent } from './components/cases/case-category/case-category.component';
 import { ClientProfileComponent } from './components/clients/client-profile/client-profile.component';
@@ -27,6 +25,10 @@ import { MailConfirmationPageComponent } from './mail-confirmation-page/mail-con
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { TodoListComponent } from './components/todo-list/todo-list.component';
+import { ExpensesTrackerComponent } from './components/Finance/expenses-tracker/expenses-tracker.component';
+import { BudgetDetailsComponent } from './components/Finance/budget-details/budget-details.component';
+import { IncomesTrackerComponent } from './components/Finance/incomes-tracker/incomes-tracker.component';
+import { IncomeDetailsComponent } from './components/Finance/incomes-tracker/income-details/income-details.component';
 
 export const routes: Routes = [
   {
@@ -47,6 +49,7 @@ export const routes: Routes = [
     title: 'Mail Confirmation',
     outlet: 'authentication',
   },
+
   {
     path: 'clients',
     component: ClientsComponent,
@@ -107,8 +110,17 @@ export const routes: Routes = [
       courts: CourtsResolver,
     },
   },
-  { path: 'dashboard', component: DashboardComponent },
+  { path: '', component: DashboardComponent },
   { path: 'calender', component: EventCalendarComponent },
   { path: 'court', component: CourtsComponent },
   { path: 'todo-list', component: TodoListComponent },
+  { path: 'expense-tracker', component: ExpensesTrackerComponent },
+  { path: 'details/:id', component: BudgetDetailsComponent },
+  { path: 'incomes-tracker', component: IncomesTrackerComponent },
+  { path: 'incomes-tracker/details/:id', component: IncomeDetailsComponent },
+  {
+    path: '**',
+    pathMatch: 'full',
+    redirectTo: '',
+  },
 ];

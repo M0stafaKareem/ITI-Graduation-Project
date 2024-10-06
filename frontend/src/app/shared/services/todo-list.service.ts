@@ -20,6 +20,8 @@ export class TodoListService {
   }
 
   insertTodo(newTodoItem: TodoItem): Observable<TodoItem> {
+    console.log(newTodoItem);
+
     return this.httpClient.post<TodoItem>(this.todosUrl, newTodoItem);
   }
 

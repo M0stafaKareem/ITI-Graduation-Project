@@ -24,6 +24,11 @@ p {
   display: flex;
   gap: 0.5rem;
   overflow: auto;
+  max-height: 60vh;
+  overflow-y: scroll;
+}
+::-webkit-scrollbar {
+  display: none;
 }
 
 @media (min-width: 768px) {

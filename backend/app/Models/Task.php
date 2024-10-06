@@ -15,6 +15,7 @@ class Task extends Model
         'description',
         'is_completed',  
         'lawyer_id',   
+        'due_date',   
     ];
     public function lawyer(){
         return $this->belongsTo(Lawyer::class);

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, interval, Observable } from 'rxjs';
 import { InitiateRequestService } from '../shared/services/initiate-request.service';
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root',
 })
@@ -8,7 +9,10 @@ export class LoginService {
   private loginStatus = new BehaviorSubject<boolean>(false);
   private token: string | null = null;
 
-  constructor(private httpClient: InitiateRequestService) {
+  constructor(
+    private httpClient: InitiateRequestService,
+    private router: Router
+  ) {
     const storedToken = sessionStorage.getItem('access_token');
     if (storedToken) {
       this.token = storedToken;
