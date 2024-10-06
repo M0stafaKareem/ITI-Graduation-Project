@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SliderComponent } from './slider/slider.component';
-import { ServicesComponent } from "./services/services.component";  // Make sure the path is correct
-
+// import { ServicesComponent } from "./services/services.component";
+import { StatsComponent } from "./stats/stats.component";
+import { AboutusComponent } from "./aboutus/aboutus.component";  
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, SliderComponent, ServicesComponent],
+  imports: [RouterOutlet, SliderComponent, StatsComponent, AboutusComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
