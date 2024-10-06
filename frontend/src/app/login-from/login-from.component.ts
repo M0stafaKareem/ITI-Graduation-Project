@@ -33,13 +33,11 @@ export class LoginFromComponent {
       this.toastr.success('Welcome', 'login Success', {
         positionClass: 'toast-bottom-right',
       });
-      console.log('Login successful');
       this.router.navigate(['/dashboard']);
     } else {
       this.toastr.error('Invalid credentials', 'login failed', {
         positionClass: 'toast-bottom-right',
       });
-      console.log('Invalid credentials');
     }
   }
 }

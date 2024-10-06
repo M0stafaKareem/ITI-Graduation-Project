@@ -1,3 +1,4 @@
+@import "../global.css";
 .home-container {
   height: 92vh;
   overflow-y: scroll;

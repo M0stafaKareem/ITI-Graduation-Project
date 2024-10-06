@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
   standalone: true,
   imports: [RouterLink, FormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
   enteredEmail: string = '';
@@ -20,22 +20,22 @@ export class LoginComponent {
     private toastr: ToastrService
   ) {}
   async onLoginHandler() {
-    if (
-      await this.loginService.verifyCredentials(
-        this.enteredEmail,
-        this.enteredPassword
-      )
-    ) {
-      this.toastr.success('Welcome', 'login Success', {
-        positionClass: 'toast-bottom-right',
+    this.loginService
+      .verifyCredentials(this.enteredEmail, this.enteredPassword)
+      .then((responce) => {
+        if (responce) {
+          this.toastr.success('Welcome', 'login Success', {
+            positionClass: 'toast-bottom-right',
+          });
+          console.log('Login successful');
+          this.router.navigate(['/dashboard']);
+          location.reload();
+        } else {
+          this.toastr.error('Invalid credentials', 'login failed', {
+            positionClass: 'toast-bottom-right',
+          });
+          console.log('Invalid credentials');
+        }
       });
-      console.log('Login successful');
-      this.router.navigate(['/dashboard']);
-    } else {
-      this.toastr.error('Invalid credentials', 'login failed', {
-        positionClass: 'toast-bottom-right',
-      });
-      console.log('Invalid credentials');
-    }
   }
 }

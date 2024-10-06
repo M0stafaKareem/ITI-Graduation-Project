@@ -49,6 +49,7 @@ export const routes: Routes = [
     title: 'Mail Confirmation',
     outlet: 'authentication',
   },
+
   {
     path: 'clients',
     component: ClientsComponent,
@@ -108,7 +109,7 @@ export const routes: Routes = [
       courts: CourtsResolver,
     },
   },
-  { path: 'dashboard', component: DashboardComponent },
+  { path: '', component: DashboardComponent },
   { path: 'calender', component: EventCalendarComponent },
   { path: 'court', component: CourtsComponent },
   { path: 'todo-list', component: TodoListComponent },
@@ -116,4 +117,9 @@ export const routes: Routes = [
   { path: 'details/:id', component: BudgetDetailsComponent },
   { path: 'incomes-tracker', component: IncomesTrackerComponent },
   { path: 'incomes-tracker/details/:id', component: IncomeDetailsComponent },
+  {
+    path: '**',
+    pathMatch: 'full',
+    redirectTo: '',
+  },
 ];
