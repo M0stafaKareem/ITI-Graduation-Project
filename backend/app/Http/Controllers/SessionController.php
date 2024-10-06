@@ -28,11 +28,11 @@ class SessionController extends Controller
         try{
 
             $request->validate([
-                'session_number' => 'required',
+                'case_id' => 'required',
+                'session_number' => 'nullable',
                 'session_date' => 'required',
-                'session_events'=>'required',
-                'is_completed'=>'required',
-                'session_requirements'=>'required'
+                'happened'=>'nullable',
+                'requirements'=>'nullable'
 
             ]);
             $request = Session::create($request->all());
@@ -58,6 +58,15 @@ class SessionController extends Controller
         }
     }
 
+     public function getSessionsByCaseId($caseId)
+    {
+        // Fetch all sessions where case_id matches the provided caseId
+        $sessions = Session::where('case_id', $caseId)->get();
+
+        // Return the sessions as a JSON response
+        return response()->json($sessions);
+    }
+
     /**
      * Update the specified resource in storage.
      */
@@ -66,11 +75,10 @@ class SessionController extends Controller
         try{
 
             $request->validate([
-                'session_number' => 'required',
+                'session_number' => 'nullable',
                 'session_date' => 'required',
-                'session_events'=>'required',
-                'is_completed'=>'required',
-                'session_requirements'=>'required'
+                'happened'=>'nullable',
+                'requirements'=>'nullable'
 
             ]);
             $session = Session::findOrFail($id);

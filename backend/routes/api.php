@@ -87,6 +87,7 @@ Route::apiResource('tasks',TaskController::class);
 //event route
 Route::apiResource('events',EventController::class);
 //session route
+Route::get('/sessions/cases/{caseId}', [App\Http\Controllers\SessionController::class, 'getSessionsByCaseId']);
 Route::apiResource('sessions',App\Http\Controllers\SessionController::class);
 
 

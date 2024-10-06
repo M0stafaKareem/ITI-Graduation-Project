@@ -20,8 +20,6 @@ export class CasesService {
     private http: HttpClient
   ) {}
 
-  // Case-related API calls
-
   getCases(searchTerm: string = ''): Observable<Case[]> {
     let params = new HttpParams();
     if (searchTerm) {
@@ -50,7 +48,6 @@ export class CasesService {
     return this.httpClient.delete(`${this.getCasesURL}/${caseId}`, 'text');
   }
 
-  // Category-related API calls
   getCategories(searchTerm: string = ''): Observable<CaseCategory[]> {
     let params = new HttpParams();
     if (searchTerm) {

@@ -1,0 +1,70 @@
+@if(config && config.color && borderColor && textColor){
+<div
+  class="flex flex-col gap-4 border-2 border-solid {{ borderColor }}
+    py-4 px-5 rounded-4 bg-white"
+>
+  <div class="progress-text gap-4 flex w-full justify-between items-center">
+    <p class="text-2xl {{ textColor }} font-bold">{{ config.name }}</p>
+    <p class="text-2xl {{ textColor }}">
+      {{ config.budget | currency : "EGP " }} Expected
+    </p>
+  </div>
+
+  <div
+    class="progress-bar w-full h-4 appearance-none border-none rounded-[100vmax] overflow-hidden relative bg-gray-300"
+  >
+    <div
+      [style.width]="calculatePercentage()"
+      class="progress-bar h-full absolute top-0 left-0 z-2 bg-success"
+    ></div>
+  </div>
+
+  <div class="progress-text flex justify-between w-full">
+    <small class="{{ textColor }} text-[15px]">{{
+      config.spent | currency : "EGP "
+    }}</small>
+    <small class="text-customHsl-muted text-[15px]">{{
+      config.budget - config.spent | currency : "EGP "
+    }}</small>
+  </div>
+
+  <div
+    (click)="viewDetails()"
+    class="btn {{ bgColor }} m-auto text-black w-fit border-none px-4 py-2"
+  >
+    {{ isDelete ? "Delete budget" : "View Details" }}
+    @if(isDelete){
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      width="20"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
+        clip-rule="evenodd"
+      ></path>
+    </svg>
+    }@else {
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      aria-hidden="true"
+      width="20"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"
+      ></path>
+    </svg>
+
+    }
+  </div>
+</div>
+}

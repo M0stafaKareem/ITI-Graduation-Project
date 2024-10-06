@@ -5,7 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import * as bootstrap from 'bootstrap';
 import moment from 'moment';
-import { CalendarEventsService } from '../../shared/services/calendar-events.service'; // Import service
+import { CalendarEventsService } from '../../shared/services/calendar-events.service';
 
 @Component({
   selector: 'app-event-calendar',
@@ -23,21 +23,18 @@ export class EventCalendarComponent implements OnInit {
   myEvents: any[] = [];
   selectedEvent: any = null;
 
-  constructor(private eventsService: CalendarEventsService) {} // Inject service
+  constructor(private eventsService: CalendarEventsService) {}
 
   ngOnInit() {
     this.loadEvents();
   }
 
-  // Fetch events from the database
   loadEvents() {
     this.eventsService.loadEvents().subscribe((events) => {
       this.myEvents = JSON.parse(JSON.stringify(events));
 
-      this.calendar?.removeAllEvents(); // Clear previous events
+      this.calendar?.removeAllEvents();
       this.calendar?.addEventSource(this.myEvents);
-      // Add events from the database
-      console.log(this.myEvents);
     });
     this.initCalendar();
   }
@@ -51,7 +48,7 @@ export class EventCalendarComponent implements OnInit {
         customButton: {
           text: 'Add Event',
           click: () => {
-            this.showModal(); // Show modal to add an event
+            this.showModal();
           },
         },
       },
@@ -61,7 +58,7 @@ export class EventCalendarComponent implements OnInit {
       },
       editable: true,
       selectable: true,
-      unselectAuto: false,
+      unselectAuto: true,
       displayEventTime: false,
       events: this.myEvents,
       eventClick: (info: any) => {
@@ -72,10 +69,8 @@ export class EventCalendarComponent implements OnInit {
     });
 
     this.calendar.render();
-    console.log(this.calendar);
   }
 
-  // To generate unique event IDs
   uuidv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
       const r = (Math.random() * 16) | 0;
@@ -86,6 +81,7 @@ export class EventCalendarComponent implements OnInit {
   updateEvent(info: any) {
     const updatedEvent = {
       id: info.event.id,
+      title: info.event.title,
       start: moment(info.event.start).format('YYYY-MM-DD'),
       end: moment(info.event.end).format('YYYY-MM-DD'),
     };
@@ -118,7 +114,7 @@ export class EventCalendarComponent implements OnInit {
     this.calendar.addEvent(newEvent);
 
     this.eventsService.createEvent(newEvent).subscribe((response: any) => {
-      this.loadEvents(); // Fetch the updated events from the server
+      this.loadEvents();
     });
     this.myModal.hide();
   }
@@ -129,12 +125,10 @@ export class EventCalendarComponent implements OnInit {
     this.dangerAlert.style.display = 'block';
   }
 
-  // Show modal to add or edit an event
   showModal(event: any = null) {
     this.myModal = new bootstrap.Modal(document.getElementById('form')!);
 
     if (event) {
-      // Populate the modal with event data
       const titleInput = document.getElementById(
         'event-title'
       ) as HTMLInputElement;
@@ -165,35 +159,30 @@ export class EventCalendarComponent implements OnInit {
     this.myModal.hide();
   }
 
-  // Show modal to confirm event deletion
   showDeleteModal() {
     this.myModal = new bootstrap.Modal(
       document.getElementById('deleteEventModal')!
     );
     this.myModal.show();
   }
-
-  // Delete the selected event
   deleteSelectedEvent() {
     if (this.selectedEvent) {
       const event = this.calendar.getEventById(this.selectedEvent.id);
       if (event) {
-        event.remove(); // Remove event from calendar
+        event.remove();
       }
 
-      this.eventsService.deleteEvent(this.selectedEvent); // Delete from database
+      this.eventsService.deleteEvent(this.selectedEvent);
 
-      // Remove event from local array
       const eventIndex = this.myEvents.findIndex(
         (event) => event.id === this.selectedEvent.id
       );
       if (eventIndex > -1) {
-        this.myEvents.splice(eventIndex, 1); // Remove from array
+        this.myEvents.splice(eventIndex, 1);
       }
 
-      // Hide modal
       this.myModal.hide();
-      this.selectedEvent = null; // Clear the selected event
+      this.selectedEvent = null;
     }
   }
 }

@@ -1,6 +1,7 @@
 import { Clients } from './clients.model';
 import { Court } from './court.model';
 import { Lawyers } from './lawyers.model';
+import { Session } from './session.model';
 
 export interface Case {
   id?: number;
@@ -21,4 +22,6 @@ export interface Case {
   oppositeLawyer: Lawyers;
   lawyer_id: number;
   opposing_lawyer_id: number;
+  session_id: number;
+  sessions: Session[];
 }

@@ -14,12 +14,8 @@ class Task extends Model
         'title',
         'description',
         'is_completed',  
-<<<<<<< HEAD
-        'user_id',   
-        'due_date',   
-=======
         'lawyer_id',   
->>>>>>> 78af8b2 ("adjusting Event table , relate it to lawyers")
+        'due_date',   
     ];
     public function lawyer(){
         return $this->belongsTo(Lawyer::class);

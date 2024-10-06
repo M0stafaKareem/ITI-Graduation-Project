@@ -11,13 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::dropIfExists('sessions');
-        Schema::create('sessions', function (Blueprint $table) {
+        Schema::dropIfExists('Csessions');
+        Schema::create('Csessions', function (Blueprint $table) {
 			$table->id();   
-            $table->timestamps();
             $table->date('session_date');
+            $table->string('requirements')->nullable();
+            $table->string('happened')->nullable();
             $table->string(column: 'court_decision')->nullable();
+            $table->bigInteger('case_id')->nullable()->unsigned();
+			$table->foreign('case_id')->references('id')
+            ->on('cases')->onDelete('SET NULL');
             $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -26,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sessions');
+        Schema::dropIfExists('Csessions');
     }
 };

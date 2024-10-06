@@ -11,11 +11,13 @@ class Session extends Model
     use SoftDeletes;
     use HasFactory;
     protected $fillable=[
+        'case_id',
         'session_number',
         'session_date',
-        'session_events' ,
+        'happened' ,
         'court_decision',
-        'is_completed',
-        'session_requirements'
+        'requirements'
     ];
+    //table
+    protected $table = 'Csessions';
 }

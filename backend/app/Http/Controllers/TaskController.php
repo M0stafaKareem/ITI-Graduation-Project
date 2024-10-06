@@ -13,11 +13,11 @@ class TaskController extends Controller
      */
     public function index()
     {
-        try{
+        try {
 
             return Task::all();
-        }catch(\Exception $e) {
-            return response()->json(['error'=> 'task not found '] , 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'task not found '], 404);
         }
     }
 
@@ -26,64 +26,65 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        try{
+        try {
             $request->validate([
                 'title' => 'required',
-            'user_id' => 'required',
+                'lawyer_id' => 'required',
                 'description' => 'required',
                 'is_completed' => 'required',
-            'due_date' => 'required',
-    
+                'due_date' => 'required',
+
             ]);
-             Task::create($request->all());
-    
+            Task::create($request->all());
+
             return response()->json(['message' => 'task created successfully.']);
-        }catch(ValidationException $e) {
-            return response()->
-            json(['message'=> 'validaition failed ' 
-              ,'errors'=> $e->errors()], 404);
-        }catch (\Exception $e) {
-            return response()->json(['error'=> 'task not created '] , 404);
+        } catch (ValidationException $e) {
+            return response()->json([
+                    'message' => 'validaition failed ',
+                    'errors' => $e->errors()
+                ], 404);
+        } catch (\Exception $e) {            dd($e) ;
+
+            return response()->json(['error' => 'task not created '], 404);
         }
-            
     }
 
     /**
      * Display the specified resource.
      */
-    public function show( $id)
+    public function show($id)
     {
-        try{
-            $task=Task::findOrFail($id);
+        try {
+            $task = Task::findOrFail($id);
             return $task;
-
-        }catch (\Exception $e) {
-            return response()->json(['error'=> 'task not found '] , 404);
-    }
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'task not found '], 404);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,Task  $task)
+    public function update(Request $request, Task  $task)
     {
-        try{
+        try {
 
             $request->validate([
-              'title' => 'required',
-        'user_id' => 'required',
-              'description' => 'required',
-              'is_completed' => 'required',
-              'due_date' => 'required',
-              ]) ;
-              $task->update($request->all());
-               return response()->json(['message' => 'task updated successfully.']);
-        }catch(ValidationException $e) {
-            return response()->
-            json(['message'=> 'validaition failed ' 
-              ,'errors'=> $e->errors()], 404);  
-        }catch(\Exception $e) {
-            return response()->json(['error'=> 'task not updated '] , 404);
+                'title' => 'required',
+                'lawyer_id' => 'required',
+                'description' => 'required',
+                'is_completed' => 'required',
+                'due_date' => 'required',
+            ]);
+            $task->update($request->all());
+            return response()->json(['message' => 'task updated successfully.']);
+        } catch (ValidationException $e) {
+            return response()->json([
+                    'message' => 'validaition failed ',
+                    'errors' => $e->errors()
+                ], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'task not updated '], 404);
         }
     }
 
@@ -92,13 +93,13 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        try{
+        try {
 
-            $task=Task::findOrFail($id);
+            $task = Task::findOrFail($id);
             $task->delete();
             return response()->json(['message' => 'task deleted successfully.']);
-        }catch (\Exception $e) {
-            return response()->json(['error'=> 'task not deleted '] , 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'task not deleted '], 404);
         }
     }
 }
