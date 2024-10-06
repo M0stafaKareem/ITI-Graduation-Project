@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterService } from './register.service';
 import { Router } from '@angular/router';
+import { NgIf } from '@angular/common';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-register-from',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, NgIf, ReactiveFormsModule],
   templateUrl: './register-from.component.html',
   styleUrls: [
     './register-from.component.css',
@@ -14,10 +16,24 @@ import { Router } from '@angular/router';
   ],
 })
 export class RegisterFromComponent {
+  errors: { [key: string]: string } = {};
+  registrationForm: FormGroup;
   constructor(
     private registerService: RegisterService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private fb: FormBuilder
+  ) {
+    this.registrationForm = this.fb.group(
+      {
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', Validators.required],
+      },
+      { validator: this.passwordMatchValidator }
+    );
+  }
 
   enteredFirstName = '';
   enteredLastName = '';
@@ -25,15 +41,31 @@ export class RegisterFromComponent {
   enteredPassword = '';
   enteredConfirmPassword = '';
 
+  passwordMatchValidator(form: FormGroup) {
+    return form.get('password')?.value === form.get('confirmPassword')?.value
+      ? null
+      : { mismatch: true };
+  }
+
   async onRegisterHandler() {
+    if (this.registrationForm.invalid) {
+      this.registrationForm.markAllAsTouched();
+      return;
+    }
     const userData = {
       name: `${this.enteredFirstName} ${this.enteredLastName}`,
       email: this.enteredEmail,
       password: this.enteredPassword,
       password_confirmation: this.enteredConfirmPassword,
     };
-    if (await this.registerService.registerUser(userData))
+    this.errors = {};
+
+    const result = await this.registerService.registerUser(userData);
+
+    if (result.success) {
       this.router.navigate([{ outlets: { authentication: ['verify-email'] } }]);
-    else console.log('registration failed, Enter a Valid Data');
+    } else {
+      this.errors = result.errors;
+    }
   }
 }
