@@ -6,18 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Expense extends Model
+class Budget extends Model
 {
     use SoftDeletes;
     use HasFactory;
-    protected $fillable = [
-        'expense_name',
+    protected $fillable=[
+        'budget_name',
         'amount',
-        'budget_id',
     ];
 
-    public function budget()
+    public function expenses()
     {
-        return $this->belongsTo(Budget::class);
+        return $this->hasMany(Expense::class);
     }
 }

@@ -11,21 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('client_categories')) {
-
-        Schema::create('client_categories', function (Blueprint $table) {
+        Schema::create('budgets', function (Blueprint $table) {
             $table->id();
-            $table->string('category_name');
-            $table->string('description')->nullable();
             $table->timestamps();
+            $table->string('budget_name');
+            $table->integer('amount');
+            $table->softDeletes();
         });
-    } }
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('client_categories');
+        Schema::dropIfExists('budgets');
     }
 };
