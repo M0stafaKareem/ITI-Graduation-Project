@@ -1,20 +1,18 @@
 import { Injectable } from '@angular/core';
 import {
-    Resolve,
-    ActivatedRouteSnapshot,
-    RouterStateSnapshot
-  } from '@angular/router';
+  Resolve,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { Observable, forkJoin } from 'rxjs';
-import { Court } from '../../shared/models/court.model';
-import { CourtService } from '../../shared/services/court.service';
+import { Court } from '../../../shared/models/court.model';
+import { CourtService } from '../../../shared/services/court.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CourtsResolver implements Resolve<any> {
-  constructor(
-    private courtService: CourtService
-  ) {}
+  constructor(private courtService: CourtService) {}
 
   resolve(
     route: ActivatedRouteSnapshot,

@@ -5,7 +5,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 95%;
+  width: 100%;
+  flex-direction: column;
+  align-items: start;
 }
 
 input[type="text"],
@@ -19,7 +21,7 @@ input[type="date"] {
   border: none;
   border-radius: 5px;
   padding: 12px;
-  width: 75%;
+  width: 100%;
   transition: all 0.15s ease-in-out;
 }
 
@@ -54,5 +56,19 @@ label {
   100% {
     opacity: 1;
     transform: translateY(0px);
+  }
+}
+
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  select,
+  input[type="date"] {
+    width: 100%;
+  }
+  .input-group {
+    width: 100%;
   }
 }

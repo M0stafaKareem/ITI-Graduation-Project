@@ -5,8 +5,8 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { Observable, forkJoin } from 'rxjs';
-import { ClientsService } from '../../shared/services/clients.service';
-import { CountryService } from '../../shared/services/country.service';
+import { ClientsService } from '../../../shared/services/clients.service';
+import { CountryService } from '../../../shared/services/country.service';
 
 @Injectable({
   providedIn: 'root',

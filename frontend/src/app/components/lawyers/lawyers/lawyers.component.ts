@@ -14,14 +14,23 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-lawyers',
   standalone: true,
-  imports: [SecondaryNavComponent, AddingFormComponent, TableComponent, NgIf, RouterLink],
+  imports: [
+    SecondaryNavComponent,
+    AddingFormComponent,
+    TableComponent,
+    NgIf,
+    RouterLink,
+  ],
   templateUrl: './lawyers.component.html',
-  styleUrls: ['./lawyers.component.css', '../../cases/cases.component.css'],
+  styleUrls: [
+    './lawyers.component.css',
+    '../../cases/cases-list/cases.component.css',
+  ],
 })
 export class LawyersComponent implements OnInit {
-checkChangedInput($event: any) {
-throw new Error('Method not implemented.');
-}
+  checkChangedInput($event: any) {
+    throw new Error('Method not implemented.');
+  }
   loading: boolean = false;
   isFormVisible: boolean = false;
   formType: 'Add' | 'Update' = 'Add';
@@ -43,7 +52,7 @@ throw new Error('Method not implemented.');
     this.route.queryParams.subscribe((params) => {
       const searchTerm = params['search'] || '';
       this.fetchLawyers(searchTerm);
-    })
+    });
     // this.lawyers = this.route.snapshot.data['lawyers'];
     // console.log(this.lawyers);
   }
