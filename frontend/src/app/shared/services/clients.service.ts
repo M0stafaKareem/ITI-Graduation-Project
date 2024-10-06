@@ -1,8 +1,9 @@
-import { HttpClient, HttpParams  } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { finalize, Observable } from 'rxjs';
 import { Clients } from '../models/clients.model';
 import { ClientCategory } from '../models/client.category';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable({
   providedIn: 'root',
@@ -10,19 +11,28 @@ import { ClientCategory } from '../models/client.category';
 export class ClientsService {
   clientsUrl = 'http://127.0.0.1:8000/api/Clients';
   clientCategoryUrl = 'http://127.0.0.1:8000/api/ClientCategories';
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private spinner: NgxSpinnerService
+  ) {}
 
   getClients(searchTerm: string = ''): Observable<Clients[]> {
     let params = new HttpParams();
     if (searchTerm) {
-      params = params.set('search', searchTerm);  // Set search query param if provided
+      params = params.set('search', searchTerm); // Set search query param if provided
     }
 
-    return this.httpClient.get<Clients[]>(this.clientsUrl, { params });
+    this.spinner.show();
+    return this.httpClient
+      .get<Clients[]>(this.clientsUrl, { params })
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   getClientById(id: number): Observable<Clients> {
-    return this.httpClient.get<Clients>(`${this.clientsUrl}/${id}`);
+    this.spinner.show();
+    return this.httpClient
+      .get<Clients>(`${this.clientsUrl}/${id}`)
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   getCategories(searchTerm: string = ''): Observable<ClientCategory[]> {
@@ -30,40 +40,59 @@ export class ClientsService {
     if (searchTerm) {
       params = params.set('search', searchTerm); // Set search query param if provided
     }
-    return this.httpClient.get<ClientCategory[]>(`${this.clientCategoryUrl}`, { params });
+    this.spinner.show();
+    return this.httpClient
+      .get<ClientCategory[]>(`${this.clientCategoryUrl}`, {
+        params,
+      })
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   deleteCategory(categoryId: any) {
-    return this.httpClient.delete(`${this.clientCategoryUrl}/${categoryId}`, {
-      responseType: 'text',
-    });
+    this.spinner.show();
+    return this.httpClient
+      .delete(`${this.clientCategoryUrl}/${categoryId}`, {
+        responseType: 'text',
+      })
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   insertCategory(newCategory: any): Observable<any> {
-    return this.httpClient.post(this.clientCategoryUrl, newCategory);
+    this.spinner.show();
+    return this.httpClient
+      .post(this.clientCategoryUrl, newCategory)
+      .pipe(finalize(() => this.spinner.hide()));
   }
   updateCategory(categoryId: number, newCategory: any): Observable<any> {
-    return this.httpClient.put(
-      `${this.clientCategoryUrl}/${categoryId}`,
-      newCategory,
-      { responseType: 'text' }
-    );
+    this.spinner.show();
+    return this.httpClient
+      .put(`${this.clientCategoryUrl}/${categoryId}`, newCategory, {
+        responseType: 'text',
+      })
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   insertClient(newClient: Clients): Observable<Clients> {
-    return this.httpClient.post<Clients>(this.clientsUrl, newClient);
+    this.spinner.show();
+    return this.httpClient
+      .post<Clients>(this.clientsUrl, newClient)
+      .pipe(finalize(() => this.spinner.hide()));
   }
   updateClient(clientId: number, updatedClient: Clients) {
-    return this.httpClient.put(
-      `${this.clientsUrl}/${clientId}`,
-      updatedClient,
-      { responseType: 'text' }
-    );
+    this.spinner.show();
+    return this.httpClient
+      .put(`${this.clientsUrl}/${clientId}`, updatedClient, {
+        responseType: 'text',
+      })
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   deleteClient(clienId: number) {
-    return this.httpClient.delete(`${this.clientsUrl}/${clienId}`, {
-      responseType: 'text',
-    });
+    this.spinner.show();
+    return this.httpClient
+      .delete(`${this.clientsUrl}/${clienId}`, {
+        responseType: 'text',
+      })
+      .pipe(finalize(() => this.spinner.hide()));
   }
 }

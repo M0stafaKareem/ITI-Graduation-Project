@@ -1,7 +1,8 @@
-import { HttpClient, HttpParams  } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { finalize, Observable } from 'rxjs';
 import { Court } from '../models/court.model';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable({
   providedIn: 'root',
@@ -9,34 +10,51 @@ import { Court } from '../models/court.model';
 export class CourtService {
   courtsUrl = 'http://127.0.0.1:8000/api/courts';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private spinner: NgxSpinnerService
+  ) {}
 
   getCourts(searchTerm: string = ''): Observable<Court[]> {
     let params = new HttpParams();
     if (searchTerm) {
-      params = params.set('search', searchTerm);  // Set search query param if provided
+      params = params.set('search', searchTerm); // Set search query param if provided
     }
-
-    return this.httpClient.get<Court[]>(this.courtsUrl, { params });
+    this.spinner.show();
+    return this.httpClient
+      .get<Court[]>(this.courtsUrl, { params })
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   getCourtById(id: number): Observable<Court> {
-    return this.httpClient.get<Court>(`${this.courtsUrl}/${id}`);
+    this.spinner.show();
+    return this.httpClient
+      .get<Court>(`${this.courtsUrl}/${id}`)
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   insertCourt(newCourt: Court): Observable<Court> {
-    return this.httpClient.post<Court>(this.courtsUrl, newCourt);
+    this.spinner.show();
+    return this.httpClient
+      .post<Court>(this.courtsUrl, newCourt)
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   updateCourt(courtId: any, newCourt: any): Observable<any> {
-    return this.httpClient.put(`${this.courtsUrl}/${courtId}`, newCourt, {
-      responseType: 'text',
-    });
+    this.spinner.show();
+    return this.httpClient
+      .put(`${this.courtsUrl}/${courtId}`, newCourt, {
+        responseType: 'text',
+      })
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   deleteCourt(courtId: any) {
-    return this.httpClient.delete(`${this.courtsUrl}/${courtId}`, {
-      responseType: 'text',
-    });
+    this.spinner.show();
+    return this.httpClient
+      .delete(`${this.courtsUrl}/${courtId}`, {
+        responseType: 'text',
+      })
+      .pipe(finalize(() => this.spinner.hide()));
   }
 }
