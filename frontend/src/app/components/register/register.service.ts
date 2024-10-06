@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import { InitiateRequestService } from '../../shared/services/initiate-request.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RegisterService {
-  constructor(private httpClient: InitiateRequestService) {}
+  constructor(
+    private httpClient: InitiateRequestService,
+    private spinner: NgxSpinnerService
+  ) {}
 
   async registerUser(data: {
     name: string;
@@ -20,6 +24,7 @@ export class RegisterService {
       credentials: 'include',
     });
 
+    this.spinner.show();
     return await fetch(api, {
       method: 'POST',
       credentials: 'include',
@@ -30,8 +35,10 @@ export class RegisterService {
       body: JSON.stringify(data),
     }).then((response) => {
       if (response.ok) {
+        this.spinner.hide();
         return true;
       } else {
+        this.spinner.hide();
         return false;
       }
     });

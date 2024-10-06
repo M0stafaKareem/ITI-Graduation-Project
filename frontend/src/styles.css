@@ -1,3 +1,5 @@
+@import "../node_modules/ngx-spinner/animations/timer.css";
+
 :root {
   --mainTextColor: #415094;
   --textTablecolor: #828bb2;

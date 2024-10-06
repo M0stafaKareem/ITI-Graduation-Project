@@ -1,12 +1,26 @@
 <div class="">
-  <app-secondary-nav tableTitle="Lawyers" addNewButton="New Lawyer" (btnClicked)="toggleFormVisibility()"
-    (search)="handleSearch($event)" />
+  <app-secondary-nav
+    tableTitle="Lawyers"
+    addNewButton="New Lawyer"
+    (btnClicked)="toggleFormVisibility()"
+    (search)="handleSearch($event)"
+  />
 
-  <app-adding-form *ngIf="isFormVisible" [formType]="formType" [formHeader]="formHeader"
-    [formInputRows]="newLawyerInputRows" [onFormSubmit]="submitForm" (backdropClicked)="toggleFormVisibility()"
-    (inputChanged)="checkChangedInput($event)"></app-adding-form>
+  <app-adding-form
+    *ngIf="isFormVisible"
+    [formType]="formType"
+    [formHeader]="formHeader"
+    [formInputRows]="newLawyerInputRows"
+    [onFormSubmit]="submitForm"
+    (backdropClicked)="toggleFormVisibility()"
+    (inputChanged)="checkChangedInput($event)"
+  ></app-adding-form>
 
-  <app-table firstColumnHeader="Lawyer" secondColumnHeader="Mobile Number" thirdColumnHeader="Address">
+  <app-table
+    firstColumnHeader="Lawyer"
+    secondColumnHeader="Mobile Number"
+    thirdColumnHeader="Address"
+  >
     <th scope="col" ngProjectAs="fourthColumnHeader">National ID</th>
     <th scope="col" ngProjectAs="fifthColumnHeader">Action</th>
     @for (lawyer of lawyers; track $index) {
@@ -18,15 +32,21 @@
       <td>{{ lawyer.nation_id }}</td>
       <td>
         <div class="custom-select">
-          <select name="SELECT" id="" (change)="onActionSelect($event, lawyer.id!)">
+          <select
+            name="SELECT"
+            id=""
+            (change)="onActionSelect($event, lawyer.id!)"
+          >
             <option value="">SELECT</option>
             <option value="Update">Update</option>
             <option value="Delete">Delete</option>
           </select>
-          <i class="fa-solid fa-arrow-down" style="color: var(--mainTextColor)"></i>
+          <i
+            class="fa-solid fa-arrow-down"
+            style="color: var(--mainTextColor)"
+          ></i>
         </div>
       </td>
-      <td *ngIf="loading">Deleting...</td>
     </tr>
     }
   </app-table>

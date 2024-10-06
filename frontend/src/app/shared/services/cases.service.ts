@@ -1,11 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { finalize, Observable } from 'rxjs';
 import { Case } from '../models/case.model';
 import { CaseCategory } from '../models/case.category.model';
 import { InitiateRequestService } from './initiate-request.service';
 import { ClientCategory } from '../models/client.category';
 import { CaseGrade } from '../models/case.grade.model';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,8 @@ export class CasesService {
 
   constructor(
     private httpClient: InitiateRequestService,
-    private http: HttpClient
+    private http: HttpClient,
+    private spinner: NgxSpinnerService
   ) {}
 
   getCases(searchTerm: string = ''): Observable<Case[]> {
@@ -25,27 +27,38 @@ export class CasesService {
     if (searchTerm) {
       params = params.set('search', searchTerm);
     }
-    return this.http.get<Case[]>(this.getCasesURL, { params });
+    this.spinner.show();
+    return this.http
+      .get<Case[]>(this.getCasesURL, { params })
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   getCaseById(id: number): Observable<Case> {
-    return this.httpClient.get(`${this.getCasesURL}/${id}`);
+    this.spinner.show();
+    return this.httpClient
+      .get(`${this.getCasesURL}/${id}`)
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   insertCase(newCase: any): Observable<any> {
-    return this.httpClient.post(this.getCasesURL, newCase);
+    this.spinner.show();
+    return this.httpClient
+      .post(this.getCasesURL, newCase)
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   updateCase(caseId: number, newCase: any): Observable<any> {
-    return this.httpClient.put(
-      `${this.getCasesURL}/${caseId}`,
-      newCase,
-      'text'
-    );
+    this.spinner.show();
+    return this.httpClient
+      .put(`${this.getCasesURL}/${caseId}`, newCase, 'text')
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   deleteCase(caseId: any): Observable<any> {
-    return this.httpClient.delete(`${this.getCasesURL}/${caseId}`, 'text');
+    this.spinner.show();
+    return this.httpClient
+      .delete(`${this.getCasesURL}/${caseId}`, 'text')
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   getCategories(searchTerm: string = ''): Observable<CaseCategory[]> {
@@ -53,56 +66,71 @@ export class CasesService {
     if (searchTerm) {
       params = params.set('search', searchTerm);
     }
-    return this.http.get<CaseCategory[]>(this.categoriesApiUrl, { params });
+    this.spinner.show();
+    return this.http
+      .get<CaseCategory[]>(this.categoriesApiUrl, { params })
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   getCategoryById(id: number): Observable<CaseCategory> {
-    return this.httpClient.get(`${this.categoriesApiUrl}/${id}`);
+    this.spinner.show();
+    return this.httpClient
+      .get(`${this.categoriesApiUrl}/${id}`)
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   insertCategory(newCategory: any): Observable<any> {
-    return this.httpClient.post(this.categoriesApiUrl, newCategory);
+    this.spinner.show();
+    return this.httpClient
+      .post(this.categoriesApiUrl, newCategory)
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   updateCategory(categoryId: number, newCategory: any): Observable<any> {
-    return this.httpClient.put(
-      `${this.categoriesApiUrl}/${categoryId}`,
-      newCategory,
-      'text'
-    );
+    this.spinner.show();
+    return this.httpClient
+      .put(`${this.categoriesApiUrl}/${categoryId}`, newCategory, 'text')
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   deleteCategory(categoryId: any): Observable<any> {
-    return this.httpClient.delete(
-      `${this.categoriesApiUrl}/${categoryId}`,
-      'text'
-    );
+    this.spinner.show();
+    return this.httpClient
+      .delete(`${this.categoriesApiUrl}/${categoryId}`, 'text')
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   // Case Grade-related API calls
   getCaseGrade(searchTerm: string = ''): Observable<CaseGrade[]> {
+    this.spinner.show();
     let params = new HttpParams();
     if (searchTerm) {
       params = params.set('search', searchTerm);
     }
 
-    return this.http.get<CaseGrade[]>(this.CaseGradeUrl, { params });
-    // return this.httpClient.get(this.CaseGradeUrl);
+    return this.http
+      .get<CaseGrade[]>(this.CaseGradeUrl, { params })
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   insertCaseGrade(newGrade: any): Observable<any> {
-    return this.httpClient.post(this.CaseGradeUrl, newGrade);
+    this.spinner.show();
+    return this.httpClient
+      .post(this.CaseGradeUrl, newGrade)
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   updateCaseGrade(gradeId: number, newGrade: any): Observable<any> {
-    return this.httpClient.put(
-      `${this.CaseGradeUrl}/${gradeId}`,
-      newGrade,
-      'text'
-    );
+    this.spinner.show();
+    return this.httpClient
+      .put(`${this.CaseGradeUrl}/${gradeId}`, newGrade, 'text')
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
   deleteCaseGrade(gradeId: any): Observable<any> {
-    return this.httpClient.delete(`${this.CaseGradeUrl}/${gradeId}`, 'text');
+    this.spinner.show();
+    return this.httpClient
+      .delete(`${this.CaseGradeUrl}/${gradeId}`, 'text')
+      .pipe(finalize(() => this.spinner.hide()));
   }
 }

@@ -7,6 +7,7 @@ import { LoginService } from './login-from/login.service';
 import { LoginFromComponent } from './login-from/login-from.component';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ import { CommonModule } from '@angular/common';
     SidebarComponent,
     LoginFromComponent,
     CommonModule,
+    NgxSpinnerModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

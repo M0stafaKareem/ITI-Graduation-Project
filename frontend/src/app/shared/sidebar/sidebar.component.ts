@@ -25,19 +25,17 @@ export class SidebarComponent {
   }
 
   clientsToggle() {
+    this.closeAllDropdowns();
     this.clientsDropDown = !this.clientsDropDown;
-    this.casesDropDown = false;
   }
   casesToggle() {
+    this.closeAllDropdowns();
     this.casesDropDown = !this.casesDropDown;
-    this.clientsDropDown = false;
-    this.lawyersDropDown = false;
   }
 
   lawyersToggle() {
+    this.closeAllDropdowns();
     this.lawyersDropDown = !this.lawyersDropDown;
-    this.casesDropDown = false;
-    this.clientsDropDown = false;
   }
   financeToggle() {
     this.closeAllDropdowns();
@@ -47,6 +45,8 @@ export class SidebarComponent {
   closeAllDropdowns() {
     this.clientsDropDown = false;
     this.casesDropDown = false;
+    this.lawyersDropDown = false;
+    this.financeDropDown = false;
   }
 
   logOut() {

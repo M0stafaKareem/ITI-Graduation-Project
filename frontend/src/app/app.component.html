@@ -7,6 +7,13 @@
   </div>
 </div>
 
-<ng-template #loginForm>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#fff"
+  type="timer"
+  [fullScreen]="true"
+  ><p style="color: white">Loading...</p></ngx-spinner
+><ng-template #loginForm>
   <router-outlet name="authentication"></router-outlet>
 </ng-template>
