@@ -82,6 +82,7 @@ export const routes: Routes = [
     path: 'cases',
     component: CasesComponent,
     resolve: { data: CasesResolver },
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
   },
   {
     path: 'cases/:id',

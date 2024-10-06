@@ -1,7 +1,7 @@
-<div *ngIf="isLoggedIn$ | async; else loginForm">
-  <div class="main-wrapper">
-    <app-sidebar></app-sidebar>
-    <div class="main-content">
+<div class="main-wrapper" *ngIf="isLoggedIn$ | async; else loginForm">
+  <app-sidebar></app-sidebar>
+  <div class="main-content">
+    <div class="scrollable-content">
       <router-outlet></router-outlet>
     </div>
   </div>

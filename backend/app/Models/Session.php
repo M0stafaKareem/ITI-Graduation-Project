@@ -6,16 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Event extends Model
+class Session extends Model
 {
     use SoftDeletes;
     use HasFactory;
     protected $fillable=[
-    'title',
-    'description',
-    'guest_email',
-    'guest_name',
-    'start',
-    'backgroundColor',
-    'end'];
+        'case_id',
+        'session_number',
+        'session_date',
+        'happened' ,
+        'court_decision',
+        'requirements'
+    ];
+    //table
+    protected $table = 'Csessions';
 }

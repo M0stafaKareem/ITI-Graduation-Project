@@ -59,21 +59,23 @@ export class CasesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const resolvedData = this.route.snapshot.data['data'];
-    this.cases = resolvedData.cases;
-    this.categories = resolvedData.categories;
-    this.grades = resolvedData.grades;
-    this.clients = resolvedData.clients;
-    this.courts = resolvedData.courts;
-    this.lawyers = resolvedData.lawyers;
-    this.oppositeLawyers = resolvedData.oppositeLawyers;
-
-    // Subscribe to query param changes
-    this.route.queryParams.subscribe((params) => {
-      const searchTerm = params['search'] || '';
-      this.fetchCases(searchTerm);
+    // Subscribe to resolver data
+    this.route.data.subscribe((resolvedData) => {
+      this.loadResolvedData(resolvedData);
     });
   }
+  
+  // Function to handle loading resolved data
+  loadResolvedData(resolvedData: any) {
+    resolvedData = resolvedData.data;
+    this.cases = resolvedData.cases || [];
+    this.categories = resolvedData.categories || [];
+    this.grades = resolvedData.grades || [];
+    this.clients = resolvedData.clients || []; // This should get populated from resolver
+    this.courts = resolvedData.courts || [];
+    this.lawyers = resolvedData.lawyers || [];
+    this.oppositeLawyers = resolvedData.oppositeLawyers || [];
+    }
 
   toggleFormVisibility = (caseId?: number): void => {
     this.upaddingCaseId = caseId;
@@ -199,17 +201,11 @@ export class CasesComponent implements OnInit {
   };
 
   handleSearch(searchTerm: string) {
-    // Update query params with search term
+    // Update query params to trigger resolver re-execution
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { search: searchTerm }, // Update search query param
-      queryParamsHandling: 'merge', // Merge with other query params
-    });
-  }
-  // Function to fetch clients based on the search term
-  fetchCases(searchTerm: string) {
-    this.caseService.getCases(searchTerm).subscribe((cases) => {
-      this.cases = cases;
+      queryParams: { search: searchTerm },
+      queryParamsHandling: 'merge',
     });
   }
 

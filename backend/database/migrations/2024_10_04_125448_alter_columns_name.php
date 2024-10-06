@@ -11,19 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-       
+        Schema::table('events', function (Blueprint $table) {
+            $table->renameColumn('start_date', 'start');
+            $table->renameColumn('end_date', 'end');
+        });
     }
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('lawyers', function (Blueprint $table) {
-            $table->dropUnique('lawyers_phone_number_unique');
-        });
-        Schema::table('opposing_lawyers', function (Blueprint $table) {
-            $table->dropUnique('opposing_lawyers_phone_number_unique');
+        Schema::table('events', function (Blueprint $table) {
+            $table->renameColumn('start', 'start_date');
+            $table->renameColumn('end', 'end_date');
         });
     }
-   
 };

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Lawyers } from '../../../shared/models/lawyers.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-nav.component';
 import {
   AddingFormComponent,
@@ -14,11 +14,14 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-lawyers',
   standalone: true,
-  imports: [SecondaryNavComponent, AddingFormComponent, TableComponent, NgIf],
+  imports: [SecondaryNavComponent, AddingFormComponent, TableComponent, NgIf, RouterLink],
   templateUrl: './lawyers.component.html',
   styleUrls: ['./lawyers.component.css', '../../cases/cases.component.css'],
 })
 export class LawyersComponent implements OnInit {
+checkChangedInput($event: any) {
+throw new Error('Method not implemented.');
+}
   loading: boolean = false;
   isFormVisible: boolean = false;
   formType: 'Add' | 'Update' = 'Add';
@@ -28,13 +31,36 @@ export class LawyersComponent implements OnInit {
   lawyers!: Lawyers[];
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private lawyerService: LawyersService,
     private toaster: ToastrService
   ) {}
 
-  ngOnInit() {
-    this.lawyers = this.route.snapshot.data['lawyers'];
-    console.log(this.lawyers);
+  ngOnInit(): void {
+    const resolverData = this.route.snapshot.data['lawyers'];
+    this.lawyers = resolverData.lawyers || [];
+    // subscribe to query param changes
+    this.route.queryParams.subscribe((params) => {
+      const searchTerm = params['search'] || '';
+      this.fetchLawyers(searchTerm);
+    })
+    // this.lawyers = this.route.snapshot.data['lawyers'];
+    // console.log(this.lawyers);
+  }
+
+  fetchLawyers(searchTerm: string) {
+    this.lawyerService.getLawyers(searchTerm).subscribe((lawyers) => {
+      this.lawyers = lawyers;
+    });
+  }
+
+  handleSearch(searchTerm: string) {
+    // Update query params to trigger resolver re-execution
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { search: searchTerm },
+      queryParamsHandling: 'merge',
+    });
   }
 
   addNewLawyer(newLawyer: Lawyers) {

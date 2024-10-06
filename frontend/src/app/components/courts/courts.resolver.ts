@@ -1,17 +1,29 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
-import { Observable } from 'rxjs';
-
+import {
+    Resolve,
+    ActivatedRouteSnapshot,
+    RouterStateSnapshot
+  } from '@angular/router';
+import { Observable, forkJoin } from 'rxjs';
 import { Court } from '../../shared/models/court.model';
 import { CourtService } from '../../shared/services/court.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CourtsResolver implements Resolve<Court[]> {
-  constructor(private courtService: CourtService) {}
+export class CourtsResolver implements Resolve<any> {
+  constructor(
+    private courtService: CourtService
+  ) {}
 
-  resolve(): Observable<Court[]> {
-    return this.courtService.getCourts();
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<any> {
+    // get the search term from query params
+    const searchTerm = route.queryParams['search'] || '';
+    return forkJoin({
+      courts: this.courtService.getCourts(searchTerm),
+    });
   }
 }

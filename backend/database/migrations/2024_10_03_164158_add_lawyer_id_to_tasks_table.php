@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::table('tasks', function (Blueprint $table) {
             $table->bigInteger('lawyer_id')->nullable()->unsigned();
-            $table->foreign('lawyer_id')->references('id')->on('lawyers')->onDelete('SET NULL');
+            $table->foreign('lawyer_id')
+            ->references('id')
+            ->on('lawyers')->onDelete('SET NULL');
         });
     }
 

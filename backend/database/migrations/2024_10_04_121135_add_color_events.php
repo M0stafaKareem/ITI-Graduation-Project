@@ -11,19 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-       
+        Schema::table('events', function (Blueprint $table) {
+            $table->string('backgroundColor')->nullable();
+        });
     }
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('lawyers', function (Blueprint $table) {
-            $table->dropUnique('lawyers_phone_number_unique');
-        });
-        Schema::table('opposing_lawyers', function (Blueprint $table) {
-            $table->dropUnique('opposing_lawyers_phone_number_unique');
+        Schema::table('events', function (Blueprint $table) {
+            $table->dropColumn('backgroundColor');
         });
     }
-   
 };

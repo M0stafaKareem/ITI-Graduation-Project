@@ -29,8 +29,8 @@ class EventController extends Controller
 
             $request->validate([
                 'title' => 'required',
-                'end_date' => 'required',
-                'start_date'=>'required',
+                'end' => 'required',
+                'start'=>'required',
                
             ]);
     
@@ -69,8 +69,8 @@ class EventController extends Controller
             
             $request->validate([
                 'title' => 'required',
-                'end_date' => 'required',
-                'start_date'=>'required',
+                'end' => 'required',
+                'start'=>'required',
             ]);
             $event = Event::findOrFail($id);
             $event->update($request->all());

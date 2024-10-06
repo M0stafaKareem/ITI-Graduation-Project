@@ -21,6 +21,7 @@ class MCase extends Model
         'court_id',
         'lawyer_id',
         'opposing_lawyer_id',
+        
     ];
 
     protected $casts = [

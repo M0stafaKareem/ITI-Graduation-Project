@@ -52,7 +52,7 @@ export interface inputType {
     | 'color'
     | 'select';
   options?: { id: string; value: string }[];
-  value?: string;
+  value?: any;
   disabled?: boolean;
 }
 

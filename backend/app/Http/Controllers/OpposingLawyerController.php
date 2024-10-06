@@ -10,9 +10,25 @@ class OpposingLawyerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return OpposingLawyer::all();
+        // Get all opposing lawyers
+        $OpposingLawyers = OpposingLawyer::all();
+
+        // Extract the search term from the query parameters
+        $searchTerm = $request->query('search');
+
+        // If there's a search term, filter the results based on it
+        if (!empty($searchTerm)) {
+            $OpposingLawyers = OpposingLawyer::when($searchTerm, function ($query, $searchTerm) {
+                $query->where('name', 'like', "%{$searchTerm}%")
+                    ->orWhere('phone_number', 'like', "%{$searchTerm}%")
+                    ->orWhere('national_id', 'like', "%{$searchTerm}%")
+                    ->orWhere('address', 'like', "%{$searchTerm}%");
+            })->get();
+        }
+
+        return $OpposingLawyers;
     }
 
     /**

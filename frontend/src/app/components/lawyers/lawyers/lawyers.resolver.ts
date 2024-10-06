@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Observable, forkJoin } from 'rxjs';
 
 import { Lawyers } from '../../../shared/models/lawyers.model';
 import { LawyersService } from '../../../shared/services/lawyers.service';
@@ -8,10 +8,18 @@ import { LawyersService } from '../../../shared/services/lawyers.service';
 @Injectable({
   providedIn: 'root',
 })
-export class LawyersResolver implements Resolve<Lawyers[]> {
-  constructor(private lawyerService: LawyersService) {}
+export class LawyersResolver implements Resolve<any> {
+  constructor(
+    private lawyerService: LawyersService) {}
 
-  resolve(): Observable<Lawyers[]> {
-    return this.lawyerService.getLawyers();
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<any> {
+    const searchTerm = route.queryParams['search'] || '';
+
+    return forkJoin({
+      lawyers: this.lawyerService.getLawyers(searchTerm),
+    });
   }
 }
