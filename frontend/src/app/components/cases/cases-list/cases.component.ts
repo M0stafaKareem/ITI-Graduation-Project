@@ -1,23 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { CaseComponent } from './case/case.component';
-import { TableComponent } from '../../shared/table/table.component';
-import { SecondaryNavComponent } from '../../shared/secondary-nav/secondary-nav.component';
-import { CasesService } from '../../shared/services/cases.service';
 import { NgFor, NgIf } from '@angular/common';
-import { ClientComponent } from '../clients/client/client.component';
-import { Case } from '../../shared/models/case.model';
-import { CaseCategory } from '../../shared/models/case.category.model';
-import { CaseGrade } from '../../shared/models/case.grade.model';
-import { Clients } from '../../shared/models/clients.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+
+import { CaseComponent } from '../case/case.component';
+import { TableComponent } from '../../../shared/table/table.component';
+import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-nav.component';
+import { CasesService } from '../../../shared/services/cases.service';
+import { ClientComponent } from '../../clients/client/client.component';
+import { Case } from '../../../shared/models/case.model';
+import { CaseCategory } from '../../../shared/models/case.category.model';
+import { CaseGrade } from '../../../shared/models/case.grade.model';
+import { Clients } from '../../../shared/models/clients.model';
 import {
   inputType,
   AddingFormComponent,
-} from '../../shared/adding-form/adding-form.component';
-import { LoadingScreenComponent } from '../../shared/loading-screen/loading-screen.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Court } from '../../shared/models/court.model';
-import { Lawyers } from '../../shared/models/lawyers.model';
-import { ToastrService } from 'ngx-toastr';
+} from '../../../shared/adding-form/adding-form.component';
+import { LoadingScreenComponent } from '../../../shared/loading-screen/loading-screen.component';
+import { Court } from '../../../shared/models/court.model';
+import { Lawyers } from '../../../shared/models/lawyers.model';
 
 @Component({
   selector: 'app-cases',

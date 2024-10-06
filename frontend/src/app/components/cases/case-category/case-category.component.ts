@@ -15,9 +15,19 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-case-category',
   standalone: true,
-  imports: [TableComponent, SecondaryNavComponent, NgIf, AddingFormComponent, CommonModule, RouterLink],
+  imports: [
+    TableComponent,
+    SecondaryNavComponent,
+    NgIf,
+    AddingFormComponent,
+    CommonModule,
+    RouterLink,
+  ],
   templateUrl: './case-category.component.html',
-  styleUrls: ['./case-category.component.css', '../cases.component.css'],
+  styleUrls: [
+    './case-category.component.css',
+    '../cases-list/cases.component.css',
+  ],
 })
 export class CaseCategoryComponent implements OnInit {
   checkChangedInput($event: any) {
@@ -36,7 +46,6 @@ export class CaseCategoryComponent implements OnInit {
     private toaster: ToastrService,
     private route: ActivatedRoute,
     private router: Router
-
   ) {}
 
   ngOnInit(): void {
@@ -54,7 +63,7 @@ export class CaseCategoryComponent implements OnInit {
   fetchCategories(searchTerm: string) {
     this.caseService.getCategories(searchTerm).subscribe((categories) => {
       this.categories = categories;
-    }); 
+    });
   }
 
   handleSearch(searchTerm: string) {

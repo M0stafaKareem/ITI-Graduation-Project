@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SecondaryNavComponent } from '../../shared/secondary-nav/secondary-nav.component';
-import { TableComponent } from '../../shared/table/table.component';
-import { ClientsService } from '../../shared/services/clients.service';
-import { Clients } from '../../shared/models/clients.model';
+import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-nav.component';
+import { TableComponent } from '../../../shared/table/table.component';
+import { ClientsService } from '../../../shared/services/clients.service';
+import { Clients } from '../../../shared/models/clients.model';
 import {
   inputType,
   AddingFormComponent,
-} from '../../shared/adding-form/adding-form.component';
+} from '../../../shared/adding-form/adding-form.component';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
-import { ClientCategory } from '../../shared/models/client.category';
-import { CountryService } from '../../shared/services/country.service';
+import { ClientCategory } from '../../../shared/models/client.category';
+import { CountryService } from '../../../shared/services/country.service';
 import { BehaviorSubject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
@@ -25,7 +25,10 @@ import { ToastrService } from 'ngx-toastr';
     RouterLink,
   ],
   templateUrl: './clients.component.html',
-  styleUrls: ['./clients.component.css', '../cases/cases.component.css'],
+  styleUrls: [
+    './clients.component.css',
+    '../../cases/cases-list/cases.component.css',
+  ],
 })
 export class ClientsComponent implements OnInit {
   clients?: Array<Clients>;

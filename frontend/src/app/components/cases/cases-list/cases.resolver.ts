@@ -6,10 +6,10 @@ import {
 } from '@angular/router';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CasesService } from '../../shared/services/cases.service';
-import { ClientsService } from '../../shared/services/clients.service';
-import { CourtService } from '../../shared/services/court.service';
-import { LawyersService } from '../../shared/services/lawyers.service';
+import { CasesService } from '../../../shared/services/cases.service';
+import { ClientsService } from '../../../shared/services/clients.service';
+import { CourtService } from '../../../shared/services/court.service';
+import { LawyersService } from '../../../shared/services/lawyers.service';
 
 @Injectable({
   providedIn: 'root',
