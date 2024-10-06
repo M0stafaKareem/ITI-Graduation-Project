@@ -4,13 +4,14 @@ import { SliderComponent } from './slider/slider.component';
 import { StatsComponent } from "./stats/stats.component";
 import { AboutusComponent } from "./aboutus/aboutus.component";
 import { ServicesComponent } from "./services/services.component";
-import { FaqsComponent } from "./faqs/faqs.component";  
+import { FaqsComponent } from "./faqs/faqs.component";
+import { ContactComponent } from "./contact/contact.component";  
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, SliderComponent, StatsComponent, AboutusComponent, ServicesComponent, FaqsComponent],
+  imports: [RouterOutlet, SliderComponent, StatsComponent, AboutusComponent, ServicesComponent, FaqsComponent, ContactComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
