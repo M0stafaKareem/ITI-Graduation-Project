@@ -8,17 +8,21 @@ import {
   inputType,
   AddingFormComponent,
 } from '../../../shared/adding-form/adding-form.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-case-category',
   standalone: true,
-  imports: [TableComponent, SecondaryNavComponent, NgIf, AddingFormComponent],
+  imports: [TableComponent, SecondaryNavComponent, NgIf, AddingFormComponent, CommonModule, RouterLink],
   templateUrl: './case-category.component.html',
   styleUrls: ['./case-category.component.css', '../cases.component.css'],
 })
 export class CaseCategoryComponent implements OnInit {
+  checkChangedInput($event: any) {
+    throw new Error('Function not implemented.');
+  }
   categories?: CaseCategory[];
   loading: boolean = false;
   isFormVisible: boolean = false;
@@ -29,12 +33,39 @@ export class CaseCategoryComponent implements OnInit {
 
   constructor(
     private caseService: CasesService,
+    private toaster: ToastrService,
     private route: ActivatedRoute,
-    private toaster: ToastrService
+    private router: Router
+
   ) {}
 
   ngOnInit(): void {
+    const resolveData = this.route.snapshot.data['data'];
+    this.categories = resolveData?.categories || [];
+    // subscribe to query param changes
+    this.route.queryParams.subscribe((params) => {
+      const searchTerm = params['search'] || '';
+      this.fetchCategories(searchTerm);
+    });
     this.categories = this.route.snapshot.data['categories'];
+  }
+
+  // Function to fetch clients based on the search term
+  fetchCategories(searchTerm: string) {
+    this.caseService.getCategories(searchTerm).subscribe((categories) => {
+      this.categories = categories;
+    }); 
+  }
+
+  handleSearch(searchTerm: string) {
+    // Update query params with search term
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { search: searchTerm }, // Update search query param
+      queryParamsHandling: 'merge', // Merge with other query params
+    });
+
+    this.fetchCategories(searchTerm);
   }
 
   addNewCategory(newCategory: CaseCategory) {
