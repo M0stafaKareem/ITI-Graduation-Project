@@ -45,7 +45,8 @@ class CaseController extends Controller
             'first_session_date' => 'required',
             'case_category_id' => 'required',
             'case_grade_id' => 'required',
-            'court_id' => 'required'
+            'court_id' => 'required',
+            'status' => 'required'
         ]);
 
         $client = Client::find($request->client_id);
@@ -87,6 +88,7 @@ class CaseController extends Controller
             'case_category_id' => 'required',
             'case_grade_id' => 'required',
             'court_id' => 'required',
+            'status' => 'required',
         ]);
 
         $client = Client::find($request->client_id);
