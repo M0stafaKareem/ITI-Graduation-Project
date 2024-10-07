@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { NgClass } from '@angular/common';
-import { LoginService } from '../../login-from/login.service';
+import { LoginService } from '../../components/login/login.service';
 
 @Component({
   selector: 'app-sidebar',
