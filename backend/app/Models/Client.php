@@ -24,4 +24,7 @@ class Client extends Model
         'description',
         'client_category_id',
     ];
+    public function invoices(){
+        return $this->hasMany(Invoice::class);
+    }
 }

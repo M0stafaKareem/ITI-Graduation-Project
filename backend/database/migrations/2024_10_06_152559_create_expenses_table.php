@@ -19,7 +19,7 @@ return new class extends Migration
                 $table->string('expense_name');
                 $table->integer('amount');
                 $table->softDeletes();
-                $table->foreignId('budget_id')->constrained()->references('id')->on('budgets')
+                $table->foreignId('budget_id')->nullable()->constrained()->references('id')->on('budgets')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             });
