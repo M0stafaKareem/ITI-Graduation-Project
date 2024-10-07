@@ -18,13 +18,14 @@
 .form-box {
   position: absolute;
   margin: 0 auto;
-  width: 40%;
+  width: 26%;
   background-color: #2d3748;
   padding: 30px;
   border-radius: 8px;
   z-index: 1010;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   animation: slideIn 0.5s ease-in-out forwards;
+  right: 37%;
 }
 
 .form-box h2 {
@@ -83,5 +84,14 @@ button:hover {
     width: 90%;
     animation: none;
     padding: 30px;
+    right: 5%;
+  }
+}
+@media (max-width: 1080px) {
+  .form-box {
+    width: 90%;
+    animation: none;
+    padding: 30px;
+    right: 5%;
   }
 }
