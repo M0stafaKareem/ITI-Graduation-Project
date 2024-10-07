@@ -6,6 +6,7 @@
     <app-input-row
       [input_Info]="item"
       (inputChanged)="saveInputData(item.backed_key, $event)"
+      [form]="form"
     />
     }
     <button type="button" (click)="submitForm()">{{ formType }}</button>
