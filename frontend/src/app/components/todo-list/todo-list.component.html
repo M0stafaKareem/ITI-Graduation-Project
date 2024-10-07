@@ -1,7 +1,8 @@
-<div class="container ms-5 ps-5">
-  <h1 class="ms-5">Lawyers Team Todo List</h1>
+<div class="card p-2">
+<div class="container  ">
+  <h1 class="">Lawyers Team Todo List</h1>
 </div>
-<main>
+<div>
   <ul id="users">
     @for (user of usersArray; track $index) {
     <li>
@@ -16,6 +17,7 @@
   @if (selectedUser) {
   <app-tasks [selectedUser]="selectedUser" />
   }@else {
-  <h3 class="mt-2 ms-5 ps-5">Select a user to see their tasks</h3>
+  <h3 class="mt-2 ">Select a user to see their tasks</h3>
   }
-</main>
+</div>
+</div>
