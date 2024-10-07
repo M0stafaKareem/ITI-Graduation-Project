@@ -48,6 +48,10 @@ label {
   margin-bottom: 4px;
 }
 
+p {
+  color: red;
+}
+
 @keyframes slideIn {
   0% {
     opacity: 0;

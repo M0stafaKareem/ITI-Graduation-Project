@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import {
   MatPaginator,
@@ -8,6 +8,12 @@ import {
   PageEvent,
 } from '@angular/material/paginator';
 import { ViewChild } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 import { CaseComponent } from '../case/case.component';
 import { TableComponent } from '../../../shared/table/table.component';
@@ -39,6 +45,8 @@ import { Lawyers } from '../../../shared/models/lawyers.model';
     AddingFormComponent,
     LoadingScreenComponent,
     MatPaginatorModule,
+    ReactiveFormsModule,
+    RouterLink,
   ],
   templateUrl: './cases.component.html',
   styleUrls: ['./cases.component.css', 'cases.component.scss'],
@@ -61,14 +69,18 @@ export class CasesComponent implements OnInit {
   newCasesInputRows!: inputType[];
   pageSize: number = 5;
   currentPage: number = 0;
+  form!: FormGroup;
   @ViewChild('paginatorContainer') paginatorContainer!: ElementRef;
   constructor(
     private caseService: CasesService,
     private route: ActivatedRoute,
     private router: Router,
     private toaster: ToastrService,
-    private renderer: Renderer2
-  ) {}
+    private renderer: Renderer2,
+    private fb: FormBuilder
+  ) {
+    this.form = this.fb.group({});
+  }
 
   ngOnInit() {
     this.route.data.subscribe((resolvedData) => {
@@ -134,6 +146,27 @@ export class CasesComponent implements OnInit {
       this.formHeader = 'Add New Case';
       this.formType = 'Add';
     }
+    this.form = this.fb.group({
+      case_name: [targetCase?.case_name || '', Validators.required],
+      case_date: [targetCase?.case_date || '', Validators.required],
+      first_session_date: [
+        targetCase?.first_session_date || '',
+        Validators.required,
+      ],
+      case_category_id: [
+        targetCase?.case_category_id || '',
+        Validators.required,
+      ],
+      status: [targetCase?.status || '', Validators.required],
+      case_grade_id: [targetCase?.case_grade_id || '', Validators.required],
+      client_id: [targetCase?.client_id || '', Validators.required],
+      lawyer_id: [targetCase?.lawyer_id || '', Validators.required],
+      opposing_lawyer_id: [
+        targetCase?.opposing_lawyer_id || '',
+        Validators.required,
+      ],
+      court_id: [targetCase?.court_id || '', Validators.required],
+    });
     this.newCasesInputRows = [
       {
         backed_key: 'case_name',
@@ -232,26 +265,33 @@ export class CasesComponent implements OnInit {
     });
 
     if (this.formType === 'Add') {
-      this.addNewCase(caseData).then((result) => {
-        if (result) {
-          this.cases?.push(caseData);
-        } else {
-          console.log('failed to add case');
-        }
-      });
+      if (this.form.valid) {
+        this.addNewCase(caseData).then((result) => {
+          if (result) {
+            this.cases?.push(caseData);
+          }
+        });
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
     } else if (this.formType === 'Update') {
-      await this.updateCase(this.upaddingCaseId!, caseData).then((result) => {
-        if (result) {
-          this.cases = this.cases?.map((item) => {
-            if (item.id == this.upaddingCaseId) {
-              return caseData;
-            }
-            return item;
-          });
-        } else {
-          console.log('failed to update case');
-        }
-      });
+      if (this.form.valid) {
+        await this.updateCase(this.upaddingCaseId!, caseData).then((result) => {
+          if (result) {
+            this.cases = this.cases?.map((item) => {
+              if (item.id == this.upaddingCaseId) {
+                return caseData;
+              }
+              return item;
+            });
+            window.location.reload();
+          }
+        });
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
     }
     this.toggleFormVisibility();
   };
@@ -302,6 +342,8 @@ export class CasesComponent implements OnInit {
       this.deleteCase(caseId);
     } else if (selectedValue === 'Update') {
       this.toggleFormVisibility(caseId);
+    } else if (selectedValue === 'View') {
+      this.router.navigate(['cases', caseId]);
     }
     event.target.value = '';
   }
