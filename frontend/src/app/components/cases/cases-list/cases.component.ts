@@ -1,7 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
+import { ViewChild } from '@angular/core';
 
 import { CaseComponent } from '../case/case.component';
 import { TableComponent } from '../../../shared/table/table.component';
@@ -32,12 +38,14 @@ import { Lawyers } from '../../../shared/models/lawyers.model';
     NgIf,
     AddingFormComponent,
     LoadingScreenComponent,
+    MatPaginatorModule,
   ],
   templateUrl: './cases.component.html',
-  styleUrl: './cases.component.css',
+  styleUrls: ['./cases.component.css', 'cases.component.scss'],
 })
 export class CasesComponent implements OnInit {
   cases?: Array<Case>;
+  paginatedCases?: Array<Case>;
   categories?: Array<CaseCategory>;
   grades?: Array<CaseGrade>;
   clients?: Array<Clients>;
@@ -51,31 +59,69 @@ export class CasesComponent implements OnInit {
   formHeader: string = 'Add New Case';
   upaddingCaseId?: number;
   newCasesInputRows!: inputType[];
-
+  pageSize: number = 5;
+  currentPage: number = 0;
+  @ViewChild('paginatorContainer') paginatorContainer!: ElementRef;
   constructor(
     private caseService: CasesService,
     private route: ActivatedRoute,
     private router: Router,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private renderer: Renderer2
   ) {}
 
   ngOnInit() {
-    // Subscribe to resolver data
     this.route.data.subscribe((resolvedData) => {
       this.loadResolvedData(resolvedData);
     });
   }
 
-  // Function to handle loading resolved data
+  ngAfterViewInit() {
+    const paginatorElement =
+      this.paginatorContainer.nativeElement.querySelector('mat-paginator');
+
+    this.renderer.setStyle(paginatorElement, 'background-color', '#f5f5f5');
+    this.renderer.setStyle(paginatorElement, 'padding', '5px');
+    this.renderer.setStyle(paginatorElement, 'border-radius', '5px');
+    this.renderer.setStyle(paginatorElement, 'over-flow', 'hidden');
+
+    const buttons = paginatorElement.querySelectorAll('.mat-button');
+    buttons.forEach((button: any) => {
+      this.renderer.setStyle(button, 'color', 'var(--primaryColor)');
+      this.renderer.setStyle(button, 'border-radius', '50%');
+      this.renderer.setStyle(button, 'padding', '4px 8px');
+      this.renderer.setStyle(button, 'margin', '0 4px');
+    });
+
+    // const dropdown = paginatorElement.querySelector('.mat-select-value');
+    // if (dropdown) {
+    //   this.renderer.setStyle(dropdown, 'color', 'var(--primaryColor)');
+    // }
+  }
+
   loadResolvedData(resolvedData: any) {
     resolvedData = resolvedData.data;
     this.cases = resolvedData.cases || [];
     this.categories = resolvedData.categories || [];
     this.grades = resolvedData.grades || [];
-    this.clients = resolvedData.clients || []; // This should get populated from resolver
+    this.clients = resolvedData.clients || [];
     this.courts = resolvedData.courts || [];
     this.lawyers = resolvedData.lawyers || [];
     this.oppositeLawyers = resolvedData.oppositeLawyers || [];
+    this.updatePaginatedCases();
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex;
+    this.updatePaginatedCases();
+  }
+  updatePaginatedCases(): void {
+    if (this.cases) {
+      const start = this.currentPage * this.pageSize;
+      const end = start + this.pageSize;
+      this.paginatedCases = this.cases.slice(start, end);
+    }
   }
 
   toggleFormVisibility = (caseId?: number): void => {

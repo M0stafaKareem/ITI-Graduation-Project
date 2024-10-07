@@ -41,7 +41,7 @@
     >
       Action
     </th>
-    @for (case of cases; track $index) {
+    @for (case of paginatedCases; track $index) {
     <tr>
       <td class="text-center">{{ $index + 1 }}</td>
       <td
@@ -72,8 +72,8 @@
       <td>
         @if (case.status === 'closed') {
         <button class="btn btn-danger">Closed</button>} @else if (case.status
-        === 'waiting') {<button class="btn btn-warning">Waiting</button>} @else {
-        <button class="btn btn-success">running</button>}
+        === 'waiting') {<button class="btn btn-warning">Waiting</button>} @else
+        { <button class="btn btn-success">running</button>}
       </td>
       <td>
         <div class="custom-select">
@@ -96,5 +96,14 @@
     </tr>
     }
   </app-table>
+  <div #paginatorContainer class="paginator-container">
+    <mat-paginator
+      [length]="cases?.length"
+      [pageSize]="5"
+      (page)="onPageChange($event)"
+      showFirstLastButtons
+    >
+    </mat-paginator>
+  </div>
 </div>
 }

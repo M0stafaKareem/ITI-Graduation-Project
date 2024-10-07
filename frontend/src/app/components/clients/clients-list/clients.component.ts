@@ -63,7 +63,6 @@ export class ClientsComponent implements OnInit {
   ngOnInit(): void {
     const resolvedData = this.route.snapshot.data['data'];
     this.clients = resolvedData?.clients || [];
-    // Subscribe to query param changes
     this.route.queryParams.subscribe((params) => {
       const searchTerm = params['search'] || '';
       this.fetchClients(searchTerm);
@@ -82,11 +81,9 @@ export class ClientsComponent implements OnInit {
           value: city.name,
         }));
         cityInput.disabled = cities.length === 0;
-        // cityInput.value = '';
       }
     });
   }
-  // Function to fetch clients based on the search term
   fetchClients(searchTerm: string) {
     this.clientsService.getClients(searchTerm).subscribe((clients) => {
       this.clients = clients;
