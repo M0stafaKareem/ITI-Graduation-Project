@@ -32,7 +32,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: [
     './case-details.component.css',
     '../../../shared/single-page-details/single-page-details.component.css',
-    '../cases.component.css',
+    '../cases-list/cases.component.css',
   ],
 })
 export class CaseDetailsComponent {

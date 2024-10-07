@@ -91,4 +91,15 @@ Route::apiResource('events',EventController::class);
 Route::get('/sessions/cases/{caseId}', [App\Http\Controllers\SessionController::class, 'getSessionsByCaseId']);
 Route::apiResource('sessions',App\Http\Controllers\SessionController::class);
 
+//expense route
+Route::apiResource('expenses',controller: App\Http\Controllers\ExpenseController::class);
+
+//budget controller 
+Route::apiResource('budgets',controller: App\Http\Controllers\BudgetController::class);
+
+//payments 
+Route::apiResource('payments',controller: App\Http\Controllers\PaymentController::class);
+
+//invoices
+Route::apiResource('invoices',controller: App\Http\Controllers\InvoiceController::class);
 

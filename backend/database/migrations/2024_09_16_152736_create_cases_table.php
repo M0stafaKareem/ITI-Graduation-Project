@@ -22,7 +22,7 @@ return new class extends Migration
 
 			$table->date('first_session_date')->nullable();
 			
-
+			$table->enum('status',['running', 'waiting','closed'])->default('running')->nullable();
 			
 
 			$table->bigInteger('case_category_id')->nullable()->unsigned();

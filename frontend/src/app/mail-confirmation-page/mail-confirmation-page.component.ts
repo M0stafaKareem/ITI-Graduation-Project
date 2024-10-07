@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { LoginService } from '../login-from/login.service';
 import { CommonModule } from '@angular/common';
+import { LoginService } from '../components/login/login.service';
 
 @Component({
   selector: 'app-mail-confirmation-page',

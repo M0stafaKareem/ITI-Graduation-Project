@@ -3,16 +3,18 @@ import { Router, RouterLink } from '@angular/router';
 import { LoginService } from './login.service';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { NgIf } from '@angular/common';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule, NgIf],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
   enteredEmail: string = '';
   enteredPassword: string = '';
+  errors: { [key: string]: string } = {};
 
   constructor(
     private loginService: LoginService,
@@ -35,5 +37,6 @@ export class LoginComponent {
           });
         }
       });
+    }
   }
 }

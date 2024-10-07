@@ -16,17 +16,24 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-client-category',
   standalone: true,
-  imports: [TableComponent, AddingFormComponent, SecondaryNavComponent, NgIf, CommonModule, RouterLink],
+  imports: [
+    TableComponent,
+    AddingFormComponent,
+    SecondaryNavComponent,
+    NgIf,
+    CommonModule,
+    RouterLink,
+  ],
   templateUrl: './client-category.component.html',
   styleUrls: [
     './client-category.component.css',
-    '../../cases/cases.component.css',
+    '../../cases/cases-list/cases.component.css',
   ],
 })
 export class ClientCategoryComponent {
-checkChangedInput($event: any) {
-throw new Error('Method not implemented.');
-}
+  checkChangedInput($event: any) {
+    throw new Error('Method not implemented.');
+  }
   categories?: ClientCategory[];
   loading: boolean = false;
   isFormVisible: boolean = false;
@@ -40,12 +47,11 @@ throw new Error('Method not implemented.');
     private route: ActivatedRoute,
     private router: Router,
     private toaster: ToastrService
-
   ) {}
 
   ngOnInit(): void {
     const resolveData = this.route.snapshot.data['data'];
-    this .categories = resolveData?.clientCategories || [];
+    this.categories = resolveData?.clientCategories || [];
     // subscribe to query param changes
     this.route.queryParams.subscribe((params) => {
       const searchTerm = params['search'] || '';
@@ -54,21 +60,21 @@ throw new Error('Method not implemented.');
     this.categories = this.route.snapshot.data['clientCategories'];
   }
 
-    // Function to fetch clients based on the search term
-    fetchCategories(searchTerm: string) {
-      this.clientSerivce.getCategories(searchTerm).subscribe((categories) => {
-        this.categories = categories;
-      }); 
-    }
+  // Function to fetch clients based on the search term
+  fetchCategories(searchTerm: string) {
+    this.clientSerivce.getCategories(searchTerm).subscribe((categories) => {
+      this.categories = categories;
+    });
+  }
 
-    handleSearch(searchTerm: string) {
-      // Update query params to trigger resolver re-execution
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: { search: searchTerm },
-        queryParamsHandling: 'merge',
-      });
-    }
+  handleSearch(searchTerm: string) {
+    // Update query params to trigger resolver re-execution
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { search: searchTerm },
+      queryParamsHandling: 'merge',
+    });
+  }
   addNewCategory(newCategory: ClientCategory) {
     return new Promise((resolve) => {
       this.clientSerivce.insertCategory(newCategory).subscribe({

@@ -27,7 +27,7 @@ export class LoginService {
     return this.loginStatus.asObservable();
   }
 
-  async verifyCredentials(email: string, password: string): Promise<boolean> {
+  async verifyCredentials(email: string, password: string): Promise<any> {
     const api = 'http://localhost:8000/login';
     this.spinner.show();
     try {
@@ -53,13 +53,15 @@ export class LoginService {
         return data;
       }
     } catch (error) {
+      this.spinner.hide();
       console.error('Error during login:', error);
+      return {
+        success: false,
+        errors: {
+          general: 'An error occurred during login. Please try again later.',
+        },
+      };
     }
-
-    this.loginStatus.next(false);
-    this.spinner.hide();
-
-    return false;
   }
 
   verifyEmail(url: string): Observable<any> {

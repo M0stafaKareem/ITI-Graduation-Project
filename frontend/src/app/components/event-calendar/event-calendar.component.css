@@ -1,0 +1,81 @@
+Style for the calendar container #calendar {
+  max-width: 80%; /* Adjusts the width */
+  margin: 20px auto; /* Centers the calendar on the page */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+/* Style for the calendar header toolbar */
+.fc-toolbar {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style for calendar buttons */
+.fc-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 0 5px;
+}
+
+.fc-button:hover {
+  background-color: #0056b3;
+}
+
+/* Style for events */
+.fc-event {
+  background-color: #16699c !important;
+  border: none;
+  color: white;
+  font-weight: bold;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+/* Style for modal */
+.modal-content {
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  background-color: #007bff;
+  color: #fff;
+  border-bottom: none;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.modal-title {
+  font-weight: bold;
+}
+
+.btn-close {
+  color: #fff;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Additional style adjustments for inputs */
+.form-control {
+  border-radius: 4px;
+}
+
+.alert-danger {
+  border-radius: 4px;
+}

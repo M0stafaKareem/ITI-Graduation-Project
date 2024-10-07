@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (!Schema::hasTable('client_categories')) {
+
         Schema::create('client_categories', function (Blueprint $table) {
             $table->id();
             $table->string('category_name');
             $table->string('description')->nullable();
             $table->timestamps();
         });
-    }
+    } }
 
     /**
      * Reverse the migrations.

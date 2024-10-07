@@ -1,0 +1,137 @@
+.banner-container {
+    background-image: url('../../../../frontend/src/assets/shadyraagay copy.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    color: white;
+    text-align: left;
+    overflow: hidden;
+    padding-left: 2rem;
+}
+
+.content {
+    max-width: 600px;
+    text-align: left;
+    margin-left: 40px;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+
+.line {
+    border-top: 2px solid #fff;
+    margin: 10px 0;
+
+}
+
+.case-results-btn {
+    color: white;
+    border: 1px solid white;
+    background: none;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s, transform 0.3s;
+    display: block;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+.case-results-btn:hover {
+    transform: scale(1.05);
+    border: 1px solid white;
+    background: white;
+    color: black;
+}
+
+.case-results-btn:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Media Queries */
+
+/* Medium screens - Tablets */
+@media (max-width: 768px) {
+    .banner-container {
+        justify-content: center;
+        /* Center content horizontally for smaller screens */
+        padding-left: 1rem;
+        /* Reduce padding */
+        text-align: center;
+        /* Center-align text */
+    }
+
+    .content {
+        max-width: 90%;
+        /* Increase the width to fit more content on smaller screens */
+    }
+
+    .title {
+        font-size: 2rem;
+        /* Scale down title size */
+    }
+
+    .subtitle {
+        font-size: 1rem;
+        /* Scale down subtitle size */
+    }
+
+    .case-results-btn {
+        padding: 0.6rem 1.5rem;
+        /* Reduce button padding */
+        font-size: 0.9rem;
+        /* Scale down font size */
+    }
+}
+
+/* Small screens - Mobile phones */
+@media (max-width: 480px) {
+    .banner-container {
+        justify-content: center;
+        /* Center the content on mobile */
+        padding-left: 1rem;
+        /* Reduce padding */
+        text-align: center;
+        /* Center-align text */
+    }
+
+    .content {
+        max-width: 100%;
+        /* Allow full width for content */
+    }
+
+    .title {
+        font-size: 1.5rem;
+        /* Further reduce title size */
+    }
+
+    .subtitle {
+        font-size: 0.9rem;
+        /* Reduce subtitle size */
+    }
+
+    .case-results-btn {
+        padding: 0.5rem 1.2rem;
+        /* Reduce button padding */
+        font-size: 0.8rem;
+        /* Scale down font size */
+    }
+}

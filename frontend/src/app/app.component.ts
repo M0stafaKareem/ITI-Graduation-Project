@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CasesComponent } from './components/cases/cases.component';
-import { ClientsComponent } from './components/clients/clients.component';
+import { CasesComponent } from './components/cases/cases-list/cases.component';
+import { ClientsComponent } from './components/clients/clients-list/clients.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
-import { LoginService } from './login-from/login.service';
-import { LoginFromComponent } from './login-from/login-from.component';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { LoginService } from './components/login/login.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +16,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     CasesComponent,
     ClientsComponent,
     SidebarComponent,
-    LoginFromComponent,
     CommonModule,
     NgxSpinnerModule,
   ],
