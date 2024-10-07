@@ -25,6 +25,7 @@
     "ag-charts-angular": "^10.2.0",
     "bootstrap": "^5.3.3",
     "moment": "^2.30.1",
+    "ng-apexcharts": "^1.10.0",
     "ngx-countup": "^13.2.0",
     "ngx-spinner": "^17.0.0",
     "ngx-toastr": "^19.0.0",
