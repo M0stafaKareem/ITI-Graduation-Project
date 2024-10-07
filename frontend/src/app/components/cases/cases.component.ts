@@ -64,7 +64,7 @@ export class CasesComponent implements OnInit {
       this.loadResolvedData(resolvedData);
     });
   }
-  
+
   // Function to handle loading resolved data
   loadResolvedData(resolvedData: any) {
     resolvedData = resolvedData.data;
@@ -75,7 +75,7 @@ export class CasesComponent implements OnInit {
     this.courts = resolvedData.courts || [];
     this.lawyers = resolvedData.lawyers || [];
     this.oppositeLawyers = resolvedData.oppositeLawyers || [];
-    }
+  }
 
   toggleFormVisibility = (caseId?: number): void => {
     this.upaddingCaseId = caseId;
@@ -114,6 +114,15 @@ export class CasesComponent implements OnInit {
           return { id: '' + item.id, value: item.name };
         }),
         value: targetCase ? '' + targetCase.case_category_id : undefined,
+      },
+      {
+        backed_key: 'status',
+        title: 'Case Status',
+        type: 'select',
+        options: ['running', 'waiting', 'closed']?.map((item) => {
+          return { id: item, value: item };
+        }),
+        value: targetCase ? '' + targetCase.status : undefined,
       },
       {
         backed_key: 'case_grade_id',
