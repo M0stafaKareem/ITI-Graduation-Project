@@ -1,8 +1,6 @@
 .footer {
     color: #000;
-    /* Text color */
-    background-color: #F9F9F9;
-    /* Background color */
+    background-color: #f7f7f7;
     font-size: 14px;
     padding-bottom: 50px;
     position: relative;
@@ -12,33 +10,24 @@
     padding-top: 50px;
 }
 
-.sitename {
-    text-decoration: none;
-}
-
 .footer .footer-about .logo {
     margin-bottom: 25px;
-}
-
-.footer .footer-about .logo img {
-    max-height: 40px;
-    margin-right: 6px;
+    text-decoration: none;
 }
 
 .footer .footer-about .logo span {
     color: #467576;
-    /* Main Color */
     font-size: 30px;
     font-weight: 700;
     letter-spacing: 1px;
     font-family: Arial, sans-serif;
-    /* Simplified font */
+    text-decoration: none;
+
 }
 
 .footer .footer-about p {
     font-size: 14px;
     font-family: Arial, sans-serif;
-    /* Simplified font */
 }
 
 .footer .social-links a {
@@ -48,20 +37,16 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 1px solid #467576;
-    /* Main Color */
     font-size: 16px;
     color: #467576;
-    /* Main Color */
     margin-right: 10px;
     transition: 0.3s;
+    text-decoration: none;
+
 }
 
 .footer .social-links a:hover {
-    color: #000;
-    /* Text turns black on hover */
-    border-color: #000;
-    /* Border turns black on hover */
+    color: #316060;
 }
 
 .footer h4 {
@@ -69,8 +54,6 @@
     font-weight: bold;
     position: relative;
     padding-bottom: 12px;
-    color: #467576;
-    /* Main Color */
 }
 
 .footer .footer-links {
@@ -89,54 +72,34 @@
     align-items: center;
 }
 
-.footer .footer-links ul li:first-child {
-    padding-top: 0;
-}
-
 .footer .footer-links ul a {
-    color: #000;
-    /* Links in black */
+    color: #467576;
     display: inline-block;
     line-height: 1;
+    transition: color 0.3s;
     text-decoration: none;
-    /* No text decorations */
-    transition: 0.3s;
+
 }
 
 .footer .footer-links ul a:hover {
-    color: #467576;
-    /* Main Color on hover */
+    color: #316060;
 }
 
 .footer .footer-contact p {
     margin-bottom: 5px;
-    color: #000;
-    /* Text in black */
 }
 
 .footer .copyright {
     padding-top: 25px;
     padding-bottom: 25px;
-    background-color: #E8E8E8;
-    /* Light grey background */
+    background-color: #e9e9e9;
 }
 
 .footer .copyright p {
     margin-bottom: 0;
-    color: #000;
-    /* Text in black */
 }
 
 .footer .credits {
     margin-top: 6px;
     font-size: 13px;
-    color: #000;
-    /* Text in black */
-}
-
-/* Hover animations for links */
-.footer a:hover {
-    transform: scale(1.05);
-    /* Slight zoom effect on hover */
-    transition: transform 0.3s ease-in-out;
 }
