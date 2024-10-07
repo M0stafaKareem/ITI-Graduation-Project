@@ -25,8 +25,6 @@ export class RegisterComponent {
   enteredConfirmPassword = '';
 
   async onRegisterHandler() {
-    console.log('hi');
-
     const userData = {
       name: `${this.enteredFirstName} ${this.enteredLastName}`,
       email: this.enteredEmail,
