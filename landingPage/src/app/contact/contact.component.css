@@ -3,6 +3,7 @@
     padding: 30px;
     transition: transform 0.3s, box-shadow 0.3s;
     border-radius: 10px;
+    margin-top: 10px;
 }
 
 .contact .info-item:hover {
@@ -31,12 +32,18 @@
     color: #000;
 }
 
+.row {
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
 .contact .php-email-form {
     background: rgba(244, 244, 244, 0.96);
     padding: 30px;
     height: 100%;
     transition: transform 0.3s;
     border-radius: 10px;
+
 }
 
 .contact .php-email-form:hover {

@@ -1,6 +1,8 @@
 .footer {
-    color: var(--default-color);
-    background-color: var(--background-color);
+    color: #000;
+    /* Text color */
+    background-color: #F9F9F9;
+    /* Background color */
     font-size: 14px;
     padding-bottom: 50px;
     position: relative;
@@ -8,6 +10,10 @@
 
 .footer .footer-top {
     padding-top: 50px;
+}
+
+.sitename {
+    text-decoration: none;
 }
 
 .footer .footer-about .logo {
@@ -20,16 +26,19 @@
 }
 
 .footer .footer-about .logo span {
-    color: var(--heading-color);
+    color: #467576;
+    /* Main Color */
     font-size: 30px;
     font-weight: 700;
     letter-spacing: 1px;
-    font-family: var(--heading-font);
+    font-family: Arial, sans-serif;
+    /* Simplified font */
 }
 
 .footer .footer-about p {
     font-size: 14px;
-    font-family: var(--heading-font);
+    font-family: Arial, sans-serif;
+    /* Simplified font */
 }
 
 .footer .social-links a {
@@ -39,16 +48,20 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 1px solid color-mix(in srgb, var(--default-color), transparent 50%);
+    border: 1px solid #467576;
+    /* Main Color */
     font-size: 16px;
-    color: color-mix(in srgb, var(--default-color), transparent 50%);
+    color: #467576;
+    /* Main Color */
     margin-right: 10px;
     transition: 0.3s;
 }
 
 .footer .social-links a:hover {
-    color: var(--accent-color);
-    border-color: var(--accent-color);
+    color: #000;
+    /* Text turns black on hover */
+    border-color: #000;
+    /* Border turns black on hover */
 }
 
 .footer h4 {
@@ -56,6 +69,8 @@
     font-weight: bold;
     position: relative;
     padding-bottom: 12px;
+    color: #467576;
+    /* Main Color */
 }
 
 .footer .footer-links {
@@ -66,12 +81,6 @@
     list-style: none;
     padding: 0;
     margin: 0;
-}
-
-.footer .footer-links ul i {
-    padding-right: 2px;
-    font-size: 12px;
-    line-height: 0;
 }
 
 .footer .footer-links ul li {
@@ -85,30 +94,49 @@
 }
 
 .footer .footer-links ul a {
-    color: color-mix(in srgb, var(--default-color), transparent 20%);
+    color: #000;
+    /* Links in black */
     display: inline-block;
     line-height: 1;
+    text-decoration: none;
+    /* No text decorations */
+    transition: 0.3s;
 }
 
 .footer .footer-links ul a:hover {
-    color: var(--accent-color);
+    color: #467576;
+    /* Main Color on hover */
 }
 
 .footer .footer-contact p {
     margin-bottom: 5px;
+    color: #000;
+    /* Text in black */
 }
 
 .footer .copyright {
     padding-top: 25px;
     padding-bottom: 25px;
-    background-color: color-mix(in srgb, var(--default-color), transparent 95%);
+    background-color: #E8E8E8;
+    /* Light grey background */
 }
 
 .footer .copyright p {
     margin-bottom: 0;
+    color: #000;
+    /* Text in black */
 }
 
 .footer .credits {
     margin-top: 6px;
     font-size: 13px;
+    color: #000;
+    /* Text in black */
+}
+
+/* Hover animations for links */
+.footer a:hover {
+    transform: scale(1.05);
+    /* Slight zoom effect on hover */
+    transition: transform 0.3s ease-in-out;
 }
