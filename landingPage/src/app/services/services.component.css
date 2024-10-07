@@ -3,6 +3,11 @@
     padding-top: 40px;
 }
 
+.services {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
 .services .service-item:before {
     content: "";
     position: absolute;
@@ -10,7 +15,7 @@
     left: 0;
     right: 0;
     height: 2px;
-    background: color-mix(in srgb, var(--default-color), transparent 90%);
+    background: rgba(70, 117, 118, 0.1);
 }
 
 .services .service-item::after {
@@ -20,8 +25,8 @@
     left: 0;
     width: 30px;
     height: 2px;
-    background: var(--accent-color);
-    border-right: 5px solid var(--background-color);
+    background: #467576;
+    border-right: 5px solid #fff;
 }
 
 .services .service-item .icon {
@@ -33,11 +38,16 @@
 }
 
 .services .service-item .icon i {
-    color: color-mix(in srgb, var(--default-color), transparent 30%);
+    color: rgba(70, 117, 118, 0.3);
     font-size: 56px;
-    transition: ease-in-out 0.3s;
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
     z-index: 2;
     position: relative;
+}
+
+.services .service-item .icon:hover i {
+    color: #467576;
+    transform: scale(1.2);
 }
 
 .services .service-item .icon:before {
@@ -45,12 +55,16 @@
     content: "";
     height: 30px;
     width: 30px;
-    background: color-mix(in srgb, var(--accent-color), transparent 70%);
+    background: rgba(70, 117, 118, 0.7);
     border-radius: 50px;
     z-index: 1;
     bottom: -15px;
     right: -15px;
-    transition: 0.3s;
+    transition: transform 0.3s ease-in-out;
+}
+
+.services .service-item:hover .icon:before {
+    transform: rotate(45deg);
 }
 
 .services .service-item .title {
@@ -60,14 +74,28 @@
 }
 
 .services .service-item .title a {
-    color: var(--heading-color);
+    color: #000;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
 }
 
-.services .service-item .title a:hover {
-    color: var(--accent-color);
+.services .service-item .title:hover {
+    color: #467576;
+    cursor: pointer;
+
+
 }
 
 .services .service-item .description {
     line-height: 24px;
     font-size: 14px;
+    color: #000;
+}
+
+.services .service-item .description:hover {
+    line-height: 24px;
+    font-size: 14px;
+    color: #467576;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
 }
