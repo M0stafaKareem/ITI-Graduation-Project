@@ -1,23 +1,33 @@
+import { ToastrService } from 'ngx-toastr';
+import { CommonModule, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
+
 import { TableComponent } from '../../../shared/table/table.component';
 import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-nav.component';
 import { CasesService } from '../../../shared/services/cases.service';
-import { NgIf } from '@angular/common';
 import {
   inputType,
   AddingFormComponent,
 } from '../../../shared/adding-form/adding-form.component';
-import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { CaseGrade } from '../../../shared/models/case.grade.model';
-import { ToastrService } from 'ngx-toastr';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-case-grade',
   standalone: true,
-  imports: [TableComponent, SecondaryNavComponent, NgIf, AddingFormComponent, CommonModule, RouterLink],
+  imports: [
+    TableComponent,
+    SecondaryNavComponent,
+    NgIf,
+    AddingFormComponent,
+    CommonModule,
+    RouterLink,
+  ],
   templateUrl: './case-grade.component.html',
-  styleUrls: ['./case-grade.component.css', '../cases.component.css'],
+  styleUrls: [
+    './case-grade.component.css',
+    '../cases-list/cases.component.css',
+  ],
 })
 export class CaseGradeComponent implements OnInit {
   checkChangedInput($event: any) {
@@ -49,7 +59,7 @@ export class CaseGradeComponent implements OnInit {
     this.grades = this.route.snapshot.data['grades'];
   }
 
-      // Function to fetch clients based on the search term
+  // Function to fetch clients based on the search term
   fetchGrades(searchTerm: string) {
     this.caseService.getCaseGrade(searchTerm).subscribe((grades) => {
       this.grades = grades;

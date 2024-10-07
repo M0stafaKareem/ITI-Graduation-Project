@@ -15,9 +15,19 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-case-category',
   standalone: true,
-  imports: [TableComponent, SecondaryNavComponent, NgIf, AddingFormComponent, CommonModule, RouterLink],
+  imports: [
+    TableComponent,
+    SecondaryNavComponent,
+    NgIf,
+    AddingFormComponent,
+    CommonModule,
+    RouterLink,
+  ],
   templateUrl: './case-category.component.html',
-  styleUrls: ['./case-category.component.css', '../cases.component.css'],
+  styleUrls: [
+    './case-category.component.css',
+    '../cases-list/cases.component.css',
+  ],
 })
 export class CaseCategoryComponent implements OnInit {
   checkChangedInput($event: any) {
@@ -36,7 +46,6 @@ export class CaseCategoryComponent implements OnInit {
     private toaster: ToastrService,
     private route: ActivatedRoute,
     private router: Router
-
   ) {}
 
   ngOnInit(): void {
@@ -50,19 +59,17 @@ export class CaseCategoryComponent implements OnInit {
     this.categories = this.route.snapshot.data['categories'];
   }
 
-  // Function to fetch clients based on the search term
   fetchCategories(searchTerm: string) {
     this.caseService.getCategories(searchTerm).subscribe((categories) => {
       this.categories = categories;
-    }); 
+    });
   }
 
   handleSearch(searchTerm: string) {
-    // Update query params with search term
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { search: searchTerm }, // Update search query param
-      queryParamsHandling: 'merge', // Merge with other query params
+      queryParams: { search: searchTerm },
+      queryParamsHandling: 'merge',
     });
 
     this.fetchCategories(searchTerm);

@@ -24,4 +24,5 @@ export interface Case {
   opposing_lawyer_id: number;
   session_id: number;
   sessions: Session[];
+  status: string;
 }

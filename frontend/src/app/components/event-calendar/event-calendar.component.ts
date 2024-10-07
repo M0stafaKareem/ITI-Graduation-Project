@@ -67,6 +67,46 @@ export class EventCalendarComponent implements OnInit {
       },
       eventDrop: (info: any) => this.updateEvent(info),
     });
+    calendarEl.style.maxWidth = '90%';
+    calendarEl.style.maxHeight = '100vh';
+    calendarEl.style.margin = '20px 20px auto';
+    calendarEl.style.border = '1px solid #ddd';
+    calendarEl.style.borderRadius = '8px';
+    calendarEl.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.5)';
+    calendarEl.style.padding = '10px';
+    calendarEl.style.backgroundColor = '#f9f9f9';
+
+    // Manipulate buttons in the toolbar
+    setTimeout(() => {
+      const buttons = calendarEl.querySelectorAll('.fc-button');
+      buttons.forEach((button: any) => {
+        button.style.backgroundColor = '#415094';
+        button.style.color = '#fff';
+        button.style.border = 'none';
+        button.style.borderRadius = '5px';
+        button.style.padding = '5px 10px';
+        button.style.margin = '0 5px';
+
+        /*Change Hover Button Color */
+        button.addEventListener('mouseover', () => {
+          button.style.backgroundColor = '#7485B7';
+        });
+        button.addEventListener('mouseout', () => {
+          button.style.backgroundColor = '#415094';
+        });
+      });
+
+      // Style events
+      const events = calendarEl.querySelectorAll('.fc-event');
+      events.forEach((event: any) => {
+        event.style.backgroundColor = '#16699c';
+        event.style.border = 'none';
+        event.style.color = 'white';
+        event.style.fontWeight = 'bold';
+        event.style.padding = '2px 4px';
+        event.style.borderRadius = '4px';
+      });
+    }, 0);
 
     this.calendar.render();
   }

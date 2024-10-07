@@ -15,17 +15,24 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-opposite-lawyers',
   standalone: true,
-  imports: [SecondaryNavComponent, AddingFormComponent, TableComponent, NgIf, CommonModule, RouterLink],
+  imports: [
+    SecondaryNavComponent,
+    AddingFormComponent,
+    TableComponent,
+    NgIf,
+    CommonModule,
+    RouterLink,
+  ],
   templateUrl: './opposite-lawyers.component.html',
   styleUrls: [
     './opposite-lawyers.component.css',
-    '../../cases/cases.component.css',
+    '../../cases/cases-list/cases.component.css',
   ],
 })
 export class OppositeLawyersComponent {
-checkChangedInput($event: any) {
-throw new Error('Method not implemented.');
-}
+  checkChangedInput($event: any) {
+    throw new Error('Method not implemented.');
+  }
   loading: boolean = false;
   isFormVisible: boolean = false;
   formType: 'Add' | 'Update' = 'Add';
@@ -38,7 +45,6 @@ throw new Error('Method not implemented.');
     private oppositeLawyerService: LawyersService,
     private toaster: ToastrService,
     private router: Router
-    
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +57,6 @@ throw new Error('Method not implemented.');
     });
 
     this.lawyers = this.route.snapshot.data['oppositeLawyers'];
-
   }
 
   fetchLawyers(searchTerm: string) {

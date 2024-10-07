@@ -1,37 +1,89 @@
 <div class="page-container">
-    <div class="left-half">
-        <img src="../../../assets/registrationFrom/Colored Hor.png" alt="Logo" class="logo" />
-        <h2>Sign Up</h2>
-        <form (ngSubmit)="onRegisterHandler()">
-            <div class="form-group">
-                <label for="firstName">First Name</label>
-                <input type="text" id="firstName" [(ngModel)]="enteredFirstName" name="firstName" required />
-            </div>
+  <div class="left-half">
+    <img
+      src="../../../assets/registrationFrom/Colored Hor.png"
+      alt="Logo"
+      class="logo"
+    />
+    <h2>Sign Up</h2>
+    <form (ngSubmit)="onRegisterHandler()">
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input
+          type="text"
+          id="firstName"
+          [(ngModel)]="enteredFirstName"
+          name="firstName"
+          required
+        />
+        <div *ngIf="errors['first_name']" class="error-message">
+          {{ errors["first_name"] }}
+        </div>
+      </div>
 
-            <div class="form-group">
-                <label for="lastName">Last Name</label>
-                <input type="text" id="lastName" [(ngModel)]="enteredLastName" name="lastName" required />
-            </div>
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input
+          type="text"
+          id="lastName"
+          [(ngModel)]="enteredLastName"
+          name="lastName"
+          required
+        />
+        <div *ngIf="errors['last_name']" class="error-message">
+          {{ errors["last_name"] }}
+        </div>
+      </div>
 
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" [(ngModel)]="enteredEmail" name="email" required />
-            </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          [(ngModel)]="enteredEmail"
+          name="email"
+          required
+        />
+        <div *ngIf="errors['email']" class="error-message">
+          {{ errors["email"] }}
+        </div>
+      </div>
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" [(ngModel)]="enteredPassword" name="password" required />
-            </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="enteredPassword"
+          name="password"
+          required
+        />
+        <div *ngIf="errors['password']" class="error-message">
+          {{ errors["password"] }}
+        </div>
+      </div>
 
-            <div class="form-group">
-                <label for="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" [(ngModel)]="enteredConfirmPassword" name="confirmPassword"
-                    required />
-            </div>
-            <button type="submit" class="register-btn">Sign Up</button>
-        </form>
-    </div>
-    <div class="right-half">
-        <img src="../../../assets/pexels-sora-shimazaki-5668802.jpg" alt="Sign Up Image" />
-    </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          [(ngModel)]="enteredConfirmPassword"
+          name="confirmPassword"
+          required
+        />
+        <div *ngIf="errors['password_confirmation']" class="error-message">
+          {{ errors["password_confirmation"] }}
+        </div>
+      </div>
+      <button type="submit" class="register-btn">Sign Up</button>
+      <p class="text-center">Already have an account? <a [routerLink]="['/']">Login</a></p>
+    </form>
+  </div>
+  <div class="right-half">
+    <img
+      src="../../../assets/pexels-sora-shimazaki-5668802.jpg"
+      alt="Sign Up Image"
+    />
+  </div>
 </div>
