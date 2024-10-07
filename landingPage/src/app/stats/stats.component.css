@@ -30,6 +30,21 @@
 .stats .stats-item {
     padding: 30px;
     width: 100%;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    /* Add transition for scale and shadow */
+    border-radius: 15px;
+    position: relative;
+    /* Ensures the z-index works correctly */
+    overflow: hidden;
+    /* Ensures child elements do not overflow */
+}
+
+.stats .stats-item:hover {
+    transform: scale(1.05);
+    /* Scale up on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    /* Add shadow on hover */
 }
 
 .stats .stats-item span {
