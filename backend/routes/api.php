@@ -97,3 +97,9 @@ Route::apiResource('expenses',controller: App\Http\Controllers\ExpenseController
 //budget controller 
 Route::apiResource('budgets',controller: App\Http\Controllers\BudgetController::class);
 
+//payments 
+Route::apiResource('payments',controller: App\Http\Controllers\PaymentController::class);
+
+//invoices
+Route::apiResource('invoices',controller: App\Http\Controllers\InvoiceController::class);
+
