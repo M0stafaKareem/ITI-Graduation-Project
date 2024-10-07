@@ -42,3 +42,4 @@ frontend/.vscode/
 /frontend/out-tsc
 /frontend/.angular/cache
 /frontend/.firebase/
+/frontend/src/assets/vendor
