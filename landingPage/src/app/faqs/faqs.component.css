@@ -1,20 +1,22 @@
 .faq .content h3 {
     font-weight: 400;
     font-size: 34px;
+    color: rgba(70, 117, 118, 0.7);
+
 }
 
 .faq .content p {
     font-size: 15px;
-    color: color-mix(in srgb, var(--default-color), transparent 30%);
 }
 
 .faq .faq-container .faq-item {
-    background-color: var(--surface-color);
+    background-color: #fff;
     position: relative;
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0px 5px 25px 0px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    transition: background-color 0.3s;
 }
 
 .faq .faq-container .faq-item:last-child {
@@ -26,19 +28,27 @@
     font-size: 18px;
     line-height: 24px;
     margin: 0 30px 0 0;
-    transition: 0.3s;
     cursor: pointer;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: space-between;
+    color: #000;
+    transition: color 0.3s ease-in-out;
 }
 
 .faq .faq-container .faq-item h3 .num {
-    color: var(--accent-color);
+    color: #467576;
     padding-right: 5px;
 }
 
-.faq .faq-container .faq-item h3:hover {
-    color: var(--accent-color);
+.faq .faq-container .faq-item .faq-toggle {
+    font-size: 20px;
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+    color: #000;
+}
+
+.faq .faq-container .faq-item .faq-toggle:hover {
+    color: #467576;
 }
 
 .faq .faq-container .faq-item .faq-content {
@@ -54,22 +64,8 @@
     overflow: hidden;
 }
 
-.faq .faq-container .faq-item .faq-toggle {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 16px;
-    line-height: 0;
-    transition: 0.3s;
-    cursor: pointer;
-}
-
-.faq .faq-container .faq-item .faq-toggle:hover {
-    color: var(--accent-color);
-}
-
 .faq .faq-container .faq-active h3 {
-    color: var(--accent-color);
+    color: #467576;
 }
 
 .faq .faq-container .faq-active .faq-content {
@@ -81,5 +77,9 @@
 
 .faq .faq-container .faq-active .faq-toggle {
     transform: rotate(90deg);
-    color: var(--accent-color);
+    color: #467576;
+}
+
+.faq .faq-container .faq-toggle {
+    transition: transform 0.3s ease;
 }

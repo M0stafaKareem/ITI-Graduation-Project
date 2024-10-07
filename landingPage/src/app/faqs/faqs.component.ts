@@ -4,9 +4,9 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-faqs',
   standalone: true,
-  imports: [CommonModule],  // Include this if using Angular directives in your HTML
+  imports: [CommonModule],  
   templateUrl: './faqs.component.html',
-  styleUrls: ['./faqs.component.css']  // Corrected from styleUrl to styleUrls
+  styleUrls: ['./faqs.component.css']
 })
 export class FaqsComponent implements AfterViewInit {
 
