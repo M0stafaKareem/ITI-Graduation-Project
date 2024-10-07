@@ -297,7 +297,6 @@ export class CasesComponent implements OnInit {
   };
 
   handleSearch(searchTerm: string) {
-    // Update query params to trigger resolver re-execution
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { search: searchTerm },
