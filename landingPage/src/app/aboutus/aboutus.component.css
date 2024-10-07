@@ -1,35 +1,24 @@
 .services-container {
     display: flex;
-    /* Use flexbox for alignment */
     align-items: center;
     justify-content: center;
     margin: 2rem 0;
-    /* Add top and bottom margin */
+
 }
 
-.line {
-    flex: 1;
-    /* Allow lines to take equal space */
-    height: 2px;
-    /* Set line height */
-    background-color: black;
-    /* Change line color to black */
-    margin: 0 0.5rem;
-    max-width: 100px;
-    /* Set a maximum width for the lines */
+.row.align-items-xl-center.gy-5 {
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
+
 
 .services-title {
     font-size: 2rem;
-    /* Adjust title size */
     font-weight: bold;
-    /* Make title bold */
     text-transform: uppercase;
-    /* Uppercase letters */
     color: black;
-    /* Change text color to black */
     text-align: center;
-    /* Center align text */
+
 }
 
 .about .content h3 {
@@ -38,7 +27,7 @@
     line-height: 19px;
     padding: 10px 20px;
     background: color-mix(in srgb, var(--accent-color), transparent 95%);
-    color: var(--accent-color);
+    color: #467576;
     border-radius: 7px;
     display: inline-block;
 }
@@ -52,9 +41,10 @@
 }
 
 .about .content .read-more {
-    background: var(--accent-color);
-    color: var(--contrast-color);
-    font-family: var(--heading-font);
+    background: none;
+    border: 2px solid #467576;
+    color: #467576;
+    text-decoration: none;
     font-weight: 500;
     font-size: 16px;
     letter-spacing: 1px;
@@ -80,6 +70,7 @@
 
 .about .content .read-more:hover i {
     margin-left: 10px;
+
 }
 
 .about .icon-box {
@@ -101,8 +92,8 @@
     font-size: 32px;
     line-height: 0;
     transition: all 0.4s ease-out 0s;
-    background-color: color-mix(in srgb, var(--accent-color), transparent 95%);
-    color: var(--accent-color);
+    background-color: color-mix(in srgb, #467576, transparent 95%);
+    color: #467576;
 }
 
 .about .icon-box h3 {
