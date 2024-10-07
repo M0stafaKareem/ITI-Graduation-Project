@@ -11,21 +11,21 @@
 }
 
 .contact .info-item i {
-    font-size: 38px;
-    line-height: 0;
-    color: #007bff;
+    font-size: 30px;
+    color: #467576;
+    margin-bottom: 15px;
 }
 
 .contact .info-item h3 {
-    font-size: 20px;
-    font-weight: 700;
-    margin: 20px 0 10px 0;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 15px 0 10px 0;
     color: #000;
 }
 
 .contact .info-item p {
     padding: 0;
-    line-height: 24px;
+    line-height: 22px;
     font-size: 14px;
     margin-bottom: 0;
     color: #000;
@@ -49,12 +49,11 @@
     font-size: 14px;
     padding: 10px 15px;
     box-shadow: none;
-    border-radius: 0;
+    border-radius: 10px;
     color: #000;
     background-color: rgba(244, 244, 244, 0.96);
     border: 1px solid rgba(220, 220, 220, 0.96);
     transition: border-color 0.3s;
-    border-radius: 10px;
 }
 
 .contact .php-email-form input[type=text]:focus,
@@ -83,19 +82,20 @@
     background: none;
     border: 1px solid #467576;
     color: #467576;
-    border-radius: 4px;
-    padding: 10px 30px;
     transition: background-color 0.4s;
 }
 
+/* Disabled submit button */
 button[type="submit"]:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
 }
 
+/* Loading, error, and success message styles */
 .loading {
     font-size: 16px;
     color: #007bff;
+    /* Loading in blue */
     margin-bottom: 10px;
 }
 
@@ -111,7 +111,7 @@ button[type="submit"]:disabled {
     margin-bottom: 10px;
 }
 
-.phoneNumber {
+.phoneNumber a {
     text-decoration: none !important;
-
+    color: #000
 }
