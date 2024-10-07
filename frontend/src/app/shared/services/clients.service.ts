@@ -20,9 +20,9 @@ export class ClientsService {
     let params = new HttpParams();
     if (searchTerm) {
       params = params.set('search', searchTerm); // Set search query param if provided
+    } else {
+      this.spinner.show();
     }
-
-    this.spinner.show();
     return this.httpClient
       .get<Clients[]>(this.clientsUrl, { params })
       .pipe(finalize(() => this.spinner.hide()));
@@ -39,8 +39,9 @@ export class ClientsService {
     let params = new HttpParams();
     if (searchTerm) {
       params = params.set('search', searchTerm); // Set search query param if provided
+    } else {
+      this.spinner.show();
     }
-    this.spinner.show();
     return this.httpClient
       .get<ClientCategory[]>(`${this.clientCategoryUrl}`, {
         params,

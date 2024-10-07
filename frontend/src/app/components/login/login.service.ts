@@ -41,14 +41,16 @@ export class LoginService {
         body: JSON.stringify({ email, password }),
       });
 
-      if (response.ok) {
-        const jsonResponse = await response.json();
-        this.token = jsonResponse.access_token;
+      const data = await response.json();
+
+      if (data.access_token) {
+        this.token = data.access_token;
 
         sessionStorage.setItem('access_token', this.token!);
         this.loginStatus.next(true);
-
         return true;
+      } else {
+        return data;
       }
     } catch (error) {
       console.error('Error during login:', error);

@@ -144,7 +144,7 @@ export class ClientsComponent implements OnInit {
   toggleFormVisibility = (clientId?: number) => {
     this.upaddingClientId = clientId;
     const targetClient = this.clients?.find(
-      (clients) => clients.id === clientId
+      (clients) => clients.id == clientId
     );
     if (clientId && targetClient) {
       this.formHeader = 'Update Client';
