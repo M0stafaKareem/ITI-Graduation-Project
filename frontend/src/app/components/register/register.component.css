@@ -93,6 +93,10 @@ input:focus {
   font-size: 0.875rem;
   margin-top: 0.25rem;
 }
+.text-center a {
+  color: #3a6664;
+  text-decoration: none;
+}
 
 /* Media Queries */
 @media screen and (max-width: 768px) {

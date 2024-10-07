@@ -59,7 +59,6 @@ export class CaseCategoryComponent implements OnInit {
     this.categories = this.route.snapshot.data['categories'];
   }
 
-  // Function to fetch clients based on the search term
   fetchCategories(searchTerm: string) {
     this.caseService.getCategories(searchTerm).subscribe((categories) => {
       this.categories = categories;
@@ -67,11 +66,10 @@ export class CaseCategoryComponent implements OnInit {
   }
 
   handleSearch(searchTerm: string) {
-    // Update query params with search term
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { search: searchTerm }, // Update search query param
-      queryParamsHandling: 'merge', // Merge with other query params
+      queryParams: { search: searchTerm },
+      queryParamsHandling: 'merge',
     });
 
     this.fetchCategories(searchTerm);

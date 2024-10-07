@@ -3,16 +3,18 @@ import { Router, RouterLink } from '@angular/router';
 import { LoginService } from './login.service';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { NgIf } from '@angular/common';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule, NgIf],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
   enteredEmail: string = '';
   enteredPassword: string = '';
+  errors: { [key: string]: string } = {};
 
   constructor(
     private loginService: LoginService,
@@ -20,22 +22,22 @@ export class LoginComponent {
     private toastr: ToastrService
   ) {}
   async onLoginHandler() {
-    this.loginService
-      .verifyCredentials(this.enteredEmail, this.enteredPassword)
-      .then((responce) => {
-        if (responce) {
-          this.toastr.success('Welcome', 'login Success', {
-            positionClass: 'toast-bottom-right',
-          });
-          console.log('Login successful');
-          this.router.navigate(['/dashboard']);
-          location.reload();
-        } else {
-          this.toastr.error('Invalid credentials', 'login failed', {
-            positionClass: 'toast-bottom-right',
-          });
-          console.log('Invalid credentials');
-        }
+    const response = await this.loginService.verifyCredentials(
+      this.enteredEmail,
+      this.enteredPassword
+    );
+
+    if (response.success) {
+      this.toastr.success('Welcome', 'Login Successful', {
+        positionClass: 'toast-bottom-right',
       });
+      this.router.navigate(['/dashboard']);
+      location.reload();
+    } else {
+      this.errors = response.errors || {};
+      this.toastr.error('Invalid credentials', 'Login Failed', {
+        positionClass: 'toast-bottom-right',
+      });
+    }
   }
 }
