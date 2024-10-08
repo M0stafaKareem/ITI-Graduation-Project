@@ -20,3 +20,7 @@ td:first-child {
   font-weight: bold;
   color: var(--mainTextColor);
 }
+
+.cdk-overlay-container {
+  display: none;
+}

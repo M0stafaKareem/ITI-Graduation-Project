@@ -12,9 +12,7 @@
       [formControlName]="input_Info.backed_key"
       (change)="emmitNewValue($event)"
     >
-      <option [value]="null" hidden>
-        Please Select {{ input_Info.title }}
-      </option>
+      <option value="">Please Select {{ input_Info.title }}</option>
       <option *ngFor="let option of input_Info.options" [value]="option.id">
         {{ option.value }}
       </option>

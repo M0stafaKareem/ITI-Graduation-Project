@@ -19,8 +19,7 @@
   position: absolute;
   margin: 0 auto;
   width: 26%;
-  background-color: #2d3748;
-  padding: 30px;
+  background-color: #fff;
   border-radius: 8px;
   z-index: 1010;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -29,9 +28,12 @@
 }
 
 .form-box h2 {
-  color: #e2e8f0;
-  margin-bottom: 16px;
+  color: black;
   font-size: 24px;
+  padding: 20px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  background-color: rgba(0, 0, 255, 0.5);
   font-weight: bold;
 }
 
@@ -39,7 +41,7 @@ form {
   display: flex;
   flex-direction: column;
   gap: 2.5vh;
-  max-height: 50vh;
+  max-height: 60vh;
   overflow-y: scroll;
 }
 form::-webkit-scrollbar {
@@ -51,7 +53,7 @@ p {
   margin-top: 10px;
 }
 
-button {
+/* button {
   background: linear-gradient(to right, #6366f1, #3b82f6);
   color: #fff;
   padding: 10px;
@@ -62,10 +64,17 @@ button {
   cursor: pointer;
   transition: all 0.15s ease-in-out;
   align-self: center;
-}
+} */
 
-button:hover {
+/* button:hover {
   background: linear-gradient(to right, #4f46e5, #2563eb);
+} */
+.form-inputs {
+  height: 80%;
+  overflow: scroll;
+}
+.form-inputs::-webkit-scrollbar {
+  display: none;
 }
 
 @keyframes slideIn {

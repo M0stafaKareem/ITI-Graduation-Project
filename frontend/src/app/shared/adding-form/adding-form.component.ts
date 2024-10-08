@@ -123,7 +123,7 @@ export class AddingFormComponent {
    * @default 'Add Case'
    */
   @Input({ required: true }) formHeader: string = 'Add Case';
-  @Input() form: any;
+  @Input() form?: any;
 
   @Output() backdropClicked = new EventEmitter();
   @Output() inputChanged = new EventEmitter();

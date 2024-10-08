@@ -1,14 +1,27 @@
 <div class="backdrop" (click)="closeForm()"></div>
 <div class="form-box">
   <h2>{{ formHeader }}</h2>
-  <form>
-    @for (item of formInputRows; track $index) {
-    <app-input-row
-      [input_Info]="item"
-      (inputChanged)="saveInputData(item.backed_key, $event)"
-      [form]="form"
-    />
-    }
-    <button type="button" (click)="submitForm()">{{ formType }}</button>
+  <form class="px-3 pb-3">
+    <div class="form-inputs">
+      @for (item of formInputRows; track $index) {
+      <app-input-row
+        [input_Info]="item"
+        (inputChanged)="saveInputData(item.backed_key, $event)"
+        [form]="form"
+      />
+      }
+    </div>
+    <div class="actions d-flex justify-content-between">
+      <button class="btn btn-danger w-25 p-1" (click)="closeForm()">
+        Cancel
+      </button>
+      <button
+        class="btn w-25 btn-primary p-1"
+        type="button"
+        (click)="submitForm()"
+      >
+        {{ formType }}
+      </button>
+    </div>
   </form>
 </div>

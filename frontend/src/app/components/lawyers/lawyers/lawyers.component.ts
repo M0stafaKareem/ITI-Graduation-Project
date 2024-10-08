@@ -10,6 +10,7 @@ import { TableComponent } from '../../../shared/table/table.component';
 import { LawyersService } from '../../../shared/services/lawyers.service';
 import { NgIf } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-lawyers',
@@ -38,23 +39,22 @@ export class LawyersComponent implements OnInit {
   upaddingLawyerId?: number;
   newLawyerInputRows!: inputType[];
   lawyers!: Lawyers[];
+  form!: FormGroup;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private lawyerService: LawyersService,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
     const resolverData = this.route.snapshot.data['lawyers'];
     this.lawyers = resolverData.lawyers || [];
-    // subscribe to query param changes
     this.route.queryParams.subscribe((params) => {
       const searchTerm = params['search'] || '';
       this.fetchLawyers(searchTerm);
     });
-    // this.lawyers = this.route.snapshot.data['lawyers'];
-    // console.log(this.lawyers);
   }
 
   fetchLawyers(searchTerm: string) {
@@ -64,7 +64,6 @@ export class LawyersComponent implements OnInit {
   }
 
   handleSearch(searchTerm: string) {
-    // Update query params to trigger resolver re-execution
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { search: searchTerm },
@@ -112,6 +111,12 @@ export class LawyersComponent implements OnInit {
       this.formHeader = 'Add Lawyer';
       this.formType = 'Add';
     }
+    this.form = this.fb.group({
+      name: [targetLawyer?.name || '', Validators.required],
+      phone_number: [targetLawyer?.phone_number || '', Validators.required],
+      address: [targetLawyer?.address || '', Validators.required],
+      nation_id: [targetLawyer?.nation_id || '', Validators.required],
+    });
     this.newLawyerInputRows = [
       {
         backed_key: 'name',
@@ -144,29 +149,39 @@ export class LawyersComponent implements OnInit {
 
   submitForm = async (lawyerData: Lawyers) => {
     if (this.formType === 'Add') {
-      this.addNewLawyer(lawyerData).then((result) => {
-        if (result) {
-          this.lawyers?.push(lawyerData);
-        } else {
-          console.log('failed to add Category');
-        }
-      });
-    } else if (this.formType === 'Update') {
-      await this.updateLawyer(this.upaddingLawyerId!, lawyerData).then(
-        (result) => {
+      if (this.form.valid) {
+        this.addNewLawyer(lawyerData).then((result) => {
           if (result) {
-            this.lawyers = this.lawyers?.map((item) => {
-              if (item.id == this.upaddingLawyerId) {
-                console.log(lawyerData);
-                return lawyerData;
-              }
-              return item;
-            });
+            this.lawyers?.push(lawyerData);
           } else {
-            console.log('failed to update client');
+            console.log('failed to add Category');
           }
-        }
-      );
+        });
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
+    } else if (this.formType === 'Update') {
+      if (this.form.valid) {
+        await this.updateLawyer(this.upaddingLawyerId!, lawyerData).then(
+          (result) => {
+            if (result) {
+              this.lawyers = this.lawyers?.map((item) => {
+                if (item.id == this.upaddingLawyerId) {
+                  console.log(lawyerData);
+                  return lawyerData;
+                }
+                return item;
+              });
+            } else {
+              console.log('failed to update client');
+            }
+          }
+        );
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
     }
     this.toggleFormVisibility();
   };

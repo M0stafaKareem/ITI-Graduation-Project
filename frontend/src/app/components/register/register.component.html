@@ -8,7 +8,7 @@
     <h2>Sign Up</h2>
     <form (ngSubmit)="onRegisterHandler()">
       <div class="form-group">
-        <label for="firstName">First Name</label>
+        <label for="firstName">Name</label>
         <input
           type="text"
           id="firstName"
@@ -16,22 +16,8 @@
           name="firstName"
           required
         />
-        <div *ngIf="errors['first_name']" class="error-message">
-          {{ errors["first_name"] }}
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="lastName">Last Name</label>
-        <input
-          type="text"
-          id="lastName"
-          [(ngModel)]="enteredLastName"
-          name="lastName"
-          required
-        />
-        <div *ngIf="errors['last_name']" class="error-message">
-          {{ errors["last_name"] }}
+        <div *ngIf="errors['name']" class="error-message">
+          {{ errors["name"] }}
         </div>
       </div>
 
@@ -77,7 +63,9 @@
         </div>
       </div>
       <button type="submit" class="register-btn">Sign Up</button>
-      <p class="text-center">Already have an account? <a [routerLink]="['/']">Login</a></p>
+      <p class="text-center">
+        Already have an account? <a [routerLink]="['/']">Login</a>
+      </p>
     </form>
   </div>
   <div class="right-half">
