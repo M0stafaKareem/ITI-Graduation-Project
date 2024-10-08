@@ -52,7 +52,7 @@ input[type="search"] {
   background-color: transparent;
 }
 
-input[type="search"]::after {
+/* input[type="search"]::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -65,4 +65,4 @@ input[type="search"]::after {
 
 input[type="search"]::after:focus {
   width: 100%;
-}
+} */

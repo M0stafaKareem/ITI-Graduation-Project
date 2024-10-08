@@ -57,7 +57,7 @@
   width: 280px;
   transition: transform 0.3s ease-in-out;
   height: 100vh;
-  z-index: 1000;
+  z-index: 1000111;
 }
 
 .sidebar.active {
@@ -72,7 +72,7 @@
   .sidebar {
     transform: translateX(-100%);
     position: fixed;
-    z-index: 1000;
+    z-index: 100011111;
     height: 100%;
     background: rgba(255, 255, 255, 0.5) !important;
     backdrop-filter: blur(3px) !important;
@@ -99,5 +99,5 @@
 }
 
 .toggle-sidebar {
-  z-index: 1001;
+  z-index: 9999999999999999999;
 }

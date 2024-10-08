@@ -101,6 +101,15 @@ export class LawyersComponent implements OnInit {
     });
   }
 
+  validations(targetLawyer?: Lawyers) {
+    this.form = this.fb.group({
+      name: [targetLawyer?.name || '', Validators.required],
+      phone_number: [targetLawyer?.phone_number || '', Validators.required],
+      address: [targetLawyer?.address || '', Validators.required],
+      nation_id: [targetLawyer?.nation_id || '', Validators.required],
+    });
+  }
+
   toggleFormVisibility = (lawyerId?: number) => {
     this.upaddingLawyerId = lawyerId;
     const targetLawyer = this.lawyers?.find((lawyer) => lawyer.id === lawyerId);
@@ -111,12 +120,8 @@ export class LawyersComponent implements OnInit {
       this.formHeader = 'Add Lawyer';
       this.formType = 'Add';
     }
-    this.form = this.fb.group({
-      name: [targetLawyer?.name || '', Validators.required],
-      phone_number: [targetLawyer?.phone_number || '', Validators.required],
-      address: [targetLawyer?.address || '', Validators.required],
-      nation_id: [targetLawyer?.nation_id || '', Validators.required],
-    });
+    this.validations(targetLawyer);
+
     this.newLawyerInputRows = [
       {
         backed_key: 'name',

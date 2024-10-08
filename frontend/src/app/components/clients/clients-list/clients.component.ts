@@ -145,19 +145,7 @@ export class ClientsComponent implements OnInit {
     }
   }
 
-  toggleFormVisibility = (clientId?: number) => {
-    this.upaddingClientId = clientId;
-    const targetClient = this.clients?.find(
-      (clients) => clients.id === clientId
-    );
-    if (clientId && targetClient) {
-      this.formHeader = 'Update Client';
-      this.formType = 'Update';
-    } else {
-      this.formHeader = 'Add New Client';
-      this.formType = 'Add';
-      this.countryCities.next([]);
-    }
+  validations(targetClient?: Clients) {
     this.form = this.fb.group({
       name: [targetClient?.name || '', Validators.required],
       country_id: [targetClient?.country_id || '', Validators.required],
@@ -176,6 +164,22 @@ export class ClientsComponent implements OnInit {
       address: [targetClient?.address || '', Validators.required],
       description: [targetClient?.description || '', Validators.required],
     });
+  }
+
+  toggleFormVisibility = (clientId?: number) => {
+    this.upaddingClientId = clientId;
+    const targetClient = this.clients?.find(
+      (clients) => clients.id === clientId
+    );
+    if (clientId && targetClient) {
+      this.formHeader = 'Update Client';
+      this.formType = 'Update';
+    } else {
+      this.formHeader = 'Add New Client';
+      this.formType = 'Add';
+      this.countryCities.next([]);
+    }
+    this.validations(targetClient);
     this.newClientInputRows = [
       {
         backed_key: 'name',
