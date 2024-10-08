@@ -4,6 +4,12 @@ import {
   inputType,
   AddingFormComponent,
 } from '../../../shared/adding-form/adding-form.component';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
+
 import { CommonModule } from '@angular/common';
 import { Lawyers } from '../../../shared/models/lawyers.model';
 import { LawyersService } from '../../../shared/services/lawyers.service';
@@ -23,6 +29,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     NgIf,
     CommonModule,
     RouterLink,
+    MatPaginator,
   ],
   templateUrl: './opposite-lawyers.component.html',
   styleUrls: [
@@ -40,8 +47,11 @@ export class OppositeLawyersComponent {
   formHeader: string = 'Add New Category';
   upaddingLawyerId?: number;
   newLawyerInputRows!: inputType[];
-  lawyers!: Lawyers[];
+  lawyers?: Lawyers[];
+  paginatedOppositeLawyers?: Lawyers[];
   form!: FormGroup;
+  pageSize: number = 5;
+  currentPage: number = 0;
   constructor(
     private route: ActivatedRoute,
     private oppositeLawyerService: LawyersService,
@@ -60,13 +70,26 @@ export class OppositeLawyersComponent {
 
     this.lawyers = this.route.snapshot.data['oppositeLawyers'];
   }
-
   fetchLawyers(searchTerm: string) {
     this.oppositeLawyerService
       .getOppositeLawyers(searchTerm)
       .subscribe((lawyers) => {
         this.lawyers = lawyers;
       });
+    this.updatePaginatedLawyers();
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex;
+    this.updatePaginatedLawyers();
+  }
+  updatePaginatedLawyers(): void {
+    if (this.lawyers) {
+      const start = this.currentPage * this.pageSize;
+      const end = start + this.pageSize;
+      this.paginatedOppositeLawyers = this.lawyers.slice(start, end);
+    }
   }
 
   handleSearch(searchTerm: string) {
@@ -179,13 +202,15 @@ export class OppositeLawyersComponent {
           lawyerData
         ).then((result) => {
           if (result) {
-            this.lawyers = this.lawyers?.map((item) => {
-              if (item.id == this.upaddingLawyerId) {
-                console.log(lawyerData);
-                return lawyerData;
+            this.paginatedOppositeLawyers = this.paginatedOppositeLawyers?.map(
+              (item) => {
+                if (item.id == this.upaddingLawyerId) {
+                  console.log(lawyerData);
+                  return lawyerData;
+                }
+                return item;
               }
-              return item;
-            });
+            );
           } else {
             console.log('failed to update client');
           }

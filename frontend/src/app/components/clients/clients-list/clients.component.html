@@ -23,7 +23,7 @@
     thirdColumnHeader="Address"
   >
     <th scope="col" ngProjectAs="fourthColumnHeader">Action</th>
-    @for (client of clients; track $index) {
+    @for (client of paginatedClients; track $index) {
     <tr>
       <td style="color: var(--mainTextColor)" class="text-center">
         {{ $index + 1 }}
@@ -57,4 +57,13 @@
     </tr>
     }
   </app-table>
+  <div #paginatorContainer class="paginator-container">
+    <mat-paginator
+      [length]="clients?.length"
+      [pageSize]="5"
+      (page)="onPageChange($event)"
+      showFirstLastButtons
+    >
+    </mat-paginator>
+  </div>
 </div>
