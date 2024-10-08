@@ -1,31 +1,58 @@
 .contact .info-item {
-    background: color-mix(in srgb, var(--default-color), transparent 96%);
+    background: rgba(244, 244, 244, 0.96);
     padding: 30px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 10px;
+    margin-top: 10px;
+
+}
+
+.contact .info-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+section#contact {
+    margin-top: 40px;
 }
 
 .contact .info-item i {
-    font-size: 38px;
-    line-height: 0;
-    color: var(--accent-color);
+    font-size: 30px;
+    color: #467576;
+    margin-bottom: 15px;
 }
 
 .contact .info-item h3 {
-    font-size: 20px;
-    font-weight: 700;
-    margin: 20px 0 10px 0;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 15px 0 10px 0;
+    color: #000;
 }
 
 .contact .info-item p {
     padding: 0;
-    line-height: 24px;
+    line-height: 22px;
     font-size: 14px;
     margin-bottom: 0;
+    color: #000;
+}
+
+.row {
+    margin-top: 10px;
+    margin-bottom: 30px;
 }
 
 .contact .php-email-form {
-    background: color-mix(in srgb, var(--default-color), transparent 96%);
+    background: rgba(244, 244, 244, 0.96);
     padding: 30px;
     height: 100%;
+    transition: transform 0.3s;
+    border-radius: 10px;
+
+}
+
+.contact .php-email-form:hover {
+    transform: translateY(-5px);
 }
 
 .contact .php-email-form input[type=text],
@@ -34,79 +61,109 @@
     font-size: 14px;
     padding: 10px 15px;
     box-shadow: none;
-    border-radius: 0;
-    color: var(--default-color);
-    background-color: color-mix(in srgb, var(--background-color), transparent 50%);
-    border-color: color-mix(in srgb, var(--default-color), transparent 80%);
+    border-radius: 10px;
+    color: #000;
+    background-color: rgba(244, 244, 244, 0.96);
+    border: 1px solid rgba(220, 220, 220, 0.96);
+    transition: border-color 0.3s;
 }
 
 .contact .php-email-form input[type=text]:focus,
 .contact .php-email-form input[type=email]:focus,
 .contact .php-email-form textarea:focus {
-    border-color: var(--accent-color);
+    border-color: #467576;
 }
 
 .contact .php-email-form input[type=text]::placeholder,
 .contact .php-email-form input[type=email]::placeholder,
 .contact .php-email-form textarea::placeholder {
-    color: color-mix(in srgb, var(--default-color), transparent 70%);
+    color: rgba(0, 0, 0, 0.7);
 }
 
 .contact .php-email-form button[type=submit] {
-    background: var(--accent-color);
-    color: var(--contrast-color);
+    background: #467576;
+    color: #fff;
     border: 0;
     padding: 10px 30px;
-    transition: 0.4s;
+    transition: background-color 0.4s;
     border-radius: 4px;
+    cursor: pointer;
 }
 
 .contact .php-email-form button[type=submit]:hover {
-    background: color-mix(in srgb, var(--accent-color), transparent 20%);
+    background: none;
+    border: 1px solid #467576;
+    color: #467576;
+    transition: background-color 0.4s;
 }
 
-/* Styling the Send Message button */
-button[type="submit"] {
-    background-color: #007bff;
-    /* Primary button color */
-    color: #fff;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button[type="submit"]:hover {
-    background-color: #0056b3;
-    /* Darker shade on hover */
-}
-
+/* Disabled submit button */
 button[type="submit"]:disabled {
     background-color: #cccccc;
-    /* Disabled state color */
     cursor: not-allowed;
 }
 
-/* Styling for loading, error, and success messages */
+/* Loading, error, and success message styles */
 .loading {
     font-size: 16px;
     color: #007bff;
-    /* Blue to match loading theme */
+    /* Loading in blue */
     margin-bottom: 10px;
 }
 
 .error-message {
     font-size: 16px;
     color: #dc3545;
-    /* Bootstrap's red color for errors */
     margin-bottom: 10px;
 }
 
 .sent-message {
     font-size: 16px;
     color: #28a745;
-    /* Bootstrap's green color for success */
     margin-bottom: 10px;
+}
+
+.phoneNumber a {
+    text-decoration: none !important;
+    color: #000
+}
+
+.contact-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #557A7F;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.contact-paragraph {
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 30px;
+    color: #000;
+}
+
+.contact-title::before,
+.contact-title::after {
+    content: "";
+    width: 80px;
+    height: 2px;
+    background-color: #557A7F;
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+}
+
+.contact-title::before {
+    left: -120px;
+}
+
+.contact-title::after {
+    right: -120px;
+}
+
+.container {
+    text-align: center;
 }
