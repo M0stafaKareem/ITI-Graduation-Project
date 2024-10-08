@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Lawyers } from '../../../shared/models/lawyers.model';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
+
 import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-nav.component';
 import {
   AddingFormComponent,
@@ -21,6 +27,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     TableComponent,
     NgIf,
     RouterLink,
+    MatPaginator,
   ],
   templateUrl: './lawyers.component.html',
   styleUrls: [
@@ -38,8 +45,11 @@ export class LawyersComponent implements OnInit {
   formHeader: string = 'Add New Category';
   upaddingLawyerId?: number;
   newLawyerInputRows!: inputType[];
-  lawyers!: Lawyers[];
+  lawyers?: Lawyers[];
+  paginatedLawyers?: Lawyers[];
   form!: FormGroup;
+  pageSize: number = 5;
+  currentPage: number = 0;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -61,6 +71,20 @@ export class LawyersComponent implements OnInit {
     this.lawyerService.getLawyers(searchTerm).subscribe((lawyers) => {
       this.lawyers = lawyers;
     });
+    this.updatePaginatedLawyers();
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex;
+    this.updatePaginatedLawyers();
+  }
+  updatePaginatedLawyers(): void {
+    if (this.lawyers) {
+      const start = this.currentPage * this.pageSize;
+      const end = start + this.pageSize;
+      this.paginatedLawyers = this.lawyers.slice(start, end);
+    }
   }
 
   handleSearch(searchTerm: string) {

@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
+
 import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-nav.component';
 import { TableComponent } from '../../../shared/table/table.component';
 import { ClientsService } from '../../../shared/services/clients.service';
@@ -24,6 +30,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     AddingFormComponent,
     CommonModule,
     RouterLink,
+    MatPaginator,
   ],
   templateUrl: './clients.component.html',
   styleUrls: [
@@ -33,6 +40,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ClientsComponent implements OnInit {
   clients?: Array<Clients>;
+  paginatedClients?: Array<Clients>;
   countries?: {
     id: string;
     name: string;
@@ -53,6 +61,8 @@ export class ClientsComponent implements OnInit {
   newClientInputRows!: inputType[];
   clientCategories!: ClientCategory[];
   form!: FormGroup;
+  pageSize: number = 5;
+  currentPage: number = 0;
 
   constructor(
     private clientsService: ClientsService,
@@ -93,6 +103,20 @@ export class ClientsComponent implements OnInit {
     this.clientsService.getClients(searchTerm).subscribe((clients) => {
       this.clients = clients;
     });
+    this.updatePaginatedClients();
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex;
+    this.updatePaginatedClients();
+  }
+  updatePaginatedClients(): void {
+    if (this.clients) {
+      const start = this.currentPage * this.pageSize;
+      const end = start + this.pageSize;
+      this.paginatedClients = this.clients.slice(start, end);
+    }
   }
 
   handleSearch(searchTerm: string) {
@@ -286,7 +310,7 @@ export class ClientsComponent implements OnInit {
         await this.updateClient(this.upaddingClientId!, clientData).then(
           (result) => {
             if (result) {
-              this.clients = this.clients?.map((client) => {
+              this.paginatedClients = this.paginatedClients?.map((client) => {
                 if (client.id == this.upaddingClientId) {
                   console.log(clientData);
                   return clientData;
