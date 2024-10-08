@@ -13,6 +13,7 @@ import { ClientCategory } from '../../../shared/models/client.category';
 import { CountryService } from '../../../shared/services/country.service';
 import { BehaviorSubject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-clients',
@@ -51,14 +52,18 @@ export class ClientsComponent implements OnInit {
   upaddingClientId?: number;
   newClientInputRows!: inputType[];
   clientCategories!: ClientCategory[];
+  form!: FormGroup;
 
   constructor(
     private clientsService: ClientsService,
     private countryService: CountryService,
     private route: ActivatedRoute,
     private router: Router,
-    private toaster: ToastrService
-  ) {}
+    private toaster: ToastrService,
+    private fb: FormBuilder
+  ) {
+    this.form = this.fb.group({});
+  }
 
   ngOnInit(): void {
     const resolvedData = this.route.snapshot.data['data'];
@@ -91,11 +96,10 @@ export class ClientsComponent implements OnInit {
   }
 
   handleSearch(searchTerm: string) {
-    // Update query params with search term
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { search: searchTerm }, // Update search query param
-      queryParamsHandling: 'merge', // Merge with other query params
+      queryParams: { search: searchTerm },
+      queryParamsHandling: 'merge',
     });
   }
 
@@ -154,6 +158,24 @@ export class ClientsComponent implements OnInit {
       this.formType = 'Add';
       this.countryCities.next([]);
     }
+    this.form = this.fb.group({
+      name: [targetClient?.name || '', Validators.required],
+      country_id: [targetClient?.country_id || '', Validators.required],
+      city_id: [targetClient?.city_id || '', Validators.required],
+      client_category: [
+        targetClient?.client_category_id || '',
+        Validators.required,
+      ],
+      role: [targetClient?.role || '', Validators.required],
+      mobile: [targetClient?.mobile || '', Validators.required],
+      email: [
+        targetClient?.email || '',
+        [Validators.required, Validators.email],
+      ],
+      gender: [targetClient?.gender || '', Validators.required],
+      address: [targetClient?.address || '', Validators.required],
+      description: [targetClient?.description || '', Validators.required],
+    });
     this.newClientInputRows = [
       {
         backed_key: 'name',
@@ -187,7 +209,7 @@ export class ClientsComponent implements OnInit {
         options: this.clientCategories?.map((item) => {
           return { id: '' + item.id, value: item.category_name };
         }),
-        value: targetClient ? '' + targetClient.state_id : undefined,
+        value: targetClient ? '' + targetClient.client_category_id : undefined,
       },
       {
         backed_key: 'role',
@@ -244,29 +266,36 @@ export class ClientsComponent implements OnInit {
 
   submitForm = async (clientData: Clients) => {
     if (this.formType === 'Add') {
-      this.addNewClient(clientData).then((result) => {
-        if (result) {
-          this.clients?.push(clientData);
-        } else {
-          console.log('failed to add client');
-        }
-      });
-    } else if (this.formType === 'Update') {
-      await this.updateClient(this.upaddingClientId!, clientData).then(
-        (result) => {
+      if (this.form.valid) {
+        this.addNewClient(clientData).then((result) => {
           if (result) {
-            this.clients = this.clients?.map((client) => {
-              if (client.id == this.upaddingClientId) {
-                console.log(clientData);
-                return clientData;
-              }
-              return client;
-            });
-          } else {
-            console.log('failed to update client');
+            this.clients?.push(clientData);
+            console.log(clientData);
           }
-        }
-      );
+        });
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
+    } else if (this.formType === 'Update') {
+      if (this.form.valid) {
+        await this.updateClient(this.upaddingClientId!, clientData).then(
+          (result) => {
+            if (result) {
+              this.clients = this.clients?.map((client) => {
+                if (client.id == this.upaddingClientId) {
+                  console.log(clientData);
+                  return clientData;
+                }
+                return client;
+              });
+            }
+          }
+        );
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
     }
     this.toggleFormVisibility();
   };
@@ -280,6 +309,8 @@ export class ClientsComponent implements OnInit {
     } else if (selectedValue === 'Update') {
       this.toggleFormVisibility(clientId);
       event.target.value = '';
+    } else if (selectedValue === 'View') {
+      this.router.navigate(['/clients', clientId]);
     }
   }
 

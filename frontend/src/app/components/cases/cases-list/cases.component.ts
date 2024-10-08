@@ -88,29 +88,6 @@ export class CasesComponent implements OnInit {
     });
   }
 
-  ngAfterViewInit() {
-    const paginatorElement =
-      this.paginatorContainer.nativeElement.querySelector('mat-paginator');
-
-    this.renderer.setStyle(paginatorElement, 'background-color', '#f5f5f5');
-    this.renderer.setStyle(paginatorElement, 'padding', '5px');
-    this.renderer.setStyle(paginatorElement, 'border-radius', '5px');
-    this.renderer.setStyle(paginatorElement, 'over-flow', 'hidden');
-
-    const buttons = paginatorElement.querySelectorAll('.mat-button');
-    buttons.forEach((button: any) => {
-      this.renderer.setStyle(button, 'color', 'var(--primaryColor)');
-      this.renderer.setStyle(button, 'border-radius', '50%');
-      this.renderer.setStyle(button, 'padding', '4px 8px');
-      this.renderer.setStyle(button, 'margin', '0 4px');
-    });
-
-    // const dropdown = paginatorElement.querySelector('.mat-select-value');
-    // if (dropdown) {
-    //   this.renderer.setStyle(dropdown, 'color', 'var(--primaryColor)');
-    // }
-  }
-
   loadResolvedData(resolvedData: any) {
     resolvedData = resolvedData.data;
     this.cases = resolvedData.cases || [];
@@ -297,7 +274,6 @@ export class CasesComponent implements OnInit {
   };
 
   handleSearch(searchTerm: string) {
-    // Update query params to trigger resolver re-execution
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { search: searchTerm },
