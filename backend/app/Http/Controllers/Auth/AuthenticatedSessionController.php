@@ -80,12 +80,13 @@ class AuthenticatedSessionController extends Controller
         }
         if ($otp->otp == $request->otp && Auth::attempt($request->only('email','password'))) {
             $user = Auth::user();
+            $token = $user->createToken('auth_token')->plainTextToken;
 
             
 
             $otp->delete();
             
-            return response()->json(['user' => $user], 200);
+            return response()->json(['user' => $user,'access_token' => $token,'token_type' => 'Bearer',], 200);
         } else {
             return response()->json(['message' => 'Invalid OTP code'], 401);
         }
