@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Schema::create('expenses', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->timestamps();
-        // });
+        Schema::create('otp', function (Blueprint $table) {
+            
+            $table->string('email')->primary();
+            $table->string('otp');
+            $table->string('expire_at');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('expenses');
+        Schema::dropIfExists('otp');
     }
 };

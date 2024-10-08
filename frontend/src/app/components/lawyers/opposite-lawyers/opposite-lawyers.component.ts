@@ -4,6 +4,12 @@ import {
   inputType,
   AddingFormComponent,
 } from '../../../shared/adding-form/adding-form.component';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
+
 import { CommonModule } from '@angular/common';
 import { Lawyers } from '../../../shared/models/lawyers.model';
 import { LawyersService } from '../../../shared/services/lawyers.service';
@@ -11,6 +17,7 @@ import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-n
 import { TableComponent } from '../../../shared/table/table.component';
 import { NgIf } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-opposite-lawyers',
@@ -22,6 +29,7 @@ import { ToastrService } from 'ngx-toastr';
     NgIf,
     CommonModule,
     RouterLink,
+    MatPaginator,
   ],
   templateUrl: './opposite-lawyers.component.html',
   styleUrls: [
@@ -39,18 +47,22 @@ export class OppositeLawyersComponent {
   formHeader: string = 'Add New Category';
   upaddingLawyerId?: number;
   newLawyerInputRows!: inputType[];
-  lawyers!: Lawyers[];
+  lawyers?: Lawyers[];
+  paginatedOppositeLawyers?: Lawyers[];
+  form!: FormGroup;
+  pageSize: number = 5;
+  currentPage: number = 0;
   constructor(
     private route: ActivatedRoute,
     private oppositeLawyerService: LawyersService,
     private toaster: ToastrService,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
     const resolverData = this.route.snapshot.data['data'];
     this.lawyers = resolverData?.oppositeLawyers || [];
-    // subscribe to query param changes
     this.route.queryParams.subscribe((params) => {
       const searchTerm = params['search'] || '';
       this.fetchLawyers(searchTerm);
@@ -58,17 +70,29 @@ export class OppositeLawyersComponent {
 
     this.lawyers = this.route.snapshot.data['oppositeLawyers'];
   }
-
   fetchLawyers(searchTerm: string) {
     this.oppositeLawyerService
       .getOppositeLawyers(searchTerm)
       .subscribe((lawyers) => {
         this.lawyers = lawyers;
       });
+    this.updatePaginatedLawyers();
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex;
+    this.updatePaginatedLawyers();
+  }
+  updatePaginatedLawyers(): void {
+    if (this.lawyers) {
+      const start = this.currentPage * this.pageSize;
+      const end = start + this.pageSize;
+      this.paginatedOppositeLawyers = this.lawyers.slice(start, end);
+    }
   }
 
   handleSearch(searchTerm: string) {
-    // Update query params to trigger resolver re-execution
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { search: searchTerm },
@@ -107,6 +131,15 @@ export class OppositeLawyersComponent {
     });
   }
 
+  validations(targetLawyer?: Lawyers) {
+    this.form = this.fb.group({
+      name: [targetLawyer?.name || '', Validators.required],
+      phone_number: [targetLawyer?.phone_number || '', Validators.required],
+      address: [targetLawyer?.address || '', Validators.required],
+      national_id: [targetLawyer?.national_id || '', Validators.required],
+    });
+  }
+
   toggleFormVisibility = (lawyerId?: number) => {
     this.upaddingLawyerId = lawyerId;
     const targetLawyer = this.lawyers?.find((lawyer) => lawyer.id === lawyerId);
@@ -117,6 +150,7 @@ export class OppositeLawyersComponent {
       this.formHeader = 'Add Lawyer';
       this.formType = 'Add';
     }
+    this.validations(targetLawyer);
     this.newLawyerInputRows = [
       {
         backed_key: 'name',
@@ -149,29 +183,42 @@ export class OppositeLawyersComponent {
 
   submitForm = async (lawyerData: Lawyers) => {
     if (this.formType === 'Add') {
-      this.addNewOppositeLawyer(lawyerData).then((result) => {
-        if (result) {
-          this.lawyers?.push(lawyerData);
-        } else {
-          console.log('failed to add Category');
-        }
-      });
-    } else if (this.formType === 'Update') {
-      await this.updateOppositeLawyer(this.upaddingLawyerId!, lawyerData).then(
-        (result) => {
+      if (this.form.valid) {
+        this.addNewOppositeLawyer(lawyerData).then((result) => {
           if (result) {
-            this.lawyers = this.lawyers?.map((item) => {
-              if (item.id == this.upaddingLawyerId) {
-                console.log(lawyerData);
-                return lawyerData;
+            this.lawyers?.push(lawyerData);
+          } else {
+            console.log('failed to add Category');
+          }
+        });
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
+    } else if (this.formType === 'Update') {
+      if (this.form.valid) {
+        await this.updateOppositeLawyer(
+          this.upaddingLawyerId!,
+          lawyerData
+        ).then((result) => {
+          if (result) {
+            this.paginatedOppositeLawyers = this.paginatedOppositeLawyers?.map(
+              (item) => {
+                if (item.id == this.upaddingLawyerId) {
+                  console.log(lawyerData);
+                  return lawyerData;
+                }
+                return item;
               }
-              return item;
-            });
+            );
           } else {
             console.log('failed to update client');
           }
-        }
-      );
+        });
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
     }
     this.toggleFormVisibility();
   };

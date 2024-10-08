@@ -12,6 +12,7 @@ import { ClientsService } from '../../../shared/services/clients.service';
 import { TableComponent } from '../../../shared/table/table.component';
 import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-nav.component';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-client-category',
@@ -41,18 +42,21 @@ export class ClientCategoryComponent {
   formHeader: string = 'Add New Category';
   upaddingClientId?: number;
   newCategoryInputRows!: inputType[];
+  form!: FormGroup;
 
   constructor(
     private clientSerivce: ClientsService,
     private route: ActivatedRoute,
     private router: Router,
-    private toaster: ToastrService
-  ) {}
+    private toaster: ToastrService,
+    private fb: FormBuilder
+  ) {
+    this.form = this.fb.group({});
+  }
 
   ngOnInit(): void {
     const resolveData = this.route.snapshot.data['data'];
     this.categories = resolveData?.clientCategories || [];
-    // subscribe to query param changes
     this.route.queryParams.subscribe((params) => {
       const searchTerm = params['search'] || '';
       this.fetchCategories(searchTerm);
@@ -60,7 +64,6 @@ export class ClientCategoryComponent {
     this.categories = this.route.snapshot.data['clientCategories'];
   }
 
-  // Function to fetch clients based on the search term
   fetchCategories(searchTerm: string) {
     this.clientSerivce.getCategories(searchTerm).subscribe((categories) => {
       this.categories = categories;
@@ -68,7 +71,6 @@ export class ClientCategoryComponent {
   }
 
   handleSearch(searchTerm: string) {
-    // Update query params to trigger resolver re-execution
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { search: searchTerm },
@@ -105,6 +107,13 @@ export class ClientCategoryComponent {
     });
   }
 
+  validations(targetCategory?: ClientCategory) {
+    this.form = this.fb.group({
+      category_name: [targetCategory?.category_name || '', Validators.required],
+      description: [targetCategory?.description || '', Validators.required],
+    });
+  }
+
   toggleFormVisibility = (categoryId?: number) => {
     this.upaddingClientId = categoryId;
     const targetCategory = this.categories?.find(
@@ -117,6 +126,7 @@ export class ClientCategoryComponent {
       this.formHeader = 'Add New Category';
       this.formType = 'Add';
     }
+    this.validations(targetCategory);
     this.newCategoryInputRows = [
       {
         backed_key: 'category_name',
@@ -136,34 +146,42 @@ export class ClientCategoryComponent {
 
   submitForm = async (categoryData: ClientCategory) => {
     if (this.formType === 'Add') {
-      this.addNewCategory(categoryData).then((result) => {
-        if (result) {
-          this.categories?.push({
-            ...categoryData,
-            id: this.categories.length,
-          });
-        } else {
-          console.log('failed to add client');
-        }
-      });
-    } else if (this.formType === 'Update') {
-      await this.updateCategory(this.upaddingClientId!, categoryData).then(
-        (result) => {
+      if (this.form.valid) {
+        this.addNewCategory(categoryData).then((result) => {
           if (result) {
-            this.categories = this.categories?.map((category) => {
-              if (category.id == this.upaddingClientId) {
-                return {
-                  ...category,
-                  id: this.categories![this.categories!.length].id! + 1,
-                };
-              }
-              return category;
+            this.categories?.push({
+              ...categoryData,
+              id: this.categories.length,
             });
-          } else {
-            console.log('failed to update client');
           }
-        }
-      );
+        });
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
+    } else if (this.formType === 'Update') {
+      if (this.form.valid) {
+        await this.updateCategory(this.upaddingClientId!, categoryData).then(
+          (result) => {
+            if (result) {
+              this.categories = this.categories?.map((category) => {
+                if (category.id == this.upaddingClientId) {
+                  return {
+                    ...category,
+                    id: this.categories![this.categories!.length].id! + 1,
+                  };
+                }
+                return category;
+              });
+            } else {
+              console.log('failed to update client');
+            }
+          }
+        );
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
     }
     this.toggleFormVisibility();
   };

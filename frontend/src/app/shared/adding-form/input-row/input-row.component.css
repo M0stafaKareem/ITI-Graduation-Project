@@ -16,13 +16,18 @@ input[type="password"],
 input[type="number"],
 select,
 input[type="date"] {
-  background-color: #4a5568;
-  color: #e2e8f0;
+  background-color: #ddd;
+  color: var(--tableTextColor);
   border: none;
-  border-radius: 5px;
+  border-radius: 5px !important;
   padding: 12px;
   width: 100%;
   transition: all 0.15s ease-in-out;
+  outline: none;
+}
+input[type="text"]::placeholder,
+input[type="date"] {
+  color: rgba(0, 0, 0, 0.3);
 }
 
 input[type="text"]:focus,
@@ -31,9 +36,9 @@ input[type="password"]:focus,
 input[type="number"]:focus,
 select:focus,
 input[type="date"]:focus {
-  background-color: #2d3748;
+  background-color: #dddd;
   outline: none;
-  border: 1px solid #3b82f6;
+  border: 1px solid black;
 }
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -44,8 +49,12 @@ input:-webkit-autofill:active {
 }
 
 label {
-  color: #e2e8f0;
+  color: var(--mainTextColor);
   margin-bottom: 4px;
+}
+
+p {
+  color: red;
 }
 
 @keyframes slideIn {
