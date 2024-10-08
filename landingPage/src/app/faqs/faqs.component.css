@@ -5,6 +5,13 @@
 
 }
 
+.contact-title {
+    text-align: center;
+    position: relative;
+    padding-bottom: 20px;
+
+}
+
 .faq .content p {
     font-size: 15px;
 }

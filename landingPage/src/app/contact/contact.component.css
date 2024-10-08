@@ -4,11 +4,16 @@
     transition: transform 0.3s, box-shadow 0.3s;
     border-radius: 10px;
     margin-top: 10px;
+
 }
 
 .contact .info-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+section#contact {
+    margin-top: 40px;
 }
 
 .contact .info-item i {
@@ -121,4 +126,44 @@ button[type="submit"]:disabled {
 .phoneNumber a {
     text-decoration: none !important;
     color: #000
+}
+
+.contact-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #557A7F;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.contact-paragraph {
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 30px;
+    color: #000;
+}
+
+.contact-title::before,
+.contact-title::after {
+    content: "";
+    width: 80px;
+    height: 2px;
+    background-color: #557A7F;
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+}
+
+.contact-title::before {
+    left: -120px;
+}
+
+.contact-title::after {
+    right: -120px;
+}
+
+.container {
+    text-align: center;
 }
