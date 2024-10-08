@@ -107,6 +107,13 @@ export class ClientCategoryComponent {
     });
   }
 
+  validations(targetCategory?: ClientCategory) {
+    this.form = this.fb.group({
+      category_name: [targetCategory?.category_name || '', Validators.required],
+      description: [targetCategory?.description || '', Validators.required],
+    });
+  }
+
   toggleFormVisibility = (categoryId?: number) => {
     this.upaddingClientId = categoryId;
     const targetCategory = this.categories?.find(
@@ -119,10 +126,7 @@ export class ClientCategoryComponent {
       this.formHeader = 'Add New Category';
       this.formType = 'Add';
     }
-    this.form = this.fb.group({
-      category_name: [targetCategory?.category_name || '', Validators.required],
-      description: [targetCategory?.description || '', Validators.required],
-    });
+    this.validations(targetCategory);
     this.newCategoryInputRows = [
       {
         backed_key: 'category_name',

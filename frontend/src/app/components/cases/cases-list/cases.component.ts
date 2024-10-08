@@ -76,7 +76,6 @@ export class CasesComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toaster: ToastrService,
-    private renderer: Renderer2,
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({});
@@ -113,16 +112,7 @@ export class CasesComponent implements OnInit {
     }
   }
 
-  toggleFormVisibility = (caseId?: number): void => {
-    this.upaddingCaseId = caseId;
-    const targetCase = this.cases?.find((clients) => clients.id === caseId);
-    if (targetCase) {
-      this.formHeader = 'Update Case';
-      this.formType = 'Update';
-    } else {
-      this.formHeader = 'Add New Case';
-      this.formType = 'Add';
-    }
+  validations(targetCase?: Case) {
     this.form = this.fb.group({
       case_name: [targetCase?.case_name || '', Validators.required],
       case_date: [targetCase?.case_date || '', Validators.required],
@@ -144,6 +134,19 @@ export class CasesComponent implements OnInit {
       ],
       court_id: [targetCase?.court_id || '', Validators.required],
     });
+  }
+
+  toggleFormVisibility = (caseId?: number): void => {
+    this.upaddingCaseId = caseId;
+    const targetCase = this.cases?.find((clients) => clients.id === caseId);
+    if (targetCase) {
+      this.formHeader = 'Update Case';
+      this.formType = 'Update';
+    } else {
+      this.formHeader = 'Add New Case';
+      this.formType = 'Add';
+    }
+    this.validations(targetCase);
     this.newCasesInputRows = [
       {
         backed_key: 'case_name',
@@ -256,13 +259,12 @@ export class CasesComponent implements OnInit {
       if (this.form.valid) {
         await this.updateCase(this.upaddingCaseId!, caseData).then((result) => {
           if (result) {
-            this.cases = this.cases?.map((item) => {
+            this.paginatedCases = this.paginatedCases?.map((item) => {
               if (item.id == this.upaddingCaseId) {
                 return caseData;
               }
               return item;
             });
-            window.location.reload();
           }
         });
       } else {

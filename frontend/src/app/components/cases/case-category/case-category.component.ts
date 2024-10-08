@@ -109,6 +109,13 @@ export class CaseCategoryComponent implements OnInit {
     });
   }
 
+  validations(targetCategory?: CaseCategory) {
+    this.form = this.fb.group({
+      name: [targetCategory?.name || '', Validators.required],
+      description: [targetCategory?.description || '', Validators.required],
+    });
+  }
+
   toggleFormVisibility = (categoryId?: number) => {
     this.upaddingCategoryId = categoryId;
     const targetCategory = this.categories?.find(
@@ -121,10 +128,7 @@ export class CaseCategoryComponent implements OnInit {
       this.formHeader = 'Add Category';
       this.formType = 'Add';
     }
-    this.form = this.fb.group({
-      name: [targetCategory?.name || '', Validators.required],
-      description: [targetCategory?.description || '', Validators.required],
-    });
+    this.validations(targetCategory);
     this.newCategoryInputRows = [
       {
         backed_key: 'name',

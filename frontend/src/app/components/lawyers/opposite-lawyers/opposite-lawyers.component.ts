@@ -47,7 +47,7 @@ export class OppositeLawyersComponent {
     private oppositeLawyerService: LawyersService,
     private toaster: ToastrService,
     private router: Router,
-    private fb:FormBuilder
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -108,6 +108,15 @@ export class OppositeLawyersComponent {
     });
   }
 
+  validations(targetLawyer?: Lawyers) {
+    this.form = this.fb.group({
+      name: [targetLawyer?.name || '', Validators.required],
+      phone_number: [targetLawyer?.phone_number || '', Validators.required],
+      address: [targetLawyer?.address || '', Validators.required],
+      national_id: [targetLawyer?.national_id || '', Validators.required],
+    });
+  }
+
   toggleFormVisibility = (lawyerId?: number) => {
     this.upaddingLawyerId = lawyerId;
     const targetLawyer = this.lawyers?.find((lawyer) => lawyer.id === lawyerId);
@@ -118,12 +127,7 @@ export class OppositeLawyersComponent {
       this.formHeader = 'Add Lawyer';
       this.formType = 'Add';
     }
-    this.form = this.fb.group({
-      name: [targetLawyer?.name || '', Validators.required],
-      phone_number: [targetLawyer?.phone_number || '', Validators.required],
-      address: [targetLawyer?.address || '', Validators.required],
-      national_id: [targetLawyer?.national_id || '', Validators.required],
-    });
+    this.validations(targetLawyer);
     this.newLawyerInputRows = [
       {
         backed_key: 'name',
@@ -156,7 +160,7 @@ export class OppositeLawyersComponent {
 
   submitForm = async (lawyerData: Lawyers) => {
     if (this.formType === 'Add') {
-      if(this.form.valid) {
+      if (this.form.valid) {
         this.addNewOppositeLawyer(lawyerData).then((result) => {
           if (result) {
             this.lawyers?.push(lawyerData);
@@ -169,7 +173,7 @@ export class OppositeLawyersComponent {
         return;
       }
     } else if (this.formType === 'Update') {
-      if(this.form.valid) {
+      if (this.form.valid) {
         await this.updateOppositeLawyer(
           this.upaddingLawyerId!,
           lawyerData

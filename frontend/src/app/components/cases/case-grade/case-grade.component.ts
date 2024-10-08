@@ -106,6 +106,13 @@ export class CaseGradeComponent implements OnInit {
     });
   }
 
+  validations(targetGrade?: CaseGrade) {
+    this.form = this.fb.group({
+      name: [targetGrade?.name || '', Validators.required],
+      description: [targetGrade?.description || '', Validators.required],
+    });
+  }
+
   toggleFormVisibility = (gradeId?: number) => {
     this.upaddingGradeId = gradeId;
     const targetGrade = this.grades?.find((item) => item.id === gradeId);
@@ -116,10 +123,7 @@ export class CaseGradeComponent implements OnInit {
       this.formHeader = 'Add Grade';
       this.formType = 'Add';
     }
-    this.form = this.fb.group({
-      name: [targetGrade?.name || '', Validators.required],
-      description: [targetGrade?.description || '', Validators.required],
-    });
+    this.validations(targetGrade);
     this.newGradeInputRows = [
       {
         backed_key: 'name',

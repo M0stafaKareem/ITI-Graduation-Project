@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { NgClass } from '@angular/common';
 import { LoginService } from '../../components/login/login.service';
+import { style } from '@angular/animations';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,6 +11,7 @@ import { LoginService } from '../../components/login/login.service';
   imports: [RouterLink, RouterLinkActive, DropdownComponent, NgClass],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
+  host: { class: 'sidebar-zindex' },
 })
 export class SidebarComponent {
   isSidebarOpen: boolean = false;
