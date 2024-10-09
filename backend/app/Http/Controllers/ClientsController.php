@@ -8,13 +8,14 @@ use App\Models\ClientCategory;
 use App\Models\Country;
 use App\Models\state;
 use Illuminate\Http\Request;
+use App\Models\Invoice;
 
 class ClientsController extends Controller
 {
   
     public function index(Request $request)
     {
-        $Clients = Client::all();
+        $Clients = Client::with('invoice')->get();
         // Extract the search term from the query parameters
         $searchTerm = $request->query('search');
         if(!empty($searchTerm)){
@@ -25,6 +26,8 @@ class ClientsController extends Controller
                       ->orWhere('address', 'like', "%{$searchTerm}%");
             })->get();
         }
+        
+
 
         return $Clients;
     }
@@ -69,7 +72,7 @@ class ClientsController extends Controller
     public function show( $id)
     {
         
-        $Client = Client::find($id);
+        $Client = Client::with('invoice')->find($id);
         if (!$Client) {
             return 'Client not found.';
         }
