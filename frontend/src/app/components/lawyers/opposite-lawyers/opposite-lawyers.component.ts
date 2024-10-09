@@ -75,8 +75,8 @@ export class OppositeLawyersComponent {
       .getOppositeLawyers(searchTerm)
       .subscribe((lawyers) => {
         this.lawyers = lawyers;
+        this.updatePaginatedLawyers();
       });
-    this.updatePaginatedLawyers();
   }
 
   onPageChange(event: PageEvent): void {
@@ -91,6 +91,47 @@ export class OppositeLawyersComponent {
       this.paginatedOppositeLawyers = this.lawyers.slice(start, end);
     }
   }
+
+  toggleFormVisibility = (lawyerId?: number) => {
+    this.upaddingLawyerId = lawyerId;
+    const targetLawyer = this.lawyers?.find((lawyer) => lawyer.id === lawyerId);
+    if (targetLawyer && lawyerId) {
+      this.formHeader = 'Update Lawyer';
+      this.formType = 'Update';
+    } else {
+      this.formHeader = 'Add Lawyer';
+      this.formType = 'Add';
+    }
+    this.validations(targetLawyer);
+    this.newLawyerInputRows = [
+      {
+        backed_key: 'name',
+        title: 'Lawyer Name',
+        type: 'text',
+        value: targetLawyer ? targetLawyer.name : undefined,
+      },
+      {
+        backed_key: 'phone_number',
+        title: 'Mobile Number',
+        type: 'text',
+        value: targetLawyer ? targetLawyer.phone_number : undefined,
+      },
+      {
+        backed_key: 'address',
+        title: 'Address',
+        type: 'text',
+        value: targetLawyer ? targetLawyer.address : undefined,
+      },
+      {
+        backed_key: 'national_id',
+        title: 'Nationality ID',
+        type: 'text',
+        value: targetLawyer ? targetLawyer.national_id : undefined,
+      },
+    ];
+
+    this.isFormVisible = !this.isFormVisible;
+  };
 
   handleSearch(searchTerm: string) {
     this.router.navigate([], {
@@ -139,47 +180,6 @@ export class OppositeLawyersComponent {
       national_id: [targetLawyer?.national_id || '', Validators.required],
     });
   }
-
-  toggleFormVisibility = (lawyerId?: number) => {
-    this.upaddingLawyerId = lawyerId;
-    const targetLawyer = this.lawyers?.find((lawyer) => lawyer.id === lawyerId);
-    if (targetLawyer && lawyerId) {
-      this.formHeader = 'Update Lawyer';
-      this.formType = 'Update';
-    } else {
-      this.formHeader = 'Add Lawyer';
-      this.formType = 'Add';
-    }
-    this.validations(targetLawyer);
-    this.newLawyerInputRows = [
-      {
-        backed_key: 'name',
-        title: 'Lawyer Name',
-        type: 'text',
-        value: targetLawyer ? targetLawyer.name : undefined,
-      },
-      {
-        backed_key: 'phone_number',
-        title: 'Mobile Number',
-        type: 'text',
-        value: targetLawyer ? targetLawyer.phone_number : undefined,
-      },
-      {
-        backed_key: 'address',
-        title: 'Address',
-        type: 'text',
-        value: targetLawyer ? targetLawyer.address : undefined,
-      },
-      {
-        backed_key: 'national_id',
-        title: 'Nationality ID',
-        type: 'text',
-        value: targetLawyer ? targetLawyer.national_id : undefined,
-      },
-    ];
-
-    this.isFormVisible = !this.isFormVisible;
-  };
 
   submitForm = async (lawyerData: Lawyers) => {
     if (this.formType === 'Add') {
