@@ -14,7 +14,7 @@ class BudgetController extends Controller
     public function index()
     {
         try{
-            return Budget::all();
+            return Budget::with('expenses')->get();
         }catch(\Exception $e){
             return $e->getMessage();
         }
@@ -29,6 +29,7 @@ class BudgetController extends Controller
             $request->validate([
                 'budget_name' => 'required',
                 'amount' => 'required',
+                'spent' => 'required',
             ]);
             $request = Budget::create($request->all());
             return response()
@@ -50,7 +51,7 @@ class BudgetController extends Controller
     public function show(string $id)
     {
         try{
-            $budget = Budget::findOrFail($id) ;
+            $budget = Budget::with('expenses')->findOrFail($id) ;
             return $budget;
         }catch(\Exception $e){
             return $e->getMessage();
@@ -67,8 +68,9 @@ class BudgetController extends Controller
             $request->validate([
                 'budget_name' => 'required',
                 'amount' => 'required',
+                'spent'=> 'required'
             ]);
-            $budget = Budget::findOrFail($id);
+            $budget = Budget::with('expenses')->findOrFail($id);
             $budget->update($request->all());
             return response()->
             json(['message' => 'budget updated successfully.']);
@@ -87,7 +89,7 @@ class BudgetController extends Controller
     public function destroy(string $id)
     {
         try{
-            $budget = Budget::findOrFail($id);
+        $budget = Budget::with('expenses')->findOrFail($id);
             $budget->delete();
             return response()->json(['message' => 'budget deleted successfully.']);
         }catch(\Exception $e){

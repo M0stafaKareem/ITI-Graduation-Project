@@ -48,7 +48,7 @@ class InvoiceController extends Controller
     public function show(string $id)
     {
         try{
-            $invoice = Invoice::with('payment','client')->findOrFail($id) ;
+            $invoice = Invoice::with(   'payment','client')->findOrFail($id) ;
             return $invoice;
         }catch(\Exception $e){
             return $e->getMessage();

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('budget_name');
             $table->integer('amount');
+            $table->string('spent');
             $table->softDeletes();
         });
     }

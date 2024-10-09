@@ -13,6 +13,7 @@ class Budget extends Model
     protected $fillable=[
         'budget_name',
         'amount',
+        'spent'
     ];
 
     public function expenses()
