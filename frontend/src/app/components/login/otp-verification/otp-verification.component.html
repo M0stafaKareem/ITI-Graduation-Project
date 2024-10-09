@@ -1,0 +1,59 @@
+<link
+  href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+  rel="stylesheet"
+/>
+<div class="backdrop" (click)="closeForm()"></div>
+<div class="otp-wrapper">
+  <div class="otp-container">
+    <button type="button" class="close-btn" (click)="closeForm()">
+      &times;
+    </button>
+    <header>
+      <i class="bx bxs-check-shield"></i>
+    </header>
+    <h4>Enter OTP Code</h4>
+    <form>
+      <div class="input-field">
+        <input (change)="checkInputsAreNotEmpty()" #otpInput type="text" />
+        <input
+          (change)="checkInputsAreNotEmpty()"
+          #otpInput
+          type="text"
+          disabled
+        />
+        <input
+          (change)="checkInputsAreNotEmpty()"
+          #otpInput
+          type="text"
+          disabled
+        />
+        <input
+          (change)="checkInputsAreNotEmpty()"
+          #otpInput
+          type="text"
+          disabled
+        />
+        <input
+          (change)="checkInputsAreNotEmpty()"
+          #otpInput
+          type="text"
+          disabled
+        />
+        <input
+          (keyup)="checkInputsAreNotEmpty()"
+          #otpInput
+          type="text"
+          disabled
+        />
+      </div>
+      <button
+        class="verify-btn"
+        type="button"
+        (click)="verifyBtnHandler()"
+        disabled
+      >
+        Verify OTP
+      </button>
+    </form>
+  </div>
+</div>

@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
             ClientCategoriesSeeder::class,
             CourtsSeeder::class,
             EventsSeeder::class,
-            ExpensesSeeder::class,
             PartiesSeeder::class,
             SessionsSeeder::class,
             LawyersSeeder::class,
@@ -23,8 +22,9 @@ class DatabaseSeeder extends Seeder
             TasksSeeder::class,
             ClientsSeeder::class,
             CasesSeeder::class,
-            CasesPartiesSeeder::class,
             CsessionsSeeder::class,
+            CasesPartiesSeeder::class,
+            ExpensesSeeder::class,
         ]);
     }
 }

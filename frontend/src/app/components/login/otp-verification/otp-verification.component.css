@@ -1,0 +1,129 @@
+/* Import Google font - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+.backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+}
+:where(.otp-container, form, .input-field, header) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.otp-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.otp-container {
+  position: relative;
+  z-index: 1001;
+  background: #fff;
+  padding: 8vh 10vw;
+  border-radius: 12px;
+  row-gap: 20px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.5s ease-in-out forwards;
+}
+.close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 5%;
+  right: 3%;
+  color: white;
+  width: 2rem;
+  height: 2rem;
+  background-color: rgba(255, 0, 0, 0.693);
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 2rem;
+}
+.close-btn:hover {
+  background-color: rgba(255, 0, 0, 0.95);
+}
+.otp-container header {
+  height: 65px;
+  width: 65px;
+  background: #00bc69;
+  color: #fff;
+  font-size: 2.5rem;
+  border-radius: 50%;
+}
+.otp-container h4 {
+  font-size: 1.25rem;
+  color: #333;
+  font-weight: 500;
+}
+form .input-field {
+  flex-direction: row;
+  column-gap: 10px;
+}
+.input-field input {
+  height: 45px;
+  width: 42px;
+  border-radius: 6px;
+  outline: none;
+  font-size: 1.125rem;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+.input-field input:focus {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+}
+.input-field input::-webkit-inner-spin-button,
+.input-field input::-webkit-outer-spin-button {
+  display: none;
+}
+.verify-btn {
+  margin-top: 25px;
+  width: 60%;
+  color: #fff;
+  font-size: 1rem;
+  border: none;
+  padding: 9px 0;
+  cursor: not-allowed;
+  border-radius: 6px;
+  background: #00bc88;
+  transition: all 0.2s ease;
+}
+
+.verify-btn.active {
+  background: #00bc69;
+  cursor: pointer;
+}
+
+form button:hover {
+  background: rgba(0, 188, 106, 0.7);
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-150px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
