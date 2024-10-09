@@ -14,8 +14,8 @@ class CaseGradesSeeder extends Seeder
 
         foreach (range(1, 5) as $index) {
             DB::table('case_grades')->insert([
-                'name' => $faker->name(),
-                'description' => $faker->paragraph(),
+                'name' => $faker->word(),
+                'description' => $faker->realText(),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

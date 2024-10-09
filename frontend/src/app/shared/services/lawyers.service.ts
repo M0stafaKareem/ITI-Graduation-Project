@@ -23,8 +23,7 @@ export class LawyersService {
     let params = new HttpParams();
     if (searchTerm) {
       params = params.set('search', searchTerm);
-    }
-    this.spinner.show();
+    } else this.spinner.show();
     return this.httpClient
       .get<Lawyers[]>(this.lawyersUrl, { params })
       .pipe(finalize(() => this.spinner.hide()));
@@ -66,8 +65,7 @@ export class LawyersService {
     let params = new HttpParams();
     if (searchTerm) {
       params = params.set('search', searchTerm);
-    }
-    this.spinner.show();
+    } else this.spinner.show();
     return this.httpClient
       .get<Lawyers[]>(`${this.oppositeLawyersUrl}`, {
         params,

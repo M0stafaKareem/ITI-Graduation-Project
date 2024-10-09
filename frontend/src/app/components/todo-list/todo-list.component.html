@@ -1,23 +1,23 @@
-<div class="card p-2">
-<div class="container  ">
-  <h1 class="">Lawyers Team Todo List</h1>
-</div>
-<div>
-  <ul id="users">
-    @for (user of usersArray; track $index) {
-    <li>
-      <app-user
-        [user]="user"
-        (select)="selectedUserHandler($event)"
-        [selectedUser]="selectedUser"
-      />
-    </li>
+<div [ngClass]="{ 'card p-2': isDashboard }">
+  <div class="container">
+    <h1 class="">Lawyers Todo List</h1>
+  </div>
+  <div [ngClass]="{ main: !isDashboard }">
+    <ul id="users">
+      @for (user of usersArray; track $index) {
+      <li>
+        <app-user
+          [user]="user"
+          (select)="selectedUserHandler($event)"
+          [selectedUser]="selectedUser"
+        />
+      </li>
+      }
+    </ul>
+    @if (selectedUser) {
+    <app-tasks [selectedUser]="selectedUser" />
+    }@else {
+    <h3 class="mt-2">Select a user to see their tasks</h3>
     }
-  </ul>
-  @if (selectedUser) {
-  <app-tasks [selectedUser]="selectedUser" />
-  }@else {
-  <h3 class="mt-2 ">Select a user to see their tasks</h3>
-  }
-</div>
+  </div>
 </div>
