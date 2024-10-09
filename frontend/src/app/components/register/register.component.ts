@@ -57,6 +57,7 @@ export class RegisterComponent {
       if (errors.hasOwnProperty(field)) {
         const messages = errors[field];
         messages.forEach((message: string) => {
+          this.errors = errors;
           this.toastr.error(
             message,
             field.charAt(0).toUpperCase() + field.slice(1)
