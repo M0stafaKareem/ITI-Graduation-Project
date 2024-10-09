@@ -32,3 +32,19 @@ td:first-child {
 .mat-mdc-paginator-container {
   justify-content: center !important;
 }
+
+@media (max-width: 786px) {
+  .fc .fc-toolbar {
+    flex-direction: column;
+  }
+  .fc-toolbar-chunk {
+    display: flex;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 968px) {
+  .fc-toolbar-chunk {
+    display: flex;
+  }
+}

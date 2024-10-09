@@ -22,6 +22,12 @@
   <div
     bio-row
     ngProjectAs="rowInfo"
+    label="Address"
+    value="{{ client?.address }}"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
     label="Email"
     value="{{ client?.email }}"
   ></div>
@@ -35,6 +41,24 @@
     bio-row
     ngProjectAs="rowInfo"
     label="Country"
-    value="{{ client?.country_id }}"
+    value="{{ client?.country?.name }}"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Role"
+    value="{{ client?.role }}"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Client Category"
+    value="{{ client?.category?.category_name }}"
+  ></div>
+  <div
+    bio-row
+    ngProjectAs="rowInfo"
+    label="Description"
+    value="{{ client?.description }}"
   ></div>
 </app-single-page-details>

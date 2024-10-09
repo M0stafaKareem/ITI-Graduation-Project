@@ -67,8 +67,8 @@
       ></td>
       <td *ngIf="!case.client">No Client Assigned</td>
       <td>
-        Court Name : {{ case.court?.name }} <br />
-        Court Location: {{ case.court?.location }}
+        Court Name : <span class="court-info">{{ case.court?.name }}</span> <br />
+        Court Location: <span class="court-info">{{ case.court?.location }}</span>
       </td>
       <td>
         @if (case.status === 'closed') {

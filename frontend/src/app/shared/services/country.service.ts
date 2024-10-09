@@ -8,6 +8,7 @@ import { finalize, Observable } from 'rxjs';
 })
 export class CountryService {
   private countriesUrl: string = 'http://127.0.0.1:8000/api/Countries';
+  private citiesUrl: string = 'http://127.0.0.1:8000/api/Cities';
   constructor(
     private httpClient: HttpClient,
     private spinner: NgxSpinnerService
