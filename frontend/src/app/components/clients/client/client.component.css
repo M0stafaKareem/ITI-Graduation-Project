@@ -2,3 +2,7 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
+.client-info {
+  color: var(--mainTextColor);
+}

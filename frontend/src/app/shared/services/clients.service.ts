@@ -38,7 +38,7 @@ export class ClientsService {
   getCategories(searchTerm: string = ''): Observable<ClientCategory[]> {
     let params = new HttpParams();
     if (searchTerm) {
-      params = params.set('search', searchTerm); // Set search query param if provided
+      params = params.set('search', searchTerm);
     } else {
       this.spinner.show();
     }

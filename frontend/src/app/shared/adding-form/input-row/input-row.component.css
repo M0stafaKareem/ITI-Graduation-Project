@@ -36,9 +36,9 @@ input[type="password"]:focus,
 input[type="number"]:focus,
 select:focus,
 input[type="date"]:focus {
-  background-color: #dddd;
+  background-color: #ddd;
   outline: none;
-  border: 1px solid black;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
 }
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -49,12 +49,35 @@ input:-webkit-autofill:active {
 }
 
 label {
-  color: var(--mainTextColor);
+  color: black;
   margin-bottom: 4px;
 }
 
 p {
   color: red;
+}
+
+.placeholder-option {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+select {
+  background-color: #ddd;
+  color: var(--tableTextColor);
+  border: none;
+  border-radius: 5px !important;
+  padding: 12px;
+  width: 100%;
+  transition: all 0.15s ease-in-out;
+  outline: none;
+}
+
+select option {
+  color: black;
+}
+
+select:not(:focus):invalid {
+  color: rgba(0, 0, 0, 0.3);
 }
 
 @keyframes slideIn {
