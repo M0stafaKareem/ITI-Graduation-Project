@@ -15,11 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->softDeletes();
-            // $table->foreignId('client_id')
-            // ->constrained()
-            // ->nullable()
-            // ->references('id')->on('clients')->onDelete('cascade')
-            // ->onUpdate('cascade');
+            
             
         });
     }

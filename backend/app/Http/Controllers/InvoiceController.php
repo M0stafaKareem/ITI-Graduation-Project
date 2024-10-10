@@ -14,7 +14,7 @@ class InvoiceController extends Controller
     public function index()
     {
         try{
-            return Invoice::with('payment','client')->get();
+            return Invoice::with(['payment','client:id,name'])->get();
         }catch(\Exception $e){
             return $e->getMessage();
         }
@@ -48,7 +48,7 @@ class InvoiceController extends Controller
     public function show(string $id)
     {
         try{
-            $invoice = Invoice::with('payment','client')->findOrFail($id) ;
+            $invoice = Invoice::with(['payment','client:id,name'])->findOrFail($id) ;
             return $invoice;
         }catch(\Exception $e){
             return $e->getMessage();
@@ -64,7 +64,7 @@ class InvoiceController extends Controller
             $request->validate([
              
             ]);
-            $invoice = Invoice::with('payment','client')->findOrFail($id);
+            $invoice = Invoice::with(['payment','client:id,name'])->findOrFail($id);
             $invoice->update($request->all());
             return response()->
             json(['message' => 'invoice updated successfully.']);
@@ -81,7 +81,7 @@ class InvoiceController extends Controller
     public function destroy(string $id)
     {
         try{
-            $invoice = Invoice::with('payment','client')->findOrFail($id);
+            $invoice = Invoice::with(['payment','client:id,name'])->findOrFail($id);
             $invoice->delete();
             return response()->json(['message' => 'invoice deleted successfully.']);
         }catch(\Exception $e){
