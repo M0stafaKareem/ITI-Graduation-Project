@@ -11,13 +11,13 @@ class Invoice extends Model
     use SoftDeletes;
     use HasFactory;
     protected $fillable = [
-        
-        
-     '  client_id',
+        'invoice_number',
+        'invoice_amount',  
+        'client_id',
     ];
     public function payment(){
         return $this->hasMany(Payment::class);
-    }
+    }   
     public function client(){
         return $this->belongsTo(Client::class);
     }   

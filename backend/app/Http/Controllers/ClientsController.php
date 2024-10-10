@@ -133,4 +133,12 @@ class ClientsController extends Controller
 
        
     }
+    public function getClientsWithInvoices()
+{
+    $clients = Client::has('invoice')->with('invoice')->get();
+
+    return response()->json($clients);
+}
+
+
 }
