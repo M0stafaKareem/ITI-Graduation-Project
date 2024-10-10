@@ -20,5 +20,6 @@ export class ClientProfileComponent {
 
   ngOnInit(): void {
     this.client = this.route.snapshot.data['client'];
+    console.log(this.client);
   }
 }

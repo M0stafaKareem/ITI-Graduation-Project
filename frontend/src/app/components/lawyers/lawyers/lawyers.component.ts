@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Lawyers } from '../../../shared/models/lawyers.model';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
+
 import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-nav.component';
 import {
   AddingFormComponent,
@@ -10,6 +16,7 @@ import { TableComponent } from '../../../shared/table/table.component';
 import { LawyersService } from '../../../shared/services/lawyers.service';
 import { NgIf } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-lawyers',
@@ -20,6 +27,7 @@ import { ToastrService } from 'ngx-toastr';
     TableComponent,
     NgIf,
     RouterLink,
+    MatPaginator,
   ],
   templateUrl: './lawyers.component.html',
   styleUrls: [
@@ -37,34 +45,49 @@ export class LawyersComponent implements OnInit {
   formHeader: string = 'Add New Category';
   upaddingLawyerId?: number;
   newLawyerInputRows!: inputType[];
-  lawyers!: Lawyers[];
+  lawyers?: Lawyers[];
+  paginatedLawyers?: Lawyers[];
+  form!: FormGroup;
+  pageSize: number = 5;
+  currentPage: number = 0;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private lawyerService: LawyersService,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
     const resolverData = this.route.snapshot.data['lawyers'];
     this.lawyers = resolverData.lawyers || [];
-    // subscribe to query param changes
     this.route.queryParams.subscribe((params) => {
       const searchTerm = params['search'] || '';
       this.fetchLawyers(searchTerm);
     });
-    // this.lawyers = this.route.snapshot.data['lawyers'];
-    // console.log(this.lawyers);
   }
 
   fetchLawyers(searchTerm: string) {
     this.lawyerService.getLawyers(searchTerm).subscribe((lawyers) => {
       this.lawyers = lawyers;
     });
+    this.updatePaginatedLawyers();
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex;
+    this.updatePaginatedLawyers();
+  }
+  updatePaginatedLawyers(): void {
+    if (this.lawyers) {
+      const start = this.currentPage * this.pageSize;
+      const end = start + this.pageSize;
+      this.paginatedLawyers = this.lawyers.slice(start, end);
+    }
   }
 
   handleSearch(searchTerm: string) {
-    // Update query params to trigger resolver re-execution
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { search: searchTerm },
@@ -102,6 +125,15 @@ export class LawyersComponent implements OnInit {
     });
   }
 
+  validations(targetLawyer?: Lawyers) {
+    this.form = this.fb.group({
+      name: [targetLawyer?.name || '', Validators.required],
+      phone_number: [targetLawyer?.phone_number || '', Validators.required],
+      address: [targetLawyer?.address || '', Validators.required],
+      nation_id: [targetLawyer?.nation_id || '', Validators.required],
+    });
+  }
+
   toggleFormVisibility = (lawyerId?: number) => {
     this.upaddingLawyerId = lawyerId;
     const targetLawyer = this.lawyers?.find((lawyer) => lawyer.id === lawyerId);
@@ -112,6 +144,8 @@ export class LawyersComponent implements OnInit {
       this.formHeader = 'Add Lawyer';
       this.formType = 'Add';
     }
+    this.validations(targetLawyer);
+
     this.newLawyerInputRows = [
       {
         backed_key: 'name',
@@ -144,29 +178,39 @@ export class LawyersComponent implements OnInit {
 
   submitForm = async (lawyerData: Lawyers) => {
     if (this.formType === 'Add') {
-      this.addNewLawyer(lawyerData).then((result) => {
-        if (result) {
-          this.lawyers?.push(lawyerData);
-        } else {
-          console.log('failed to add Category');
-        }
-      });
-    } else if (this.formType === 'Update') {
-      await this.updateLawyer(this.upaddingLawyerId!, lawyerData).then(
-        (result) => {
+      if (this.form.valid) {
+        this.addNewLawyer(lawyerData).then((result) => {
           if (result) {
-            this.lawyers = this.lawyers?.map((item) => {
-              if (item.id == this.upaddingLawyerId) {
-                console.log(lawyerData);
-                return lawyerData;
-              }
-              return item;
-            });
+            this.lawyers?.push(lawyerData);
           } else {
-            console.log('failed to update client');
+            console.log('failed to add Category');
           }
-        }
-      );
+        });
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
+    } else if (this.formType === 'Update') {
+      if (this.form.valid) {
+        await this.updateLawyer(this.upaddingLawyerId!, lawyerData).then(
+          (result) => {
+            if (result) {
+              this.lawyers = this.lawyers?.map((item) => {
+                if (item.id == this.upaddingLawyerId) {
+                  console.log(lawyerData);
+                  return lawyerData;
+                }
+                return item;
+              });
+            } else {
+              console.log('failed to update client');
+            }
+          }
+        );
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
     }
     this.toggleFormVisibility();
   };

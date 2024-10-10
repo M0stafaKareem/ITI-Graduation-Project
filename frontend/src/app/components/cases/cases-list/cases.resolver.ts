@@ -61,7 +61,7 @@ export class CasesResolver implements Resolve<any> {
             case_grade:
               grades.find((grade: any) => grade.id === caseItem.case_grade_id)
                 ?.name || 'No Grade',
-            client: client || null, // Ensure client is assigned here
+            client: client || null,
             court:
               courts.find((court: any) => court.id === caseItem.court_id) ||
               null,

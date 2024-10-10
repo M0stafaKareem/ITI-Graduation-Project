@@ -9,6 +9,7 @@ import { NgIf } from '@angular/common';
 import { CourtService } from '../../../shared/services/court.service';
 import { ToastrService } from 'ngx-toastr';
 import { inputType } from '../../../shared/adding-form/adding-form.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-courts',
@@ -38,13 +39,17 @@ export class CourtsComponent {
   isFormVisible: boolean = false;
   loading = false;
   upaddingCourtId?: number;
+  form!: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private courtService: CourtService,
-    private toaster: ToastrService
-  ) {}
+    private toaster: ToastrService,
+    private fb: FormBuilder
+  ) {
+    this.form = this.fb.group({});
+  }
   ngOnInit(): void {
     const resolvedData = this.route.snapshot.data['data'];
     this.courts = resolvedData?.courts || [];
@@ -78,6 +83,10 @@ export class CourtsComponent {
       this.formHeader = 'Add Court';
       this.formType = 'Add';
     }
+    this.form = this.fb.group({
+      name: [targetCourt?.name || '', Validators.required],
+      location: [targetCourt?.location || '', Validators.required],
+    });
     this.newCourtInputRows = [
       {
         backed_key: 'name',
@@ -98,29 +107,39 @@ export class CourtsComponent {
 
   submitForm = async (courtData: Court) => {
     if (this.formType === 'Add') {
-      this.addNewCourt(courtData).then((result) => {
-        if (result) {
-          this.courts?.push(courtData);
-        } else {
-          console.log('failed to add Court');
-        }
-      });
-    } else if (this.formType === 'Update') {
-      await this.updateCourt(this.upaddingCourtId!, courtData).then(
-        (result) => {
+      if (this.form.valid) {
+        this.addNewCourt(courtData).then((result) => {
           if (result) {
-            this.courts = this.courts?.map((item) => {
-              if (item.id == this.upaddingCourtId) {
-                console.log(courtData);
-                return courtData;
-              }
-              return item;
-            });
+            this.courts?.push(courtData);
           } else {
-            console.log('failed to update client');
+            console.log('failed to add Court');
           }
-        }
-      );
+        });
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
+    } else if (this.formType === 'Update') {
+      if (this.form.valid) {
+        await this.updateCourt(this.upaddingCourtId!, courtData).then(
+          (result) => {
+            if (result) {
+              this.courts = this.courts?.map((item) => {
+                if (item.id == this.upaddingCourtId) {
+                  console.log(courtData);
+                  return courtData;
+                }
+                return item;
+              });
+            } else {
+              console.log('failed to update client');
+            }
+          }
+        );
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
     }
     this.toggleFormVisibility();
   };

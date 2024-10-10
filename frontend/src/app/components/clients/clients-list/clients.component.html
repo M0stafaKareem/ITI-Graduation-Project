@@ -1,14 +1,29 @@
 <div class="">
-  <app-secondary-nav tableTitle="Client List" addNewButton="New Client" (btnClicked)="toggleFormVisibility()"
-    (search)="handleSearch($event)" />
+  <app-secondary-nav
+    tableTitle="Client List"
+    addNewButton="New Client"
+    (btnClicked)="toggleFormVisibility()"
+    (search)="handleSearch($event)"
+  />
 
-  <app-adding-form *ngIf="isFormVisible" [formType]="formType" [formHeader]="formHeader"
-    [formInputRows]="newClientInputRows" [onFormSubmit]="submitForm" (backdropClicked)="toggleFormVisibility()"
-    (inputChanged)="checkChangedInput($event)"></app-adding-form>
+  <app-adding-form
+    *ngIf="isFormVisible"
+    [formType]="formType"
+    [formHeader]="formHeader"
+    [formInputRows]="newClientInputRows"
+    [onFormSubmit]="submitForm"
+    (backdropClicked)="toggleFormVisibility()"
+    (inputChanged)="checkChangedInput($event)"
+    [form]="form"
+  ></app-adding-form>
 
-  <app-table firstColumnHeader="Client" secondColumnHeader="Contact" thirdColumnHeader="Address">
+  <app-table
+    firstColumnHeader="Client"
+    secondColumnHeader="Contact"
+    thirdColumnHeader="Address"
+  >
     <th scope="col" ngProjectAs="fourthColumnHeader">Action</th>
-    @for (client of clients; track $index) {
+    @for (client of paginatedClients; track $index) {
     <tr>
       <td style="color: var(--mainTextColor)" class="text-center">
         {{ $index + 1 }}
@@ -23,16 +38,32 @@
       <td>{{ client.address }}</td>
       <td>
         <div class="custom-select">
-          <select (change)="onActionSelect($event, client.id!)" name="SELECT" id="">
+          <select
+            (change)="onActionSelect($event, client.id!)"
+            name="SELECT"
+            id=""
+          >
             <option value="">SELECT</option>
             <option value="View">View</option>
             <option value="Update">Update</option>
             <option value="Delete">Delete</option>
           </select>
-          <i class="fa-solid fa-arrow-down" style="color: var(--mainTextColor)"></i>
+          <i
+            class="fa-solid fa-arrow-down"
+            style="color: var(--mainTextColor)"
+          ></i>
         </div>
       </td>
     </tr>
     }
   </app-table>
+  <div #paginatorContainer class="paginator-container">
+    <mat-paginator
+      [length]="clients?.length"
+      [pageSize]="5"
+      (page)="onPageChange($event)"
+      showFirstLastButtons
+    >
+    </mat-paginator>
+  </div>
 </div>

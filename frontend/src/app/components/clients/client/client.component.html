@@ -1,11 +1,19 @@
 <div>
-  <span class="name" [routerLink]="userProfile">Name: {{ clientName }} </span>
+  <span class="name" [routerLink]="userProfile"
+    >Name: <span class="client-info">{{ clientName }}</span></span
+  >
   <br />
-  <span>Mobile: {{ clientMobile }} </span> <br />
   <span
-    >Email:
-    {{ clientEmail }}
+    >Mobile: <span class="client-info">{{ clientMobile }}</span>
   </span>
   <br />
-  <span>Address: {{ clientAddress }} </span> <br />
+  <span
+    >Email:
+    <span class="client-info">{{ clientEmail }}</span>
+  </span>
+  <br />
+  <span
+    >Address: <span class="client-info">{{ clientAddress }}</span>
+  </span>
+  <br />
 </div>

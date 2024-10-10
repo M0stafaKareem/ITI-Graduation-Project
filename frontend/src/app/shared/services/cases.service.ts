@@ -26,8 +26,8 @@ export class CasesService {
     let params = new HttpParams();
     if (searchTerm) {
       params = params.set('search', searchTerm);
-    }
-    this.spinner.show();
+    } else this.spinner.show();
+
     return this.http
       .get<Case[]>(this.getCasesURL, { params })
       .pipe(finalize(() => this.spinner.hide()));
@@ -65,8 +65,7 @@ export class CasesService {
     let params = new HttpParams();
     if (searchTerm) {
       params = params.set('search', searchTerm);
-    }
-    this.spinner.show();
+    } else this.spinner.show();
     return this.http
       .get<CaseCategory[]>(this.categoriesApiUrl, { params })
       .pipe(finalize(() => this.spinner.hide()));
@@ -102,12 +101,10 @@ export class CasesService {
 
   // Case Grade-related API calls
   getCaseGrade(searchTerm: string = ''): Observable<CaseGrade[]> {
-    this.spinner.show();
     let params = new HttpParams();
     if (searchTerm) {
       params = params.set('search', searchTerm);
-    }
-
+    } else this.spinner.show();
     return this.http
       .get<CaseGrade[]>(this.CaseGradeUrl, { params })
       .pipe(finalize(() => this.spinner.hide()));

@@ -13,8 +13,8 @@ class ClientsSeeder extends Seeder
         $faker = Faker::create();
 
         foreach (range(1, 50) as $index) {
-        DB::table('clients')->insert([
-                'name' => $faker->name(),
+            DB::table('clients')->insert([
+                'name' => $faker->firstName() . ' ' . $faker->lastName(),
                 'country_id' => $faker->numberBetween(1, 5),
                 'state_id' => $faker->numberBetween(1, 5),
                 'city_id' => $faker->numberBetween(1, 10),
@@ -24,7 +24,7 @@ class ClientsSeeder extends Seeder
                 'email' => $faker->email(),
                 'gender' => $faker->boolean(),
                 'address' => $faker->address(),
-                'description' => $faker->paragraph(),
+                'description' => $faker->realText(),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

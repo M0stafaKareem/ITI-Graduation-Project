@@ -11,6 +11,7 @@ import {
   AddingFormComponent,
 } from '../../../shared/adding-form/adding-form.component';
 import { CaseGrade } from '../../../shared/models/case.grade.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-case-grade',
@@ -40,18 +41,21 @@ export class CaseGradeComponent implements OnInit {
   formHeader: string = 'Add New Grade';
   upaddingGradeId?: number;
   newGradeInputRows!: inputType[];
+  form!: FormGroup;
 
   constructor(
     private caseService: CasesService,
     private route: ActivatedRoute,
     private router: Router,
-    private toaster: ToastrService
-  ) {}
+    private toaster: ToastrService,
+    private fb: FormBuilder
+  ) {
+    this.form = this.fb.group({});
+  }
 
   ngOnInit(): void {
     const resolveData = this.route.snapshot.data['data'];
     this.grades = resolveData?.grades || [];
-    // subscribe to query param changes
     this.route.queryParams.subscribe((params) => {
       const searchTerm = params['search'] || '';
       this.fetchGrades(searchTerm);
@@ -59,7 +63,6 @@ export class CaseGradeComponent implements OnInit {
     this.grades = this.route.snapshot.data['grades'];
   }
 
-  // Function to fetch clients based on the search term
   fetchGrades(searchTerm: string) {
     this.caseService.getCaseGrade(searchTerm).subscribe((grades) => {
       this.grades = grades;
@@ -67,7 +70,6 @@ export class CaseGradeComponent implements OnInit {
   }
 
   handleSearch(searchTerm: string) {
-    // Update query params with search term
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { search: searchTerm },
@@ -104,6 +106,13 @@ export class CaseGradeComponent implements OnInit {
     });
   }
 
+  validations(targetGrade?: CaseGrade) {
+    this.form = this.fb.group({
+      name: [targetGrade?.name || '', Validators.required],
+      description: [targetGrade?.description || '', Validators.required],
+    });
+  }
+
   toggleFormVisibility = (gradeId?: number) => {
     this.upaddingGradeId = gradeId;
     const targetGrade = this.grades?.find((item) => item.id === gradeId);
@@ -114,6 +123,7 @@ export class CaseGradeComponent implements OnInit {
       this.formHeader = 'Add Grade';
       this.formType = 'Add';
     }
+    this.validations(targetGrade);
     this.newGradeInputRows = [
       {
         backed_key: 'name',
@@ -134,29 +144,39 @@ export class CaseGradeComponent implements OnInit {
 
   submitForm = async (gradeData: CaseGrade) => {
     if (this.formType === 'Add') {
-      this.addNewGrade(gradeData).then((result) => {
-        if (result) {
-          this.grades?.push(gradeData);
-        } else {
-          console.log('failed to add Grade');
-        }
-      });
-    } else if (this.formType === 'Update') {
-      await this.updateGrade(this.upaddingGradeId!, gradeData).then(
-        (result) => {
+      if (this.form.valid) {
+        this.addNewGrade(gradeData).then((result) => {
           if (result) {
-            this.grades = this.grades?.map((item) => {
-              if (item.id == this.upaddingGradeId) {
-                console.log(gradeData);
-                return gradeData;
-              }
-              return item;
-            });
+            this.grades?.push(gradeData);
           } else {
-            console.log('failed to update Grade');
+            console.log('failed to add Grade');
           }
-        }
-      );
+        });
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
+    } else if (this.formType === 'Update') {
+      if (this.form.valid) {
+        await this.updateGrade(this.upaddingGradeId!, gradeData).then(
+          (result) => {
+            if (result) {
+              this.grades = this.grades?.map((item) => {
+                if (item.id == this.upaddingGradeId) {
+                  console.log(gradeData);
+                  return gradeData;
+                }
+                return item;
+              });
+            } else {
+              console.log('failed to update Grade');
+            }
+          }
+        );
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
     }
     this.toggleFormVisibility();
   };

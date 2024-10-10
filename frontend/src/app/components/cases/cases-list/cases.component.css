@@ -3,6 +3,11 @@ th {
   vertical-align: middle;
 }
 
+td:not(:first-child) {
+  color: var(--textTablecolor);
+  font-weight: bold;
+}
+
 .custom-select {
   position: relative;
   display: inline-block;
@@ -54,7 +59,20 @@ select option {
   flex: auto;
 }
 
+.court-info {
+  color: var(--mainTextColor);
+}
+
 .justify-content-center {
   margin-top: 20vh;
   align-items: center;
+}
+
+.paginator-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  width: 100%;
+  background-color: white;
+  border-radius: 4px;
 }

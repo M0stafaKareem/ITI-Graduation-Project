@@ -19,8 +19,7 @@ export class CourtService {
     let params = new HttpParams();
     if (searchTerm) {
       params = params.set('search', searchTerm); // Set search query param if provided
-    }
-    this.spinner.show();
+    } else this.spinner.show();
     return this.httpClient
       .get<Court[]>(this.courtsUrl, { params })
       .pipe(finalize(() => this.spinner.hide()));

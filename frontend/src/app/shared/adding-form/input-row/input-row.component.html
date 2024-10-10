@@ -1,32 +1,53 @@
-@if (input_Info.type == 'select') {
-<div
-  class="input-group"
-  [hidden]="input_Info.disabled"
-  [id]="input_Info.backed_key"
->
-  <label for="selectInput">{{ input_Info.title | uppercase }}</label>
-  <select id="selectInput" (change)="emmitNewValue($event)">
-    <option [value]="null" hidden>Please Select {{ input_Info.title }}</option>
-    @for (item of input_Info.options; track $index) {
-    <option [value]="item.id" [selected]="item.id == input_Info.value">
-      {{ item.value }}
-    </option>
-    }
-  </select>
+<div [formGroup]="form">
+  <div
+    *ngIf="input_Info.type === 'select'"
+    class="input-group"
+    [hidden]="input_Info.disabled"
+  >
+    <label [for]="input_Info.backed_key">{{
+      input_Info.title | uppercase
+    }}</label>
+    <select
+      id="{{ input_Info.backed_key }}"
+      [formControlName]="input_Info.backed_key"
+      (change)="emmitNewValue($event)"
+      [ngClass]="{
+        'placeholder-option': !form.get(input_Info.backed_key)?.value
+      }"
+    >
+      <option value="">Please Select {{ input_Info.title }}</option>
+      <option *ngFor="let option of input_Info.options" [value]="option.id">
+        {{ option.value }}
+      </option>
+    </select>
+  </div>
+
+  <div
+    *ngIf="input_Info.type !== 'select'"
+    class="input-group"
+    [hidden]="input_Info.disabled"
+  >
+    <label [for]="input_Info.backed_key">{{
+      input_Info.title | uppercase
+    }}</label>
+    <input
+      id="{{ input_Info.backed_key }}"
+      [type]="input_Info.type"
+      [formControlName]="input_Info.backed_key"
+      [placeholder]="input_Info.title"
+      (change)="emmitNewValue($event)"
+    />
+  </div>
+
+  <div
+    *ngIf="
+      form.get(input_Info.backed_key)?.invalid &&
+      form.get(input_Info.backed_key)?.touched
+    "
+    class="validation-error"
+  >
+    <p *ngIf="form.get(input_Info.backed_key)?.errors?.['required']">
+      {{ input_Info.title }} is required
+    </p>
+  </div>
 </div>
-} @else {
-<div
-  class="input-group"
-  [hidden]="input_Info.disabled"
-  [id]="input_Info.backed_key"
->
-  <label for="input-row">{{ input_Info.title | uppercase }}</label>
-  <input
-    [id]="input_Info.backed_key"
-    [placeholder]="input_Info.title"
-    [type]="input_Info.type"
-    [value]="input_Info.value ? input_Info.value : ''"
-    (change)="emmitNewValue($event)"
-  />
-</div>
-}

@@ -14,7 +14,7 @@ class CaseCategoriesSeeder extends Seeder
 
         foreach (range(1, 10) as $index) {
             DB::table('case_categories')->insert([
-                'name' => $faker->name(),
+                'name' => $faker->word(),
                 'description' => $faker->paragraph(),
                 'created_at' => now(),
                 'updated_at' => now(),

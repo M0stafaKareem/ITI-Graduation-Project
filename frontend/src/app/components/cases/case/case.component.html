@@ -1,11 +1,11 @@
 <div>
-  <span [routerLink]="caseDetail" class="router">Case Name: {{ caseName }} </span> <br />
-  <span>Case Number: {{ caseId }} </span> <br />
+  <span [routerLink]="caseDetail" class="router">Case Name: <span class="case-info">{{ caseName }}</span> </span> <br />
+  <span>Case Number: <span class="case-info">{{ caseId }}</span> </span> <br />
   <span
     >Case Type:
-    {{ caseCategory }}
+    <span class="case-info">{{ caseCategory }}</span>
   </span>
   <br />
-  <span>Case Date: {{ caseDate }} </span> <br />
-  <span>Case Grade: {{ caseGrade }} </span> <br />
+  <span>Case Date: <span class="case-info">{{ caseDate }}</span> </span> <br />
+  <span>Case Grade: <span class="case-info">{{ caseGrade }}</span> </span> <br />
 </div>

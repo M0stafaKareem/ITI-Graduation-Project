@@ -14,6 +14,7 @@
     [onFormSubmit]="submitForm"
     (backdropClicked)="toggleFormVisibility()"
     (inputChanged)="checkChangedInput($event)"
+    [form]="form"
   ></app-adding-form>
 
   <app-table
@@ -23,7 +24,7 @@
   >
     <th scope="col" ngProjectAs="fourthColumnHeader">National ID</th>
     <th scope="col" ngProjectAs="fifthColumnHeader">Action</th>
-    @for (lawyer of lawyers; track $index) {
+    @for (lawyer of paginatedOppositeLawyers; track $index) {
     <tr>
       <td class="text-center">{{ $index + 1 }}</td>
       <td>{{ lawyer.name }}</td>
@@ -50,4 +51,13 @@
     </tr>
     }
   </app-table>
+  <div #paginatorContainer class="paginator-container">
+    <mat-paginator
+      [length]="lawyers?.length"
+      [pageSize]="5"
+      (page)="onPageChange($event)"
+      showFirstLastButtons
+    >
+    </mat-paginator>
+  </div>
 </div>

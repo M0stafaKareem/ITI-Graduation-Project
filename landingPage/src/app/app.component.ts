@@ -12,7 +12,7 @@ import { FooterComponent } from './footer/footer.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, SliderComponent, StatsComponent, AboutusComponent, ServicesComponent, FaqsComponent, ContactComponent, FooterComponent],
+  imports: [RouterOutlet,  SliderComponent, StatsComponent, AboutusComponent, ServicesComponent, FaqsComponent, ContactComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Otp;
+use Auth;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\JsonResponse;
@@ -25,5 +27,21 @@ class VerifyEmailController extends Controller
         }
 
         return response()->json(['message'=> 'Email address verified.'],200);
+    }
+    public function verificationOtp(Request $request)
+    {
+        $request->validate([
+            'otp' => ['required', 'string'],
+            'email'=> ['required', 'string'],
+        ]);
+        $otp = Otp::where('email', $request->email)->first();
+        if ($otp->otp == $request->otp) {
+            $user = Auth::user();
+            $user->email_verified_at = now();
+            $user->save();
+            return response()->json(['message' => 'Email verified successfully'], 200);
+        } else {
+            return response()->json(['message' => 'Invalid OTP code'], 401);
+        }
     }
 }

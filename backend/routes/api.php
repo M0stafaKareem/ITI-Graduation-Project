@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\CaseCategoryController;
 use App\Http\Controllers\CaseController;
 use App\Http\Controllers\CaseGradeController;
@@ -102,4 +104,8 @@ Route::apiResource('payments',controller: App\Http\Controllers\PaymentController
 
 //invoices
 Route::apiResource('invoices',controller: App\Http\Controllers\InvoiceController::class);
+
+Route::post('/verify-otp',  [AuthenticatedSessionController::class ,'verificationOtp']) 
+->middleware('guest')
+    ->name('verification.otp');
 

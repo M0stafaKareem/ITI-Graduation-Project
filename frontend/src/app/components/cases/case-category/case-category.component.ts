@@ -11,6 +11,7 @@ import {
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-case-category',
@@ -40,18 +41,21 @@ export class CaseCategoryComponent implements OnInit {
   formHeader: string = 'Add New Category';
   upaddingCategoryId?: number;
   newCategoryInputRows!: inputType[];
+  form!: FormGroup;
 
   constructor(
     private caseService: CasesService,
     private toaster: ToastrService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router,
+    private fb: FormBuilder
+  ) {
+    this.form = this.fb.group({});
+  }
 
   ngOnInit(): void {
     const resolveData = this.route.snapshot.data['data'];
     this.categories = resolveData?.categories || [];
-    // subscribe to query param changes
     this.route.queryParams.subscribe((params) => {
       const searchTerm = params['search'] || '';
       this.fetchCategories(searchTerm);
@@ -105,6 +109,13 @@ export class CaseCategoryComponent implements OnInit {
     });
   }
 
+  validations(targetCategory?: CaseCategory) {
+    this.form = this.fb.group({
+      name: [targetCategory?.name || '', Validators.required],
+      description: [targetCategory?.description || '', Validators.required],
+    });
+  }
+
   toggleFormVisibility = (categoryId?: number) => {
     this.upaddingCategoryId = categoryId;
     const targetCategory = this.categories?.find(
@@ -117,6 +128,7 @@ export class CaseCategoryComponent implements OnInit {
       this.formHeader = 'Add Category';
       this.formType = 'Add';
     }
+    this.validations(targetCategory);
     this.newCategoryInputRows = [
       {
         backed_key: 'name',
@@ -137,29 +149,39 @@ export class CaseCategoryComponent implements OnInit {
 
   submitForm = async (categoryData: CaseCategory) => {
     if (this.formType === 'Add') {
-      this.addNewCategory(categoryData).then((result) => {
-        if (result) {
-          this.categories?.push(categoryData);
-        } else {
-          console.log('failed to add Category');
-        }
-      });
-    } else if (this.formType === 'Update') {
-      await this.updateCategory(this.upaddingCategoryId!, categoryData).then(
-        (result) => {
+      if (this.form.valid) {
+        this.addNewCategory(categoryData).then((result) => {
           if (result) {
-            this.categories = this.categories?.map((item) => {
-              if (item.id == this.upaddingCategoryId) {
-                console.log(categoryData);
-                return categoryData;
-              }
-              return item;
-            });
+            this.categories?.push(categoryData);
           } else {
-            console.log('failed to update client');
+            console.log('failed to add Category');
           }
-        }
-      );
+        });
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
+    } else if (this.formType === 'Update') {
+      if (this.form.valid) {
+        await this.updateCategory(this.upaddingCategoryId!, categoryData).then(
+          (result) => {
+            if (result) {
+              this.categories = this.categories?.map((item) => {
+                if (item.id == this.upaddingCategoryId) {
+                  console.log(categoryData);
+                  return categoryData;
+                }
+                return item;
+              });
+            } else {
+              console.log('failed to update client');
+            }
+          }
+        );
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
     }
     this.toggleFormVisibility();
   };
