@@ -94,4 +94,11 @@ class PaymentController extends Controller
             json(['error' => $e->getMessage()], 500);
         }
     }
+    public function getPaymentsWithInvoice()
+{
+    $payments = Payment::with('invoice')->get();
+
+    return response()->json($payments);
+}
+
 }

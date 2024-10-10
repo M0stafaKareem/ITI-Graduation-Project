@@ -109,3 +109,8 @@ Route::post('/verify-otp',  [AuthenticatedSessionController::class ,'verificatio
 ->middleware('guest')
     ->name('verification.otp');
 
+//client-with-invoices
+Route::get('/clients-with-invoices', [ClientsController::class, 'getClientsWithInvoices']);
+
+//payment with invoices
+Route::get('/payments-with-invoices', [App\Http\Controllers\PaymentController::class, 'getPaymentsWithInvoice']);
