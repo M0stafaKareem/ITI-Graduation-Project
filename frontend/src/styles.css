@@ -3,13 +3,45 @@
 :root {
   --mainTextColor: #415094;
   --textTablecolor: #828bb2;
+  --mainColor: #467576;
+  --secondaryColor: #626060;
 }
 
 html,
 body {
   color: var(--mainTextColor);
   overflow-x: hidden;
-  background: url(./assets/body-bg.jpg);
+  /* background: url(./assets/body-bg.jpg); */
+  background-color: white;
+}
+
+/* Events Calendar Style */
+.fc-daygrid-day-number,
+.fc-col-header-cell-cushion {
+  color: white !important;
+  text-decoration: none;
+}
+
+.fc .fc-toolbar-title {
+  color: white;
+}
+
+.fc-day-today {
+  background-color: var(--mainColor) !important;
+  color: #ffffff;
+  border-radius: 5px;
+}
+
+/* End of Event Calendar Style */
+
+/* Table Style */
+th {
+  color: white !important;
+}
+
+td {
+  background-color: var(--secondaryColor) !important;
+  color: white !important;
 }
 
 .sidebar-zindex {
@@ -25,6 +57,9 @@ td:first-child {
   color: var(--mainTextColor);
 }
 
+/* End of Table Style */
+
+/* Paginator Style */
 .cdk-overlay-container {
   display: none;
 }
@@ -32,6 +67,8 @@ td:first-child {
 .mat-mdc-paginator-container {
   justify-content: center !important;
 }
+
+/* End of Paginator Style */
 
 @media (max-width: 786px) {
   .fc .fc-toolbar {

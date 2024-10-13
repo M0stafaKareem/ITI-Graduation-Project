@@ -29,6 +29,10 @@ th {
   color: var(--mainTextColor);
 }
 
+th {
+  background-color: var(--mainColor) !important;
+}
+
 @media (max-width: 768px) {
   table thead {
     display: contents;

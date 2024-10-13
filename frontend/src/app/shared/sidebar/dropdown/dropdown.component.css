@@ -1,5 +1,5 @@
 .drop-container {
-  background-color: #7485b7;
+  background-color: #828bb2;
 }
 
 .drop-container li a {
@@ -11,12 +11,12 @@
 }
 
 .drop-container li:hover {
-  background-color: #8733f9;
+  background-color: var(--secondaryColor);
   backdrop-filter: 0.9;
 }
 
 .activated {
   color: white !important;
-  background-color: #8733f9 !important;
-  border-left: 4px solid #9e34ec !important;
+  background-color: var(--secondaryColor) !important;
+  border-left: 4px solid var(--mainColor) !important;
 }

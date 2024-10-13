@@ -3,17 +3,22 @@
   [class.sidebar-open]="isSidebarOpen"
 >
   <div
-    class="sidebar d-flex flex-column flex-shrink-0 text-white bg-transparent"
+    class="sidebar d-flex flex-column flex-shrink-0 text-white bg-black"
     [class.active]="isSidebarOpen"
   >
     <a
       href="/"
-      class="d-flex align-items-center mb-3 mb-md-0 p-3 me-md-auto text-decoration-none"
-      style="color: var(--mainTextColor)"
+      class="d-flex align-items-center mb-3 mb-md-0 pxt-3 me-md-auto text-decoration-none"
+      style="color: var(--mainTextColor); display: flex; align-items: start"
     >
-      <span class="fs-4">Sidebar</span>
+      <div class="logo">
+        <img
+          src="../../../assets/registrationFrom/Colored Hor.png"
+          alt="logo"
+        />
+      </div>
     </a>
-    <hr style="color: var(--mainTextColor)" />
+    <hr style="color: var(--secondaryColor); margin-top: 0px" />
     <ul class="nav nav-pills flex-column mb-auto">
       <li
         class="nav-list"
@@ -100,19 +105,19 @@
         listName="Opposite Lawyers"
       />
       }
-      <li (click)="closeAllDropdowns()">
+      <li (click)="closeAllDropdowns()" class="nav-list">
         <a class="nav-link" routerLink="courts" routerLinkActive="activated">
           <i class="fa-solid fa-building-columns"></i>
           Court</a
         >
       </li>
-      <li (click)="closeAllDropdowns()">
+      <li (click)="closeAllDropdowns()" class="nav-list">
         <a class="nav-link" routerLink="calender" routerLinkActive="activated">
           <i class="fa-solid fa-calendar-days"></i>
           Events Calender</a
         >
       </li>
-      <li (click)="closeAllDropdowns()">
+      <li (click)="closeAllDropdowns()" class="nav-list">
         <a class="nav-link" routerLink="todo-list" routerLinkActive="activated">
           <i class="fa-solid fa-tasks"></i>
 
@@ -148,7 +153,7 @@
       </app-dropdown>
       }
 
-      <li (click)="logOut()">
+      <li (click)="logOut()" class="nav-list">
         <button class="nav-link">
           <i class="fa-solid fa-sign-out"></i>
           logout
