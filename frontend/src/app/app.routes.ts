@@ -29,6 +29,7 @@ import { ExpensesTrackerComponent } from './components/Finance/expenses-tracker/
 import { BudgetDetailsComponent } from './components/Finance/budget-details/budget-details.component';
 import { IncomesTrackerComponent } from './components/Finance/incomes-tracker/incomes-tracker.component';
 import { IncomeDetailsComponent } from './components/Finance/incomes-tracker/income-details/income-details.component';
+import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 
 export const routes: Routes = [
   {
@@ -120,7 +121,6 @@ export const routes: Routes = [
   { path: 'incomes-tracker/details/:id', component: IncomeDetailsComponent },
   {
     path: '**',
-    pathMatch: 'full',
-    redirectTo: '',
+    component: NotFoundPageComponent,
   },
 ];
