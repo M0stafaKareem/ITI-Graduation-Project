@@ -1,11 +1,11 @@
-Style for the calendar container #calendar {
+#calendar {
   max-width: 80%; /* Adjusts the width */
   margin: 20px auto; /* Centers the calendar on the page */
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 10px;
-  background-color: #f9f9f9;
+  background-color: var(--mainColor) !important;
 }
 
 /* Style for the calendar header toolbar */
@@ -14,7 +14,13 @@ Style for the calendar container #calendar {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white !important;
 }
+
+.fc-header-toolbar {
+  color: white !important;
+}
+
 
 /* Style for calendar buttons */
 .fc-button {

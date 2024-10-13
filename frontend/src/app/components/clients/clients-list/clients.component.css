@@ -1,5 +1,7 @@
 th {
   color: var(--mainTextColor);
+  background-color: var(--mainColor);
+  color: white;
 }
 
 td {
