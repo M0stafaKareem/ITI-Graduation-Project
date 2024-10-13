@@ -57,7 +57,10 @@ Route::apiResource('CaseGrades', CaseGradeController::class);
 Route::apiResource('parties', PartyController::class);
 Route::apiResource('CasesParties', CasesPartiesController::class);
 Route::apiResource('Cases',CaseController::class);
+
 Route::apiResource('Clients', ClientsController::class);
+Route::get('/Clients-with-invoices', [App\Http\Controllers\ClientsController::class, 'getClientsWithInvoices']);
+
 Route::apiResource('ClientCategories',ClientCategoryController::class);
 
 
@@ -101,6 +104,7 @@ Route::apiResource('budgets',controller: App\Http\Controllers\BudgetController::
 
 //payments 
 Route::apiResource('payments',controller: App\Http\Controllers\PaymentController::class);
+Route::get('/payments-with-invoices-with-clients', [App\Http\Controllers\PaymentController::class, 'indexRecursive']);
 
 //invoices
 Route::apiResource('invoices',controller: App\Http\Controllers\InvoiceController::class);

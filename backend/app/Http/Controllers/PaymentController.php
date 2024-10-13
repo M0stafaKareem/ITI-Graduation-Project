@@ -14,11 +14,21 @@ class PaymentController extends Controller
     public function index()
     {
         try{
-            return Payment::all();
+            return Payment::with('invoice')->get();
         }catch(\Exception $e){
             return $e->getMessage();
         }
     }
+
+    public function indexRecursive()
+    {
+        try{
+            return Payment::with('invoice')->with('invoice.client')->get();
+        }catch(\Exception $e){
+            return $e->getMessage();
+        }
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -29,6 +39,7 @@ class PaymentController extends Controller
             $request->validate([
                 'amount' => 'required',
                 'description' => 'required',
+                'invoice_id' => 'nullable',
             ]); 
             $request = Payment::create($request->all());
             return response()->

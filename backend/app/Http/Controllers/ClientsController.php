@@ -31,6 +31,7 @@ class ClientsController extends Controller
 
         return $Clients;
     }
+    
 
     public function store(Request $request)
     {
