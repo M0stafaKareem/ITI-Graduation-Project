@@ -29,7 +29,7 @@ button {
   position: relative;
   width: 300px;
   background-color: transparent;
-  border-bottom: 2px solid #bce;
+  border-bottom: 2px solid var(--mainColor);
 }
 
 input[type="search"] {

@@ -22,7 +22,7 @@
 }
 
 .mainSide {
-  border-right: 1px solid var(--mainTextColor);
+  border-right: 1px solid var(--mainColor);
 }
 
 .drop-container {

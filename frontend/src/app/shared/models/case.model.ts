@@ -1,3 +1,4 @@
+import { CaseGrade } from './case.grade.model';
 import { Clients } from './clients.model';
 import { Court } from './court.model';
 import { Lawyers } from './lawyers.model';
@@ -14,7 +15,7 @@ export interface Case {
   created_at?: string;
   updated_at?: string;
   client?: Clients | undefined;
-  case_grade?: string;
+  case_grade?: CaseGrade;
   categoryName?: string;
   court_id: number;
   court?: Court;

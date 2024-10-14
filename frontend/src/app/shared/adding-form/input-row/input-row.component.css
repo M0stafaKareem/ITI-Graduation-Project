@@ -63,7 +63,7 @@ p {
 
 select {
   background-color: #ddd;
-  color: var(--tableTextColor);
+  color: black;
   border: none;
   border-radius: 5px !important;
   padding: 12px;

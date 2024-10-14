@@ -9,5 +9,5 @@ span {
 }
 
 .case-info {
-  color: white;
+  color: var(--secondaryColor);
 }

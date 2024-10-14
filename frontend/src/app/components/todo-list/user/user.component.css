@@ -3,7 +3,7 @@ button {
   align-items: center;
   gap: 0.5rem;
   padding: 0.35rem 0.5rem;
-  background-color: #3f72af;
+  background-color: var(--mainColor);
   color: #fff;
   border: none;
   font: inherit;

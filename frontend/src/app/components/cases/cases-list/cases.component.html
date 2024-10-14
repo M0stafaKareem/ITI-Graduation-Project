@@ -54,7 +54,7 @@
           case.case_category_id ? case.categoryName : 'No Category'
         "
         [caseDate]="case.case_date"
-        [caseGrade]="case.case_grade"
+        [caseGrade]="case.case_grade?.name"
       ></td>
       <td
         client-td

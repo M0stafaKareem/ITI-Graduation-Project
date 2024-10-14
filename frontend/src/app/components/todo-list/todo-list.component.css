@@ -31,6 +31,11 @@ p {
   display: none;
 }
 
+h1,
+h3 {
+  color: var(--mainColor);
+}
+
 @media (min-width: 768px) {
   .main {
     margin: 4rem auto;
