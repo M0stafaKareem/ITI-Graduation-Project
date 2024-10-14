@@ -16,18 +16,25 @@ body {
 }
 
 /* Events Calendar Style */
-.fc-daygrid-day-number,
-.fc-col-header-cell-cushion {
-  color: white !important;
+.fc-daygrid-day-number {
+  color: black !important;
   text-decoration: none;
 }
+.fc-col-header-cell-cushion {
+  color: white;
+  text-decoration: none;
+}
+
+/* .fc-customButton-button {
+  background-color: #626060 !important;
+} */
 
 .fc .fc-toolbar-title {
   color: white;
 }
 
 .fc-day-today {
-  background-color: var(--mainColor) !important;
+  background-color: var(--secondaryColor) !important;
   color: #ffffff;
   border-radius: 5px;
 }
