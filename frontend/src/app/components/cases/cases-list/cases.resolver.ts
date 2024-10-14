@@ -59,8 +59,9 @@ export class CasesResolver implements Resolve<any> {
                 (cat: any) => cat.id === caseItem.case_category_id
               )?.name || 'No Category',
             case_grade:
-              grades.find((grade: any) => grade.id === caseItem.case_grade_id)
-                ?.name || 'No Grade',
+              grades.find(
+                (grade: any) => grade.id === caseItem.case_grade_id
+              ) || 'No Grade',
             client: client || null,
             court:
               courts.find((court: any) => court.id === caseItem.court_id) ||

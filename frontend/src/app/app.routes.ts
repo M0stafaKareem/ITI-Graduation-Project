@@ -34,6 +34,10 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
 
 export const routes: Routes = [
   {
+    path: 'dashboard',
+    component: DashboardComponent,
+  },
+  {
     path: '',
     component: LoginComponent,
     title: 'Login',

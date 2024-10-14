@@ -1,7 +1,7 @@
 article {
   padding: 1rem;
   color: #fff;
-  background-color: #3f72af;
+  background-color: var(--mainColor);
 }
 
 h2 {

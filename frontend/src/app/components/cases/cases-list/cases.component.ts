@@ -240,8 +240,18 @@ export class CasesComponent implements OnInit {
         caseData = { ...caseData, client: item };
     });
     this.courts?.forEach((item) => {
-      if (item.id == caseData.client_id)
-        caseData = { ...caseData, court: item };
+      if (item.id == caseData.court_id) caseData = { ...caseData, court: item };
+    });
+    this.grades?.forEach((item) => {
+      if (item.id == caseData.case_grade_id)
+        caseData = { ...caseData, case_grade: item };
+    });
+    this.categories?.forEach((item) => {
+      if (item.id == caseData.case_category_id)
+        caseData = { ...caseData, categoryName: item.name };
+    });
+    this.cases?.forEach((item) => {
+      if (item.id == caseData.id) caseData = { ...caseData, id: item.id };
     });
 
     if (this.formType === 'Add') {
@@ -261,6 +271,8 @@ export class CasesComponent implements OnInit {
           if (result) {
             this.paginatedCases = this.paginatedCases?.map((item) => {
               if (item.id == this.upaddingCaseId) {
+                console.log(caseData);
+
                 return caseData;
               }
               return item;

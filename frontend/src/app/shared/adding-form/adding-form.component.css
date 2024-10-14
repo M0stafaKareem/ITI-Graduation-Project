@@ -33,7 +33,7 @@
   padding: 20px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  background-color: rgba(0, 0, 255, 0.5);
+  background-color: var(--mainColor);
   font-weight: bold;
 }
 

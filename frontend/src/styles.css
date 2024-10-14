@@ -40,8 +40,8 @@ th {
 }
 
 td {
-  background-color: var(--secondaryColor) !important;
-  color: white !important;
+  background-color: white !important;
+  color: var(--secondaryColor) !important;
 }
 
 .sidebar-zindex {

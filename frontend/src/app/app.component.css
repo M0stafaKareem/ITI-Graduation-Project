@@ -24,6 +24,12 @@
   width: 280px;
 }
 
+.navbar {
+  width: 100%;
+  background-color: var(--secondaryColor);
+  height: 80px;
+}
+
 @media (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);

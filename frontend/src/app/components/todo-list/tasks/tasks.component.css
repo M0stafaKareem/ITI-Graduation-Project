@@ -3,7 +3,7 @@
   border-radius: 8px;
   max-height: 60vh;
   overflow: auto;
-  background-color: #dbe2ef;
+  background-color: var(--secondaryColor);
   backdrop-filter: blur(3px);
 }
 
@@ -13,14 +13,16 @@
 
 header {
   display: flex;
-  padding: 1rem 0 0.5rem 0;
+  padding: 1rem 0.5rem 0.5rem 0.5rem;
   position: sticky;
-  background-color: #dbe2ef;
+  background-color: #aec1da;
   top: 0;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 2rem;
   gap: 1rem;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 h2 {
@@ -28,6 +30,7 @@ h2 {
   font-size: 0.9rem;
   width: 60%;
   text-wrap: balance;
+  color: black;
 }
 p {
   color: #000;
