@@ -5,7 +5,7 @@
       alt="Logo"
       class="logo"
     />
-    <h2>Sign Up</h2>
+    <h2>Register New User</h2>
     <form (ngSubmit)="onRegisterHandler()">
       <div class="form-group">
         <label for="firstName">Name</label>
@@ -62,10 +62,7 @@
           {{ errors["password_confirmation"] }}
         </div>
       </div>
-      <button type="submit" class="register-btn">Sign Up</button>
-      <p class="text-center">
-        Already have an account? <a [routerLink]="['/']">Login</a>
-      </p>
+      <button type="submit" class="register-btn">Register</button>
     </form>
   </div>
   <div class="right-half">
