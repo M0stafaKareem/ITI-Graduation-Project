@@ -195,7 +195,7 @@ export class LawyersComponent implements OnInit {
         await this.updateLawyer(this.upaddingLawyerId!, lawyerData).then(
           (result) => {
             if (result) {
-              this.lawyers = this.lawyers?.map((item) => {
+              this.paginatedLawyers = this.paginatedLawyers?.map((item) => {
                 if (item.id == this.upaddingLawyerId) {
                   console.log(lawyerData);
                   return lawyerData;

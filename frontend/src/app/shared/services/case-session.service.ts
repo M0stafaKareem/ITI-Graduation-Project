@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Session } from '../models/session.model';
+import { DOMAIN } from '../constants/domain';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CaseSessionService {
-  sessionsUrl: string = 'http://127.0.0.1:8000/api/sessions';
+  sessionsUrl: string = `${DOMAIN.test}/sessions`;
 
   constructor(private http: HttpClient) {}
 
@@ -16,7 +17,6 @@ export class CaseSessionService {
   }
 
   loadSessionsByCaseId(caseId: number): Observable<Session[]> {
-
     return this.http.get<Session[]>(`${this.sessionsUrl}/cases/${caseId}`);
   }
 

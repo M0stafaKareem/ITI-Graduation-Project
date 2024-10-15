@@ -21,7 +21,7 @@
     secondColumnHeader="Address"
     thirdColumnHeader="Action"
   >
-    @for (court of courts; track $index) {
+    @for (court of paginatedCourts; track $index) {
     <tr>
       <td class="text-center">{{ $index + 1 }}</td>
       <td>{{ court.name }}</td>
@@ -46,4 +46,13 @@
     </tr>
     }
   </app-table>
+  <div #paginatorContainer class="paginator-container">
+    <mat-paginator
+      [length]="courts?.length"
+      [pageSize]="5"
+      (page)="onPageChange($event)"
+      showFirstLastButtons
+    >
+    </mat-paginator>
+  </div>
 </div>

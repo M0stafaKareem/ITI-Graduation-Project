@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { finalize, Observable } from 'rxjs';
 import { Court } from '../models/court.model';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DOMAIN } from '../constants/domain';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CourtService {
-  courtsUrl = 'http://127.0.0.1:8000/api/courts';
+  courtsUrl = `${DOMAIN.test}/courts`;
 
   constructor(
     private httpClient: HttpClient,

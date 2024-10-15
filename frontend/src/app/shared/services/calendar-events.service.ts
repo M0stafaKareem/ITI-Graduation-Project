@@ -1,12 +1,13 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { DOMAIN } from '../constants/domain';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CalendarEventsService {
-  eventsUrl: string = 'http://127.0.0.1:8000/api/events';
+  eventsUrl: string = `${DOMAIN.test}/events`;
   events: any[] = [];
 
   constructor(private http: HttpClient) {}
