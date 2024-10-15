@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->api(prepend: [
-            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            
         ]);
 
         $middleware->alias([
@@ -22,6 +22,12 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         //
+    })->withCommands([
+        \App\Console\Commands\DailyEventReminder::class,
+        
+    ])->withSchedule(function ( $scheduler) {
+        $scheduler->command('events:reminder')->dailyAt( '15:03');
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
