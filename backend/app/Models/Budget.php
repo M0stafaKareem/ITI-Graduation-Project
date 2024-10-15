@@ -20,4 +20,9 @@ class Budget extends Model
     {
         return $this->hasMany(Expense::class);
     }
+
+    public function case()
+    {
+        return $this->belongsTo(MCase::class);
+    }
 }

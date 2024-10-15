@@ -9,6 +9,7 @@ use App\Models\Country;
 use App\Models\state;
 use Illuminate\Http\Request;
 use App\Models\Invoice;
+use Illuminate\Validation\ValidationData;
 
 class ClientsController extends Controller
 {
@@ -36,38 +37,48 @@ class ClientsController extends Controller
     public function store(Request $request)
     {
        
- 
-        $request->validate([
-            "name"=> "required",
-            "country_id"=> "required",
-            "city_id"=> "required",
-            // "state_id"=> "required",
-            "role"=> "required",
-            "mobile"=> "required",
-            "email"=> "required|unique:clients,email",
-            "gender"=> "required",
-            "address"=> "required",
-            "description"=> "required",
-            "client_category"=> "required",
-        ]);
-        $client_category = ClientCategory::find($request->client_category);
-        if (!$client_category) {
-            return "Client Category not found.";
+        try {
+            $request->validate([
+                "name"=> "required",
+                "country_id"=> "required",
+                "city_id"=> "required",
+                // "state_id"=> "required",
+                "role"=> "required",
+                "mobile"=> "required",
+                "email"=> "required|unique:clients,email",
+                "gender"=> "required",
+                "address"=> "required",
+                "description"=> "required",
+                "client_category"=> "required",
+            ]);
+            $client_category = ClientCategory::find($request->client_category);
+            if (!$client_category) {
+                return "Client Category not found.";
+            }
+
+            $country = Country::findOrFail($request->country_id);
+            
+        
+            $city = City::findOrFail($request->city_id);
+            
+        
+            // $state = state::findOrFail($request->state_id);
+        
+        
+
+            $Client= Client::create($request->all());
+
+            return $Client;
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->
+            json(['message'=> 'validaition failed' 
+              ,'errors'=> $e->errors()], 404);
+            
         }
-
-        $country = Country::findOrFail($request->country_id);
-        
-       
-        $city = City::findOrFail($request->city_id);
-        
-       
-        // $state = state::findOrFail($request->state_id);
-    
-       
-
-        $Client= Client::create($request->all());
-
-        return $Client;
+        catch (\Exception $e) {
+            return response()->json(['error'=> 'event not created '] , 404);
+        }
     }
 
     public function show( $id)

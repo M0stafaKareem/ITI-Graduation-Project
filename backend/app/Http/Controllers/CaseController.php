@@ -7,6 +7,7 @@ use App\Models\CaseGrade;
 use App\Models\Client;
 use App\Models\MCase;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class CaseController extends Controller
 {
@@ -38,35 +39,47 @@ class CaseController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'case_name' => 'required',
-            'client_id' => 'required',
-            'case_date' => 'required',
-            'first_session_date' => 'required',
-            'case_category_id' => 'required',
-            'case_grade_id' => 'required',
-            'court_id' => 'required',
-            'status' => 'required'
-        ]);
+        try{
+                $request->validate([
+                'case_name' => 'required',
+                'client_id' => 'required',
+                'case_date' => 'required',
+                'first_session_date' => 'required',
+                'case_category_id' => 'required',
+                'case_grade_id' => 'required',
+                'court_id' => 'required',
+                'status' => 'required'
+            ]);
+            
 
-        $client = Client::find($request->client_id);
-        if (!$client) {
-            return 'Client not found.';
+            $client = Client::find($request->client_id);
+            if (!$client) {
+                return 'Client not found.';
+            }
+
+            $case_category = CaseCategory::find($request->case_category_id);
+            if (!$case_category) {
+                return 'Case category not found.';
+            }
+
+            $case_grade = CaseGrade::find($request->case_grade_id);
+            if (!$case_grade) {
+                return 'Case grade not found.';
+            }
+
+            $Case = MCase::create($request->all());
+
+            return $Case;
         }
-
-        $case_category = CaseCategory::find($request->case_category_id);
-        if (!$case_category) {
-            return 'Case category not found.';
+        catch(ValidationException $e){
+            return response()->
+            json(['message'=> 'validaition failed' 
+              ,'errors'=> $e->errors()], 404);
         }
-
-        $case_grade = CaseGrade::find($request->case_grade_id);
-        if (!$case_grade) {
-            return 'Case grade not found.';
+        catch (\Exception $e) {
+            return response()->json(['error'=> 'event not created '] , 404);
         }
-
-        $Case = MCase::create($request->all());
-
-        return $Case;
+        
     }
 
     public function show($id)

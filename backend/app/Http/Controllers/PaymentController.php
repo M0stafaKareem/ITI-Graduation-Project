@@ -41,9 +41,9 @@ class PaymentController extends Controller
                 'description' => 'required',
                 'invoice_id' => 'nullable',
             ]); 
-            $request = Payment::create($request->all());
+            $payment = Payment::create($request->all());
             return response()->
-            json(['message' => 'payment created successfully' ],200);
+            json($payment,200);
         }catch(ValidationException $e){
             return response()->
             json(['message' => $e->getMessage()], 400);  
