@@ -21,7 +21,6 @@
   color: white !important;
 }
 
-
 /* Style for calendar buttons */
 .fc-button {
   background-color: #007bff;
@@ -53,7 +52,7 @@
 }
 
 .modal-header {
-  background-color: #007bff;
+  background-color: var(--mainColor);
   color: #fff;
   border-bottom: none;
   border-top-left-radius: 8px;
@@ -84,4 +83,8 @@
 
 .alert-danger {
   border-radius: 4px;
+}
+
+label {
+  color: black;
 }

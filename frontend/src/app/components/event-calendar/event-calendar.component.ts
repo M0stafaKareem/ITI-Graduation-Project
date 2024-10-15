@@ -84,19 +84,9 @@ export class EventCalendarComponent implements OnInit {
         button.style.color = '#fff';
         button.style.border = 'none';
         button.style.borderRadius = '5px';
-        button.style.padding = '5px 10px';
+        // button.style.padding = '5px 10px';
         button.style.margin = '0 5px';
-
-        /*Change Hover Button Color */
-        button.addEventListener('mouseover', () => {
-          button.style.backgroundColor = '#7485B7';
-        });
-        button.addEventListener('mouseout', () => {
-          button.style.backgroundColor = '#415094';
-        });
       });
-
-      // Style events
       const events = calendarEl.querySelectorAll('.fc-event');
       events.forEach((event: any) => {
         event.style.backgroundColor = '#16699c';

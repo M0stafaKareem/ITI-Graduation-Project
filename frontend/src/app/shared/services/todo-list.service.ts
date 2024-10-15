@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TodoItem } from '../models/todo-item.model';
+import { DOMAIN } from '../constants/domain';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { TodoItem } from '../models/todo-item.model';
 export class TodoListService {
   constructor(private httpClient: HttpClient) {}
 
-  private todosUrl = 'http://127.0.0.1:8000/api/tasks';
+  private todosUrl = `${DOMAIN.test}/tasks`;
 
   getTodos(): Observable<TodoItem[]> {
     return this.httpClient.get<TodoItem[]>(this.todosUrl);

@@ -22,17 +22,17 @@
     secondColumnHeader="Description"
     thirdColumnHeader="Action"
   >
-    @for (category of grades; track $index) {
+    @for (grade of paginatedGrades; track $index) {
     <tr>
       <td class="text-center">{{ $index + 1 }}</td>
-      <td>{{ category.name }}</td>
-      <td>{{ category.description }}</td>
+      <td>{{ grade.name }}</td>
+      <td>{{ grade.description }}</td>
       <td>
         <div class="custom-select">
           <select
             name="SELECT"
             id=""
-            (change)="onActionSelect($event, category.id!)"
+            (change)="onActionSelect($event, grade.id!)"
           >
             <option value="">SELECT</option>
             <option value="Update">Update</option>
@@ -47,4 +47,13 @@
     </tr>
     }
   </app-table>
+  <div #paginatorContainer class="paginator-container">
+    <mat-paginator
+      [length]="grades?.length"
+      [pageSize]="5"
+      (page)="onPageChange($event)"
+      showFirstLastButtons
+    >
+    </mat-paginator>
+  </div>
 </div>

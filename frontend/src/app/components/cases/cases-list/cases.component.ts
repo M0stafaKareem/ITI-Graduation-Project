@@ -299,7 +299,7 @@ export class CasesComponent implements OnInit {
     return new Promise((resolve) => {
       this.caseService.insertCase(newCase).subscribe({
         next: (data) => {
-          this.toaster.success(data.message);
+          this.toaster.success('Case added successfully', 'Success!');
           resolve(true);
         },
         error: (error) => {
