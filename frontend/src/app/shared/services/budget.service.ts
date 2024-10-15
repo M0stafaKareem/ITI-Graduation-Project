@@ -1,108 +1,35 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { BudgetCategory } from '../models/budget-category-interface';
-import { Budget } from '../models/budget.interface';
+import { finalize, Observable } from 'rxjs';
+import { apiBudget } from '../models/budget.interface';
+import { HttpClient } from '@angular/common/http';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BudgetService {
-  public BUDGETS: string = 'BUDGETS';
-  public BUDGET_CATEGORIES = 'BUDGET_CATEGORIES';
+  constructor(private http: HttpClient, private spinner: NgxSpinnerService) {}
 
-  public budgetSubject: Subject<Budget[]> = new Subject();
-  public budgetCategorySubject: Subject<BudgetCategory[]> = new Subject();
+  budgetsAPI = 'http://127.0.0.1:8000/api/budgets';
 
-  constructor() {}
-
-  addBudget(budget: Budget) {
-    const budgets = this.getBudgets();
-    budgets.push(budget);
-    this.setBudgets(budgets);
+  apiGetBudgets(): Observable<apiBudget[]> {
+    this.spinner.show();
+    return this.http
+      .get<apiBudget[]>(this.budgetsAPI)
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
-  getBudgets(): Budget[] {
-    const budgets = JSON.parse(
-      localStorage.getItem(this.BUDGETS) || '[]'
-    ) as Budget[];
-    return budgets;
+  apiAddBudget(budget: apiBudget) {
+    this.spinner.show();
+    return this.http
+      .post<{ message: string }>(this.budgetsAPI, budget)
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
-  updateBudgetAmount(budgetId: string, spent: number) {
-    const budgets = this.getBudgets();
-
-    const index = budgets.findIndex((x) => x.id === budgetId);
-    if (index > -1) {
-      budgets[index].spent = spent;
-      this.setBudgets(budgets);
-      return;
-    }
-
-    throw Error('can not update for a budget that does not exist');
-  }
-
-  getBudgetCategories(): BudgetCategory[] {
-    const categories = JSON.parse(
-      localStorage.getItem(this.BUDGET_CATEGORIES) || '[]'
-    ) as BudgetCategory[];
-    return categories;
-  }
-
-  getBudgetById(budgetId: string) {
-    const budgets = this.getBudgets();
-    const index = budgets.findIndex((x) => x.id === budgetId);
-    if (index > -1) {
-      return budgets[index];
-    }
-
-    throw Error('Budget does not exist');
-  }
-
-  getBudgetCategoryById(id: string) {
-    const categories = this.getBudgetCategories();
-    const index = categories.findIndex((x) => x.id === id);
-    if (index > -1) {
-      return categories[index];
-    }
-
-    throw Error('Category does not exist');
-  }
-
-  setBudgets(budgets: Budget[]) {
-    localStorage.setItem(this.BUDGETS, JSON.stringify(budgets));
-
-    const budgetCategories: BudgetCategory[] = budgets.map((item: Budget) => {
-      return {
-        color: item.color,
-        id: item.id,
-        name: item.name,
-      } as BudgetCategory;
-    });
-
-    this.setBudgetCategories(budgetCategories);
-    this.budgetSubject.next(budgets);
-  }
-
-  setBudgetCategories(budgetCategories: BudgetCategory[]) {
-    localStorage.setItem(
-      this.BUDGET_CATEGORIES,
-      JSON.stringify(budgetCategories)
-    );
-    this.budgetCategorySubject.next(budgetCategories);
-  }
-
-  deleteBudgetById(budgetId: string) {
-    const budgets = this.getBudgets();
-
-    const filtered = budgets.filter((item) => item.id !== budgetId);
-    this.setBudgets(filtered);
-  }
-
-  getBudgetData(): Observable<Budget[]> {
-    return this.budgetSubject;
-  }
-
-  getBudgetCategoryData(): Observable<BudgetCategory[]> {
-    return this.budgetCategorySubject;
+  apiDeleteBudgetById(budgetId: string) {
+    this.spinner.show();
+    return this.http
+      .delete(`${this.budgetsAPI}/${budgetId}`)
+      .pipe(finalize(() => this.spinner.hide()));
   }
 }

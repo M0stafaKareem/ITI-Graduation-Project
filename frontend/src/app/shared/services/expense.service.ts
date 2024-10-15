@@ -1,98 +1,59 @@
 import { Injectable } from '@angular/core';
-import { BudgetService } from './budget.service';
-import { Observable, Subject } from 'rxjs';
-import { Expense } from '../models/expense.interface';
+import { finalize, Observable } from 'rxjs';
+import { apiExpense } from '../models/expense.interface';
 import { TableDataConfig } from '../models/table-data-config.interface';
+import { HttpClient } from '@angular/common/http';
+import { apiBudget } from '../models/budget.interface';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ExpenseService {
-  EXPENSES: string = 'EXPENSES';
-  expenseSubject: Subject<Expense[]> = new Subject();
-  constructor(private budgetService: BudgetService) {}
+  constructor(private http: HttpClient, private spinner: NgxSpinnerService) {}
 
-  addExpense(expense: Expense) {
-    try {
-      const budget = this.budgetService.getBudgetById(
-        expense.budgetCategory.id
-      );
-      const expenses = this.getExpenses();
-      expenses.push(expense);
-      this.setExpense(expenses);
-      this.updateExpense(expenses, budget.id);
-    } catch (err: any) {
-      throw Error(err.message);
-    }
+  expensesAPI = 'http://127.0.0.1:8000/api/expenses';
+  budgetAPI = 'http://127.0.0.1:8000/api/budgets';
+
+  apiGetExpenses(): Observable<apiExpense[]> {
+    this.spinner.show();
+    return this.http
+      .get<apiExpense[]>(this.expensesAPI)
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
-  getExpenses(): Expense[] {
-    return JSON.parse(localStorage.getItem(this.EXPENSES) || '[]') as Expense[];
+  apiGetExpensesByBudgetId(budgetId: string): Observable<apiBudget> {
+    this.spinner.show();
+    return this.http
+      .get<apiBudget>(`${this.budgetAPI}/${budgetId}`)
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
-  updateExpense(expenses: Expense[], budgetId: string) {
-    const budgetExpenses = expenses.filter(
-      (item) => item.budgetCategory.id === budgetId
-    );
-    const totalExpense = budgetExpenses.reduce(
-      (sum: number, current: Expense) => sum + current.amount,
-      0
-    );
-
-    this.budgetService.updateBudgetAmount(budgetId, totalExpense);
+  apiAddExpense(Expense: apiExpense) {
+    this.spinner.show();
+    return this.http
+      .post<{ message: string }>(this.expensesAPI, Expense)
+      .pipe(finalize(() => this.spinner.hide()));
   }
 
-  buildExpenseTable(expenses: Expense[]) {
-    return expenses.map((item: Expense) => {
+  apiDeleteExpenseById(ExpenseId: string) {
+    this.spinner.show();
+    return this.http
+      .delete<{ message: string }>(`${this.expensesAPI}/${ExpenseId}`)
+      .pipe(finalize(() => this.spinner.hide()));
+  }
+
+  buildExpenseTable(expenses: apiExpense[]) {
+    return expenses.map((item: apiExpense) => {
       return {
         id: item.id,
-        name: item.name,
+        name: item.expense_name,
         amount: item.amount,
-        date: item.date,
-        budget: item.budgetCategory.name,
-        color: item.budgetCategory.color,
+        date: item.created_at,
+        budget_id: item.budget_id,
+        budget: item.budget_name,
+        color: 'red',
       };
     }) as TableDataConfig[];
-  }
-
-  setExpense(expenses: Expense[]) {
-    localStorage.setItem(this.EXPENSES, JSON.stringify(expenses));
-    this.expenseSubject.next(expenses);
-  }
-
-  deleteExpenseBudgeId(budgetId: string) {
-    const expense = this.getExpenses();
-    const deleted = expense.filter(
-      (expense: Expense) => expense.budgetCategory.id != budgetId
-    );
-    this.setExpense(deleted);
-  }
-
-  deleteExpenseById(expenseId: string) {
-    const expenses = this.getExpenses();
-    const expense = expenses.filter(
-      (expense: Expense) => expense.id === expenseId
-    )[0];
-    if (!expense) {
-      throw Error('can not delete a expense that does not exist ');
-      return;
-    }
-
-    const deleted = expenses.filter(
-      (expense: Expense) => expense.id != expenseId
-    );
-    this.setExpense(deleted);
-    this.updateExpense(deleted, expense.budgetCategory.id);
-  }
-
-  getExpensesByBudgetId(budgetId: string) {
-    const expense = this.getExpenses();
-    return expense.filter(
-      (expense: Expense) => expense.budgetCategory.id === budgetId
-    );
-  }
-
-  getExpenseData(): Observable<Expense[]> {
-    return this.expenseSubject;
   }
 }
