@@ -47,7 +47,6 @@ export const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
     title: 'Register',
-    outlet: 'authentication',
   },
   {
     path: 'verify-email',
