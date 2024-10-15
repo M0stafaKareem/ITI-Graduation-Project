@@ -8,16 +8,16 @@ import {
 import { Router } from '@angular/router';
 import { BudgetCardConfig } from '../../../shared/models/budget-card-config.interface';
 import { BudgetCategory } from '../../../shared/models/budget-category-interface';
-import { Budget } from '../../../shared/models/budget.interface';
-import { Expense } from '../../../shared/models/expense.interface';
+import { apiBudget } from '../../../shared/models/budget.interface';
 import { TableDataConfig } from '../../../shared/models/table-data-config.interface';
 import { BudgetService } from '../../../shared/services/budget.service';
 import { ExpenseService } from '../../../shared/services/expense.service';
-import { UiService } from '../../../shared/services/ui.service';
 import { BudgetCardComponent } from '../budget-card/budget-card.component';
 import { FormWrapperComponent } from '../form-wrapper/form-wrapper.component';
 import { TableComponent } from '../table/table.component';
 import { v4 as uuidv4 } from 'uuid';
+import { ToastrService } from 'ngx-toastr';
+import { apiExpense } from '../../../shared/models/expense.interface';
 
 @Component({
   selector: 'app-expenses-tracker',
@@ -44,92 +44,127 @@ export class ExpensesTrackerComponent implements OnInit {
   });
 
   budgetCategories: BudgetCategory[] = [];
-  budgets: Budget[] = [];
+  budgets: apiBudget[] = [];
   budgetCards: BudgetCardConfig[] = [];
+  expenses: apiExpense[] = [];
   expenseTableData: TableDataConfig[] = [];
+
   constructor(
-    // public userService: UserService,
     private budgetService: BudgetService,
     private expenseService: ExpenseService,
     private router: Router,
-    private uiService: UiService
+    private toaster: ToastrService
   ) {}
 
   ngOnInit(): void {
-    this.budgetCategories = this.budgetService.getBudgetCategories();
-    this.budgets = this.budgetService.getBudgets();
-    this.buildBudgetCards(this.budgets);
-    this.budgetService.getBudgetData().subscribe({
-      next: (res: Budget[]) => {
-        this.budgets = res;
+    this.budgetService.apiGetBudgets().subscribe({
+      next: (data: apiBudget[]) => {
+        this.budgets = data;
+        this.budgetCategories = this.budgets.map((item) => {
+          return {
+            id: item.id,
+            name: item.budget_name,
+            color: 'red',
+          };
+        });
         this.buildBudgetCards(this.budgets);
       },
-      error: (error: any) => {
-        console.error(error);
+      error: (error) => {
+        console.error('Error fetching budgets', error);
       },
     });
 
-    this.budgetService.getBudgetCategoryData().subscribe({
-      next: (res: BudgetCategory[]) => {
-        this.budgetCategories = res;
+    this.expenseService.apiGetExpenses().subscribe({
+      next: (data: apiExpense[]) => {
+        this.expenses = data.map((item: apiExpense) => {
+          return {
+            ...item,
+            budget_name: this.budgets.find(
+              (budget: apiBudget) => budget.id === item.budget_id
+            )?.budget_name!,
+          };
+        });
+        this.expenseTableData = this.expenseService.buildExpenseTable(
+          this.expenses
+        );
       },
-      error: (error: any) => {
-        console.error(error);
-      },
-    });
-
-    const expenses = this.expenseService.getExpenses();
-    this.expenseTableData = this.expenseService.buildExpenseTable(expenses);
-    this.expenseService.getExpenseData().subscribe({
-      next: (res: Expense[]) => {
-        this.expenseTableData = this.expenseService.buildExpenseTable(res);
-      },
-      error: (error: any) => {
-        console.error(error);
+      error: (error) => {
+        console.error('Error fetching expenses', error);
       },
     });
   }
 
   addBudget() {
-    const budget: Budget = {
+    const budget: apiBudget = {
       id: uuidv4(),
-      name: this.budgetForm.value.name,
-      budget: parseInt(this.budgetForm.value.budget),
+      budget_name: this.budgetForm.value.name,
+      amount: parseInt(this.budgetForm.value.budget),
       spent: 0,
-      color: this.uiService.generateRandomColor(this.budgets.length + 1),
     };
-
-    this.budgetService.addBudget(budget);
-    this.budgetForm.reset();
+    this.budgetService.apiAddBudget(budget).subscribe((res) => {
+      if (res.message === 'budget created successfully') {
+        this.budgets.push(budget);
+        this.buildBudgetCards(this.budgets);
+        this.budgetForm.reset();
+      } else {
+        this.toaster.error(res.message, 'Failed');
+      }
+    });
   }
 
   addExpense() {
-    const category = this.budgetService.getBudgetById(
-      this.expenseForm.value.budgetCategoryId
+    const category = this.budgets.find(
+      (item) => item.id == this.expenseForm.value.budgetCategoryId
     );
-    const expense: Expense = {
+    const expense: apiExpense = {
       id: uuidv4(),
-      name: this.expenseForm.value.name,
-      budgetCategory: category,
+      expense_name: this.expenseForm.value.name,
+      budget_id: category?.id!,
+      budget_name: category?.budget_name!,
       amount: parseFloat(this.expenseForm.value.amount),
-      date: new Date(),
+      created_at: new Date(),
     };
-    // add exposne
-    this.expenseService.addExpense(expense);
-    this.expenseForm.reset();
+    this.expenseService.apiAddExpense(expense).subscribe({
+      next: (res) => {
+        if (res.message === 'expense created successfully') {
+          this.expenses.push(expense);
+          this.expenseTableData = this.expenseService.buildExpenseTable(
+            this.expenses
+          );
+          this.toaster.success(
+            expense.expense_name + ' Created Successfully',
+            'DONE'
+          );
+          this.expenseForm.reset();
+        }
+      },
+      error: (error) => {
+        this.toaster.error(error.error.error, 'Failed');
+      },
+    });
   }
 
   handleDelete(data: TableDataConfig) {
-    this.expenseService.deleteExpenseById(data.id);
+    this.expenseService.apiDeleteExpenseById(data.id).subscribe((res) => {
+      if (res.message === 'expense deleted successfully.') {
+        this.toaster.success(`${data.name} Deleted Successfully`, 'Success');
+        this.expenses = this.expenses.filter((exp) => exp.id !== data.id);
+        this.expenseTableData = this.expenseTableData.filter(
+          (exp) => exp.id !== data.id
+        );
+      } else {
+        this.toaster.error(res.message, 'Failed');
+      }
+    });
   }
 
-  buildBudgetCards(budgets: Budget[]) {
-    this.budgetCards = budgets.map((item: Budget) => {
+  buildBudgetCards(budgets: apiBudget[]) {
+    this.budgetCards = budgets.map((item: apiBudget) => {
       return {
-        name: item.name,
-        budget: item.budget,
+        name: item.budget_name,
+        budget: item.amount,
         spent: item.spent,
-        color: item.color,
+        color: 'red',
         onClick: () => {
           this.router.navigateByUrl(`details/${item.id}`);
         },

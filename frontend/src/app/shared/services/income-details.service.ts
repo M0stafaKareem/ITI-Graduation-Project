@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BudgetService } from './income.service';
 import { Observable, Subject } from 'rxjs';
-import { Expense } from '../models/expense.interface';
+import { Expense } from '../models/payment.interface';
 import { TableDataConfig } from '../models/table-data-config.interface';
 
 @Injectable({

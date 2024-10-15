@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { BudgetCardConfig } from '../../../../shared/models/budget-card-config.interface';
-import { Expense } from '../../../../shared/models/expense.interface';
+import { Expense } from '../../../../shared/models/payment.interface';
 import { TableDataConfig } from '../../../../shared/models/table-data-config.interface';
 import { BudgetService } from '../../../../shared/services/income.service';
 import { ExpenseService } from '../../../../shared/services/income-details.service';
