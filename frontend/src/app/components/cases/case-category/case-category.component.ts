@@ -142,7 +142,7 @@ export class CaseCategoryComponent implements OnInit {
 
   toggleFormVisibility = (categoryId?: number) => {
     this.upaddingCategoryId = categoryId;
-    const targetCategory = this.categories?.find(
+    const targetCategory = this.paginatedCategories?.find(
       (category) => category.id === categoryId
     );
     if (targetCategory && categoryId) {
@@ -194,7 +194,7 @@ export class CaseCategoryComponent implements OnInit {
                 (item) => {
                   if (item.id == this.upaddingCategoryId) {
                     console.log(categoryData);
-                    return categoryData;
+                    return { ...categoryData, id: item.id };
                   }
                   return item;
                 }
