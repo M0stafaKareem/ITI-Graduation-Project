@@ -18,8 +18,8 @@ class DailyEventReminder extends Command
     {
         //console log
         //console log
-        $console = new \Symfony\Component\Console\Output\ConsoleOutput( );
-        $console->write('Sending email reminders for upcoming events...');
+        // $console = new \Symfony\Component\Console\Output\ConsoleOutput( );
+        // $console->write('Sending email reminders for upcoming events...');
         // $today = today();
         // $tomorrow = $today->addDay();
 

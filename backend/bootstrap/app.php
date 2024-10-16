@@ -23,7 +23,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
         //
     })->withSchedule( function ($schedule) {
-        $schedule->command('events:reminder')->everySecond();
+        
+    
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
