@@ -3,7 +3,7 @@
   border-radius: 8px;
   max-height: 60vh;
   overflow: auto;
-  background-color: var(--secondaryColor);
+  background-color: rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(3px);
 }
 
@@ -14,8 +14,7 @@
 header {
   display: flex;
   padding: 1rem 0.5rem 0.5rem 0.5rem;
-  position: sticky;
-  background-color: #aec1da;
+  position: relative;
   top: 0;
   justify-content: space-between;
   align-items: flex-start;
@@ -30,7 +29,7 @@ h2 {
   font-size: 0.9rem;
   width: 60%;
   text-wrap: balance;
-  color: black;
+  color: #467576;
 }
 p {
   color: #000;
@@ -66,8 +65,8 @@ ul {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  max-height: 50%;
-  overflow: auto;
+  max-height: 45vh;
+  overflow: scroll;
 }
 
 @media (min-width: 768px) {
