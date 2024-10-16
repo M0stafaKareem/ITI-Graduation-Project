@@ -153,11 +153,18 @@
       </app-dropdown>
       }
 
-      <li (click)="registerNewUser()" class="nav-list">
-        <button class="nav-link">
+      <li (click)="closeAllDropdowns()" class="nav-list">
+        <a class="nav-link" routerLink="inbox" routerLinkActive="activated">
+          <i class="fa-solid fa-inbox"></i>
+          Inbox</a
+        >
+      </li>
+
+      <li (click)="closeAllDropdowns()" class="nav-list">
+        <a class="nav-link" routerLink="register" routerLinkActive="activated">
           <i class="fa-solid fa-user-plus"></i>
-          Register New User
-        </button>
+          Register New User</a
+        >
       </li>
 
       <li (click)="logOut()" class="nav-list">

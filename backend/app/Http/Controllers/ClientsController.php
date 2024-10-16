@@ -67,17 +67,15 @@ class ClientsController extends Controller
 
 
         $Client = Client::create($request->all());
-
+        try {
             return $Client;
-
         } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->
-            json(['message'=> 'validaition failed' 
-              ,'errors'=> $e->errors()], 404);
-            
-        }
-        catch (\Exception $e) {
-            return response()->json(['error'=> 'event not created '] , 404);
+            return response()->json([
+                    'message' => 'validaition failed',
+                    'errors' => $e->errors()
+                ], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'event not created '], 404);
         }
     }
 

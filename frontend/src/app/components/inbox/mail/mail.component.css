@@ -1,0 +1,24 @@
+.wrapper {
+  padding: 10px;
+}
+.wrapper:hover {
+  padding: 10px;
+  background-color: #f3f6f9;
+}
+
+.start {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+  gap: 5px;
+}
+h5,
+p {
+  color: #a5a5a5;
+}
+.mid {
+  flex: 5;
+}
+.end {
+  flex: 1;
+}
