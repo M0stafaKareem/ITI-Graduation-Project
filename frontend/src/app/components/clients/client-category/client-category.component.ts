@@ -38,9 +38,6 @@ import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-n
   ],
 })
 export class ClientCategoryComponent {
-  checkChangedInput($event: any) {
-    throw new Error('Method not implemented.');
-  }
   categories?: ClientCategory[];
   paginatedCategories?: ClientCategory[];
   loading: boolean = false;
