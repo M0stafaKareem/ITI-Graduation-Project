@@ -30,5 +30,5 @@ Schedule::call(function () {
             // Send email reminder for the event
             Mail::to(User::all())->send(new EventReminder($event));
         }
-})->everyMinute();
+})->daily();
 
