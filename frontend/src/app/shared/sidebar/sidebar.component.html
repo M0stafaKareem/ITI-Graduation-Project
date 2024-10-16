@@ -153,6 +153,13 @@
       </app-dropdown>
       }
 
+      <li (click)="registerNewUser()" class="nav-list">
+        <button class="nav-link">
+          <i class="fa-solid fa-user-plus"></i>
+          Register New User
+        </button>
+      </li>
+
       <li (click)="logOut()" class="nav-list">
         <button class="nav-link">
           <i class="fa-solid fa-sign-out"></i>
@@ -175,7 +182,13 @@
   <button
     class="btn btn-primary toggle-sidebar d-md-none"
     (click)="toggleSidebar()"
-    style="position: fixed; top: 10px; left: 10px; z-index: 1001"
+    style="
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1001;
+      background-color: var(--mainColor);
+    "
   >
     <i class="fa fa-bars"></i>
   </button>

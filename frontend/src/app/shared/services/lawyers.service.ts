@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { finalize, Observable } from 'rxjs';
 import { Lawyers } from '../models/lawyers.model';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DOMAIN } from '../constants/domain';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LawyersService {
-  lawyersUrl = 'http://localhost:8000/api/lawyers';
-  oppositeLawyersUrl = 'http://127.0.0.1:8000/api/opposinglawyers';
+  lawyersUrl = `${DOMAIN.test}/lawyers`;
+  oppositeLawyersUrl = `${DOMAIN.test}/opposinglawyers`;
   constructor(
     private httpClient: HttpClient,
     private spinner: NgxSpinnerService

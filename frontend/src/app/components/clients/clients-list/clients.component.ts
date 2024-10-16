@@ -192,7 +192,7 @@ export class ClientsComponent implements OnInit {
 
   toggleFormVisibility = (clientId?: number) => {
     this.upaddingClientId = clientId;
-    const targetClient = this.clients?.find(
+    const targetClient = this.paginatedClients?.find(
       (clients) => clients.id == clientId
     );
     if (clientId && targetClient) {
@@ -312,8 +312,7 @@ export class ClientsComponent implements OnInit {
             if (result) {
               this.paginatedClients = this.paginatedClients?.map((client) => {
                 if (client.id == this.upaddingClientId) {
-                  console.log(clientData);
-                  return clientData;
+                  return { ...clientData, id: client.id };
                 }
                 return client;
               });

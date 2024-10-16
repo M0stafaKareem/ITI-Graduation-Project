@@ -7,14 +7,15 @@ import { InitiateRequestService } from './initiate-request.service';
 import { ClientCategory } from '../models/client.category';
 import { CaseGrade } from '../models/case.grade.model';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DOMAIN } from '../constants/domain';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CasesService {
-  getCasesURL = 'http://127.0.0.1:8000/api/Cases';
-  categoriesApiUrl = 'http://127.0.0.1:8000/api/CaseCategories';
-  CaseGradeUrl = 'http://127.0.0.1:8000/api/CaseGrades';
+  getCasesURL = `${DOMAIN.test}/Cases`;
+  categoriesApiUrl = `${DOMAIN.test}/CaseCategories`;
+  CaseGradeUrl = `${DOMAIN.test}/CaseGrades`;
 
   constructor(
     private httpClient: InitiateRequestService,

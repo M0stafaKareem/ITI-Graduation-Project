@@ -1,5 +1,3 @@
-import { apiExpense } from './expense.interface';
-
 export interface Budget {
   id: string;
   name: string;
@@ -15,5 +13,5 @@ export interface apiBudget {
   budget_name: string;
   amount: number;
   spent: number;
-  expenses?: apiExpense[];
+  // expenses: expense[];
 }

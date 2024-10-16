@@ -24,6 +24,14 @@ button {
   border: none;
   color: white;
 }
+button:hover {
+  background: rgb(70, 117, 118);
+  background: linear-gradient(
+    151deg,
+    rgba(70, 117, 118, 1) 1%,
+    rgba(98, 96, 96, 1) 17%
+  );
+}
 
 .search {
   position: relative;
@@ -40,6 +48,12 @@ input[type="search"] {
   outline: none;
   position: relative;
   background-color: transparent;
+}
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
 }
 
 /* input[type="search"]::after {

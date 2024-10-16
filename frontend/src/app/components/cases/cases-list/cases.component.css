@@ -42,16 +42,11 @@ td:not(:first-child) {
 
 select:hover,
 select:hover .custom-select i {
-  background: rgb(247, 0, 190);
+  background: rgb(70, 117, 118);
   background: linear-gradient(
     151deg,
-    rgba(247, 0, 190, 1) 1%,
-    rgba(228, 8, 200, 1) 17%,
-    rgba(223, 10, 203, 1) 21%,
-    rgba(212, 15, 209, 1) 30%,
-    rgba(198, 21, 216, 1) 42%,
-    rgba(180, 28, 226, 1) 57%,
-    rgba(128, 50, 253, 1) 100%
+    rgba(70, 117, 118, 1) 1%,
+    rgba(98, 96, 96, 1) 17%
   );
   color: white !important;
 }
@@ -79,9 +74,9 @@ select option {
   justify-content: center;
   margin-top: 10px;
   width: 100%;
-  background-color: var(--mainColor);
+  background-color: gainsboro;
   border-radius: 4px;
-  color: white;
+  color: var(--secondaryColor);
 }
 
 span {

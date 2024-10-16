@@ -1,17 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { TableComponent } from '../../../shared/table/table.component';
-import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-nav.component';
-import { CasesService } from '../../../shared/services/cases.service';
-import { CaseCategory } from '../../../shared/models/case.category.model';
-import { NgIf } from '@angular/common';
 import {
-  inputType,
-  AddingFormComponent,
-} from '../../../shared/adding-form/adding-form.component';
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
+import { NgIf } from '@angular/common';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { TableComponent } from '../../../shared/table/table.component';
+import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-nav.component';
+import { CasesService } from '../../../shared/services/cases.service';
+import { CaseCategory } from '../../../shared/models/case.category.model';
+import {
+  inputType,
+  AddingFormComponent,
+} from '../../../shared/adding-form/adding-form.component';
 
 @Component({
   selector: 'app-case-category',
@@ -23,6 +29,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     AddingFormComponent,
     CommonModule,
     RouterLink,
+    MatPaginator,
   ],
   templateUrl: './case-category.component.html',
   styleUrls: [
@@ -35,6 +42,7 @@ export class CaseCategoryComponent implements OnInit {
     throw new Error('Function not implemented.');
   }
   categories?: CaseCategory[];
+  paginatedCategories?: CaseCategory[];
   loading: boolean = false;
   isFormVisible: boolean = false;
   formType: 'Add' | 'Update' = 'Add';
@@ -42,6 +50,8 @@ export class CaseCategoryComponent implements OnInit {
   upaddingCategoryId?: number;
   newCategoryInputRows!: inputType[];
   form!: FormGroup;
+  pageSize: number = 5;
+  currentPage: number = 0;
 
   constructor(
     private caseService: CasesService,
@@ -63,9 +73,23 @@ export class CaseCategoryComponent implements OnInit {
     this.categories = this.route.snapshot.data['categories'];
   }
 
+  onPageChange(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex;
+    this.updatePaginatedCategories();
+  }
+  updatePaginatedCategories(): void {
+    if (this.categories) {
+      const start = this.currentPage * this.pageSize;
+      const end = start + this.pageSize;
+      this.paginatedCategories = this.categories.slice(start, end);
+    }
+  }
+
   fetchCategories(searchTerm: string) {
     this.caseService.getCategories(searchTerm).subscribe((categories) => {
       this.categories = categories;
+      this.updatePaginatedCategories();
     });
   }
 
@@ -118,7 +142,7 @@ export class CaseCategoryComponent implements OnInit {
 
   toggleFormVisibility = (categoryId?: number) => {
     this.upaddingCategoryId = categoryId;
-    const targetCategory = this.categories?.find(
+    const targetCategory = this.paginatedCategories?.find(
       (category) => category.id === categoryId
     );
     if (targetCategory && categoryId) {
@@ -166,13 +190,15 @@ export class CaseCategoryComponent implements OnInit {
         await this.updateCategory(this.upaddingCategoryId!, categoryData).then(
           (result) => {
             if (result) {
-              this.categories = this.categories?.map((item) => {
-                if (item.id == this.upaddingCategoryId) {
-                  console.log(categoryData);
-                  return categoryData;
+              this.paginatedCategories = this.paginatedCategories?.map(
+                (item) => {
+                  if (item.id == this.upaddingCategoryId) {
+                    console.log(categoryData);
+                    return { ...categoryData, id: item.id };
+                  }
+                  return item;
                 }
-                return item;
-              });
+              );
             } else {
               console.log('failed to update client');
             }

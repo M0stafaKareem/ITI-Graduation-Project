@@ -22,7 +22,7 @@
     secondColumnHeader="Description"
     thirdColumnHeader="Action"
   >
-    @for (category of categories; track $index) {
+    @for (category of paginatedCategories; track $index) {
     <tr>
       <td class="text-center">{{ $index + 1 }}</td>
       <td>{{ category.category_name }}</td>
@@ -47,4 +47,13 @@
     </tr>
     }
   </app-table>
+  <div #paginatorContainer class="paginator-container">
+    <mat-paginator
+      [length]="categories?.length"
+      [pageSize]="5"
+      (page)="onPageChange($event)"
+      showFirstLastButtons
+    >
+    </mat-paginator>
+  </div>
 </div>

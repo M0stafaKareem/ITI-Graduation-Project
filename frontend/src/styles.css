@@ -25,16 +25,16 @@ body {
   text-decoration: none;
 }
 
-/* .fc-customButton-button {
-  background-color: #626060 !important;
-} */
+.fc-customButton-button {
+  background-color: #838080 !important;
+}
 
 .fc .fc-toolbar-title {
   color: white;
 }
 
 .fc-day-today {
-  background-color: var(--secondaryColor) !important;
+  background-color: #838080 !important;
   color: #ffffff;
   border-radius: 5px;
 }

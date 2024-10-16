@@ -1,15 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
+import { CommonModule, NgIf } from '@angular/common';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { Court } from '../../../shared/models/court.model';
 import { TableComponent } from '../../../shared/table/table.component';
 import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-nav.component';
 import { AddingFormComponent } from '../../../shared/adding-form/adding-form.component';
-import { NgIf } from '@angular/common';
 import { CourtService } from '../../../shared/services/court.service';
 import { ToastrService } from 'ngx-toastr';
 import { inputType } from '../../../shared/adding-form/adding-form.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-courts',
@@ -21,6 +26,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     NgIf,
     RouterLink,
     CommonModule,
+    MatPaginator,
   ],
   templateUrl: './courts.component.html',
   styleUrls: [
@@ -33,6 +39,7 @@ export class CourtsComponent {
     throw new Error('Method not implemented.');
   }
   courts?: Court[];
+  paginatedCourts?: Court[];
   formType: any;
   formHeader: any;
   newCourtInputRows: any;
@@ -40,6 +47,8 @@ export class CourtsComponent {
   loading = false;
   upaddingCourtId?: number;
   form!: FormGroup;
+  pageSize: number = 5;
+  currentPage: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -59,9 +68,23 @@ export class CourtsComponent {
     });
   }
 
+  onPageChange(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex;
+    this.updatePaginatedCourts();
+  }
+  updatePaginatedCourts(): void {
+    if (this.courts) {
+      const start = this.currentPage * this.pageSize;
+      const end = start + this.pageSize;
+      this.paginatedCourts = this.courts.slice(start, end);
+    }
+  }
+
   fetchCourts(searchTerm: string) {
     this.courtService.getCourts(searchTerm).subscribe((courts) => {
       this.courts = courts;
+      this.updatePaginatedCourts();
     });
   }
 
@@ -75,7 +98,9 @@ export class CourtsComponent {
 
   toggleFormVisibility = (courtId?: number) => {
     this.upaddingCourtId = courtId;
-    const targetCourt = this.courts?.find((court) => court.id === courtId);
+    const targetCourt = this.paginatedCourts?.find(
+      (court) => court.id === courtId
+    );
     if (targetCourt && courtId) {
       this.formHeader = 'Update Court';
       this.formType = 'Update';
@@ -124,10 +149,9 @@ export class CourtsComponent {
         await this.updateCourt(this.upaddingCourtId!, courtData).then(
           (result) => {
             if (result) {
-              this.courts = this.courts?.map((item) => {
+              this.paginatedCourts = this.paginatedCourts?.map((item) => {
                 if (item.id == this.upaddingCourtId) {
-                  console.log(courtData);
-                  return courtData;
+                  return { ...courtData, id: item.id };
                 }
                 return item;
               });
@@ -176,6 +200,7 @@ export class CourtsComponent {
 
   onActionSelect(event: any, courtId: number): void {
     const selectedValue = event.target.value;
+    console.log(courtId);
 
     if (selectedValue === 'Delete') {
       this.deleteCourt(courtId);

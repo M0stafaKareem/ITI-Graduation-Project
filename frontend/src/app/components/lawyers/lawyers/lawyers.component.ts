@@ -136,7 +136,9 @@ export class LawyersComponent implements OnInit {
 
   toggleFormVisibility = (lawyerId?: number) => {
     this.upaddingLawyerId = lawyerId;
-    const targetLawyer = this.lawyers?.find((lawyer) => lawyer.id === lawyerId);
+    const targetLawyer = this.paginatedLawyers?.find(
+      (lawyer) => lawyer.id === lawyerId
+    );
     if (targetLawyer && lawyerId) {
       this.formHeader = 'Update Lawyer';
       this.formType = 'Update';
@@ -195,10 +197,10 @@ export class LawyersComponent implements OnInit {
         await this.updateLawyer(this.upaddingLawyerId!, lawyerData).then(
           (result) => {
             if (result) {
-              this.lawyers = this.lawyers?.map((item) => {
+              this.paginatedLawyers = this.paginatedLawyers?.map((item) => {
                 if (item.id == this.upaddingLawyerId) {
                   console.log(lawyerData);
-                  return lawyerData;
+                  return { ...lawyerData, id: item.id };
                 }
                 return item;
               });

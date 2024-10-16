@@ -2,6 +2,12 @@ import { ToastrService } from 'ngx-toastr';
 import { CommonModule, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { TableComponent } from '../../../shared/table/table.component';
 import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-nav.component';
@@ -11,7 +17,6 @@ import {
   AddingFormComponent,
 } from '../../../shared/adding-form/adding-form.component';
 import { CaseGrade } from '../../../shared/models/case.grade.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-case-grade',
@@ -23,6 +28,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     AddingFormComponent,
     CommonModule,
     RouterLink,
+    MatPaginator,
   ],
   templateUrl: './case-grade.component.html',
   styleUrls: [
@@ -35,6 +41,7 @@ export class CaseGradeComponent implements OnInit {
     throw new Error('Function not implemented.');
   }
   grades?: CaseGrade[];
+  paginatedGrades?: CaseGrade[];
   loading: boolean = false;
   isFormVisible: boolean = false;
   formType: 'Add' | 'Update' = 'Add';
@@ -42,6 +49,8 @@ export class CaseGradeComponent implements OnInit {
   upaddingGradeId?: number;
   newGradeInputRows!: inputType[];
   form!: FormGroup;
+  pageSize: number = 5;
+  currentPage: number = 0;
 
   constructor(
     private caseService: CasesService,
@@ -63,9 +72,23 @@ export class CaseGradeComponent implements OnInit {
     this.grades = this.route.snapshot.data['grades'];
   }
 
+  onPageChange(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex;
+    this.updatePaginatedGrades();
+  }
+  updatePaginatedGrades(): void {
+    if (this.grades) {
+      const start = this.currentPage * this.pageSize;
+      const end = start + this.pageSize;
+      this.paginatedGrades = this.grades.slice(start, end);
+    }
+  }
+
   fetchGrades(searchTerm: string) {
     this.caseService.getCaseGrade(searchTerm).subscribe((grades) => {
       this.grades = grades;
+      this.updatePaginatedGrades();
     });
   }
 
@@ -115,7 +138,9 @@ export class CaseGradeComponent implements OnInit {
 
   toggleFormVisibility = (gradeId?: number) => {
     this.upaddingGradeId = gradeId;
-    const targetGrade = this.grades?.find((item) => item.id === gradeId);
+    const targetGrade = this.paginatedGrades?.find(
+      (item) => item.id === gradeId
+    );
     if (targetGrade && gradeId) {
       this.formHeader = 'Update Grade';
       this.formType = 'Update';
@@ -161,10 +186,10 @@ export class CaseGradeComponent implements OnInit {
         await this.updateGrade(this.upaddingGradeId!, gradeData).then(
           (result) => {
             if (result) {
-              this.grades = this.grades?.map((item) => {
+              this.paginatedGrades = this.paginatedGrades?.map((item) => {
                 if (item.id == this.upaddingGradeId) {
                   console.log(gradeData);
-                  return gradeData;
+                  return { ...gradeData, id: item.id };
                 }
                 return item;
               });

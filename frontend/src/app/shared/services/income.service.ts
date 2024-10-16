@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { BudgetCategory } from '../models/budget-category-interface';
-import { Budget } from '../models/budget.interface';
+import { Budget } from '../models/invoice.interface';
 
 @Injectable({
   providedIn: 'root',

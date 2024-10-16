@@ -1,9 +1,8 @@
 <div class="budget-detail-container w-full h-full flex flex-col gap-y-8 p-6">
   <h2 class="text-5xl font-bold">
-    <span
-      class="{{ uiService.generateTailwindClass(budgetCard.color, 'text') }}"
-      >{{ budgetCard.name }}</span
-    >
+    <span class="{{ uiService.generateTailwindClass('red', 'text') }}">{{
+      budgetCard.name
+    }}</span>
     Overview
   </h2>
 
@@ -34,7 +33,7 @@
               formControlName="amount"
               type="number"
               class="input-select"
-              placeholder="e.g, R120"
+              placeholder="e.g, 120"
             />
           </div>
         </div>

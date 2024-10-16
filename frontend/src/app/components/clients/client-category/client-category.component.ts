@@ -2,6 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { NgIf } from '@angular/common';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 import { ClientCategory } from '../../../shared/models/client.category';
 import {
@@ -11,8 +18,6 @@ import {
 import { ClientsService } from '../../../shared/services/clients.service';
 import { TableComponent } from '../../../shared/table/table.component';
 import { SecondaryNavComponent } from '../../../shared/secondary-nav/secondary-nav.component';
-import { ToastrService } from 'ngx-toastr';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-client-category',
@@ -24,6 +29,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     NgIf,
     CommonModule,
     RouterLink,
+    MatPaginator,
   ],
   templateUrl: './client-category.component.html',
   styleUrls: [
@@ -36,6 +42,7 @@ export class ClientCategoryComponent {
     throw new Error('Method not implemented.');
   }
   categories?: ClientCategory[];
+  paginatedCategories?: ClientCategory[];
   loading: boolean = false;
   isFormVisible: boolean = false;
   formType: 'Add' | 'Update' = 'Add';
@@ -43,6 +50,8 @@ export class ClientCategoryComponent {
   upaddingClientId?: number;
   newCategoryInputRows!: inputType[];
   form!: FormGroup;
+  pageSize: number = 5;
+  currentPage: number = 0;
 
   constructor(
     private clientSerivce: ClientsService,
@@ -64,9 +73,23 @@ export class ClientCategoryComponent {
     this.categories = this.route.snapshot.data['clientCategories'];
   }
 
+  onPageChange(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex;
+    this.updatePaginatedCategory();
+  }
+  updatePaginatedCategory(): void {
+    if (this.categories) {
+      const start = this.currentPage * this.pageSize;
+      const end = start + this.pageSize;
+      this.paginatedCategories = this.categories.slice(start, end);
+    }
+  }
+
   fetchCategories(searchTerm: string) {
     this.clientSerivce.getCategories(searchTerm).subscribe((categories) => {
       this.categories = categories;
+      this.updatePaginatedCategory();
     });
   }
 
@@ -116,7 +139,7 @@ export class ClientCategoryComponent {
 
   toggleFormVisibility = (categoryId?: number) => {
     this.upaddingClientId = categoryId;
-    const targetCategory = this.categories?.find(
+    const targetCategory = this.paginatedCategories?.find(
       (category) => category.id === categoryId
     );
     if (categoryId && targetCategory) {
@@ -164,15 +187,16 @@ export class ClientCategoryComponent {
         await this.updateCategory(this.upaddingClientId!, categoryData).then(
           (result) => {
             if (result) {
-              this.categories = this.categories?.map((category) => {
-                if (category.id == this.upaddingClientId) {
-                  return {
-                    ...category,
-                    id: this.categories![this.categories!.length].id! + 1,
-                  };
+              this.paginatedCategories = this.paginatedCategories?.map(
+                (category) => {
+                  if (category.id == this.upaddingClientId) {
+                    console.log(categoryData);
+                    return { ...categoryData, id: category.id };
+                  }
+
+                  return category;
                 }
-                return category;
-              });
+              );
             } else {
               console.log('failed to update client');
             }

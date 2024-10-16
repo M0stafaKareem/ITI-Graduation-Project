@@ -4,13 +4,14 @@ import { finalize, Observable } from 'rxjs';
 import { Clients } from '../models/clients.model';
 import { ClientCategory } from '../models/client.category';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DOMAIN } from '../constants/domain';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClientsService {
-  clientsUrl = 'http://127.0.0.1:8000/api/Clients';
-  clientCategoryUrl = 'http://127.0.0.1:8000/api/ClientCategories';
+  clientsUrl = `${DOMAIN.test}/Clients`;
+  clientCategoryUrl = `${DOMAIN.test}/ClientCategories`;
   constructor(
     private httpClient: HttpClient,
     private spinner: NgxSpinnerService
