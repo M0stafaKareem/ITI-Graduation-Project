@@ -107,6 +107,7 @@ export class CaseCategoryComponent implements OnInit {
     return new Promise((resolve) => {
       this.caseService.insertCategory(newCategory).subscribe({
         next: (data) => {
+          this.paginatedCategories?.push(data);
           this.toaster.success('successfully added');
           resolve(true);
         },
@@ -174,13 +175,7 @@ export class CaseCategoryComponent implements OnInit {
   submitForm = async (categoryData: CaseCategory) => {
     if (this.formType === 'Add') {
       if (this.form.valid) {
-        this.addNewCategory(categoryData).then((result) => {
-          if (result) {
-            this.categories?.push(categoryData);
-          } else {
-            console.log('failed to add Category');
-          }
-        });
+        this.addNewCategory(categoryData).then();
       } else {
         this.form.markAllAsTouched();
         return;
@@ -230,7 +225,7 @@ export class CaseCategoryComponent implements OnInit {
         next: () => {
           console.log('deleting');
 
-          this.categories = this.categories?.filter(
+          this.paginatedCategories = this.paginatedCategories?.filter(
             (category: CaseCategory) => category.id !== categoryId
           );
 

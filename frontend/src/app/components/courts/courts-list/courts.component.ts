@@ -133,13 +133,7 @@ export class CourtsComponent {
   submitForm = async (courtData: Court) => {
     if (this.formType === 'Add') {
       if (this.form.valid) {
-        this.addNewCourt(courtData).then((result) => {
-          if (result) {
-            this.courts?.push(courtData);
-          } else {
-            console.log('failed to add Court');
-          }
-        });
+        this.addNewCourt(courtData);
       } else {
         this.form.markAllAsTouched();
         return;
@@ -172,6 +166,7 @@ export class CourtsComponent {
     return new Promise((resolve) => {
       this.courtService.insertCourt(newCourt).subscribe({
         next: (data) => {
+          this.paginatedCourts?.push(data);
           this.toaster.success('Court added successfully');
           resolve(true);
         },
@@ -187,7 +182,7 @@ export class CourtsComponent {
     return new Promise((resolve) => {
       this.courtService.updateCourt(courtId, updatedCourt).subscribe({
         next: (data) => {
-          this.toaster.success(data.message);
+          this.toaster.success('court updated successfully');
           resolve(true);
         },
         error: (error) => {
@@ -217,7 +212,7 @@ export class CourtsComponent {
         next: () => {
           console.log('deleting');
 
-          this.courts = this.courts?.filter(
+          this.paginatedCourts = this.paginatedCourts?.filter(
             (court: Court) => court.id !== courtId
           );
 

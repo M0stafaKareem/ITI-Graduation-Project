@@ -40,8 +40,8 @@ class lawyerController extends Controller
             'address' => 'required',
         ]);
 
-        Lawyer::create($request->all());
-        return response()->json(['message' => 'Lawyer created successfully.']);
+        $laywer =  Lawyer::create($request->all());
+        return response()->json($laywer);
     }
 
     /**

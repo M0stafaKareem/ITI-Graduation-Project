@@ -22,9 +22,9 @@ class CreateClientsTable extends Migration
                 $table->foreign('country_id')->references('id')
                     ->on('countries')->onDelete('SET NULL');
 
-                $table->unsignedBigInteger('state_id')->nullable()->unsigned();
-                $table->foreign('state_id')->references('id')
-                    ->on('states')->onDelete('SET NULL');
+                // $table->unsignedBigInteger('state_id')->nullable()->unsigned();
+                // $table->foreign('state_id')->references('id')
+                //     ->on('states')->onDelete('SET NULL');
 
                 $table->unsignedBigInteger('city_id')->nullable()->unsigned();
                 $table->foreign('city_id')->references('id')
@@ -35,11 +35,11 @@ class CreateClientsTable extends Migration
                     ->on('client_categories')->onDelete('SET NULL');
 
 
-                $table->enum('role', ['Defendant', 'Plaintiff','Accused','Victim','Witness','Other'])->default('Defendant');
+                $table->enum('role', ['Defendant', 'Plaintiff', 'Accused', 'Victim', 'Witness', 'Other'])->default('Defendant');
 
                 $table->string('mobile')->nullable();
                 $table->string('email')->nullable();
-                $table->boolean('gender')->default(0);
+                $table->string('gender')->default(0);
                 $table->text('address')->nullable();
                 $table->longText('description')->nullable();
 
