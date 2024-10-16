@@ -98,7 +98,9 @@ export class CourtsComponent {
 
   toggleFormVisibility = (courtId?: number) => {
     this.upaddingCourtId = courtId;
-    const targetCourt = this.courts?.find((court) => court.id === courtId);
+    const targetCourt = this.paginatedCourts?.find(
+      (court) => court.id === courtId
+    );
     if (targetCourt && courtId) {
       this.formHeader = 'Update Court';
       this.formType = 'Update';
@@ -149,8 +151,7 @@ export class CourtsComponent {
             if (result) {
               this.paginatedCourts = this.paginatedCourts?.map((item) => {
                 if (item.id == this.upaddingCourtId) {
-                  console.log(courtData);
-                  return courtData;
+                  return { ...courtData, id: item.id };
                 }
                 return item;
               });
@@ -199,6 +200,7 @@ export class CourtsComponent {
 
   onActionSelect(event: any, courtId: number): void {
     const selectedValue = event.target.value;
+    console.log(courtId);
 
     if (selectedValue === 'Delete') {
       this.deleteCourt(courtId);

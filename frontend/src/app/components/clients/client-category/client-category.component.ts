@@ -139,7 +139,7 @@ export class ClientCategoryComponent {
 
   toggleFormVisibility = (categoryId?: number) => {
     this.upaddingClientId = categoryId;
-    const targetCategory = this.categories?.find(
+    const targetCategory = this.paginatedCategories?.find(
       (category) => category.id === categoryId
     );
     if (categoryId && targetCategory) {
@@ -191,7 +191,7 @@ export class ClientCategoryComponent {
                 (category) => {
                   if (category.id == this.upaddingClientId) {
                     console.log(categoryData);
-                    return categoryData;
+                    return { ...categoryData, id: category.id };
                   }
 
                   return category;

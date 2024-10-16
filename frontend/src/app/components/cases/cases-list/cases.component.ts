@@ -138,7 +138,9 @@ export class CasesComponent implements OnInit {
 
   toggleFormVisibility = (caseId?: number): void => {
     this.upaddingCaseId = caseId;
-    const targetCase = this.cases?.find((clients) => clients.id === caseId);
+    const targetCase = this.paginatedCases?.find(
+      (clients) => clients.id === caseId
+    );
     if (targetCase) {
       this.formHeader = 'Update Case';
       this.formType = 'Update';
@@ -273,7 +275,7 @@ export class CasesComponent implements OnInit {
               if (item.id == this.upaddingCaseId) {
                 console.log(caseData);
 
-                return caseData;
+                return { ...caseData, id: item.id };
               }
               return item;
             });

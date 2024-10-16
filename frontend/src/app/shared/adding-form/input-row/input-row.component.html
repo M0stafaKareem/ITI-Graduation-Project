@@ -15,7 +15,7 @@
         'placeholder-option': !form.get(input_Info.backed_key)?.value
       }"
     >
-      <option value="">Please Select {{ input_Info.title }}</option>
+      <option value="" hidden>Please Select {{ input_Info.title }}</option>
       <option *ngFor="let option of input_Info.options" [value]="option.id">
         {{ option.value }}
       </option>

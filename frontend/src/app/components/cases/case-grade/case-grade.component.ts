@@ -138,7 +138,9 @@ export class CaseGradeComponent implements OnInit {
 
   toggleFormVisibility = (gradeId?: number) => {
     this.upaddingGradeId = gradeId;
-    const targetGrade = this.grades?.find((item) => item.id === gradeId);
+    const targetGrade = this.paginatedGrades?.find(
+      (item) => item.id === gradeId
+    );
     if (targetGrade && gradeId) {
       this.formHeader = 'Update Grade';
       this.formType = 'Update';
@@ -187,7 +189,7 @@ export class CaseGradeComponent implements OnInit {
               this.paginatedGrades = this.paginatedGrades?.map((item) => {
                 if (item.id == this.upaddingGradeId) {
                   console.log(gradeData);
-                  return gradeData;
+                  return { ...gradeData, id: item.id };
                 }
                 return item;
               });
