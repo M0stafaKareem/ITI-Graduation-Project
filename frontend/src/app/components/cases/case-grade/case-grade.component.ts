@@ -103,7 +103,8 @@ export class CaseGradeComponent implements OnInit {
     return new Promise((resolve) => {
       this.caseService.insertCaseGrade(newGrade).subscribe({
         next: (data) => {
-          this.toaster.success(data.message);
+          this.paginatedGrades?.push(data);
+          this.toaster.success('Grade added successfully');
           resolve(true);
         },
         error: (error) => {
@@ -170,13 +171,7 @@ export class CaseGradeComponent implements OnInit {
   submitForm = async (gradeData: CaseGrade) => {
     if (this.formType === 'Add') {
       if (this.form.valid) {
-        this.addNewGrade(gradeData).then((result) => {
-          if (result) {
-            this.grades?.push(gradeData);
-          } else {
-            console.log('failed to add Grade');
-          }
-        });
+        this.addNewGrade(gradeData);
       } else {
         this.form.markAllAsTouched();
         return;
@@ -188,7 +183,6 @@ export class CaseGradeComponent implements OnInit {
             if (result) {
               this.paginatedGrades = this.paginatedGrades?.map((item) => {
                 if (item.id == this.upaddingGradeId) {
-                  console.log(gradeData);
                   return { ...gradeData, id: item.id };
                 }
                 return item;
@@ -224,7 +218,7 @@ export class CaseGradeComponent implements OnInit {
         next: () => {
           console.log('deleting');
 
-          this.grades = this.grades?.filter(
+          this.paginatedGrades = this.paginatedGrades?.filter(
             (item: CaseGrade) => item.id !== gradeId
           );
 
