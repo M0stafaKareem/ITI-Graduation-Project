@@ -11,7 +11,6 @@ class InvoiceController extends Controller
     public function index()
     {
         try {
-            // Retrieve all invoices with associated client and payments
             $invoices = Invoice::with(['payment', 'client:id,name'])->get();
             
             return response()->json($invoices);
@@ -19,7 +18,6 @@ class InvoiceController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
 
    
      //Store a newly created invoice and associate with a client and payments.
@@ -31,8 +29,10 @@ class InvoiceController extends Controller
                 'client_id' => 'required|exists:clients,id',
                 'invoice_number' => 'required',
                 'invoice_amount'=> 'required',
-                
-                        ]);
+                'payments' => 'required|array',
+                'payments.*.amount' => 'required'
+                        
+            ]);
            
 
             $invoice = Invoice::create([
@@ -40,9 +40,13 @@ class InvoiceController extends Controller
                 'invoice_number' => $request->invoice_number,
                 'invoice_amount' => $request->invoice_amount,
             ]);
-      
-            
-        
+
+            foreach ($request->payments as $paymentData) {
+                $invoice->payments()->create([
+                    'amount' => $paymentData['amount'],
+                ]);
+            }
+
             return response()->json([
                 'message' => 'Invoice created successfully',
                 'invoice' => $invoice->load('payment', 'client:id,name')

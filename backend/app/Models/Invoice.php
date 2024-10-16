@@ -13,6 +13,8 @@ class Invoice extends Model
     protected $fillable = [
         'invoice_number',
         'invoice_amount',  
+        'amount',
+        'spent',
         'client_id',
     ];
     public function payment(){

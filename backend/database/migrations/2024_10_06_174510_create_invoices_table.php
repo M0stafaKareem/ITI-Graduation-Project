@@ -16,9 +16,9 @@ return new class extends Migration
             $table->timestamps();
             $table->string('invoice_number');
             $table->integer('invoice_amount');
-            $table->softDeletes();
-            
-            
+            $table->softDeletes();  
+            $table->integer(column: 'amount');
+            $table->integer(column: 'spent'); 
         });
     }
 
