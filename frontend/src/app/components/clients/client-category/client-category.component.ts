@@ -104,6 +104,7 @@ export class ClientCategoryComponent {
     return new Promise((resolve) => {
       this.clientSerivce.insertCategory(newCategory).subscribe({
         next: (data) => {
+          this.paginatedCategories?.push(data);
           this.toaster.success('Added new category', 'Success');
           resolve(true);
         },
@@ -170,14 +171,7 @@ export class ClientCategoryComponent {
   submitForm = async (categoryData: ClientCategory) => {
     if (this.formType === 'Add') {
       if (this.form.valid) {
-        this.addNewCategory(categoryData).then((result) => {
-          if (result) {
-            this.categories?.push({
-              ...categoryData,
-              id: this.categories.length,
-            });
-          }
-        });
+        this.addNewCategory(categoryData);
       } else {
         this.form.markAllAsTouched();
         return;
@@ -226,7 +220,7 @@ export class ClientCategoryComponent {
       this.loading = true;
       this.clientSerivce.deleteCategory(categoryId).subscribe({
         next: () => {
-          this.categories = this.categories?.filter(
+          this.paginatedCategories = this.paginatedCategories?.filter(
             (category: ClientCategory) => category.id !== categoryId
           );
 

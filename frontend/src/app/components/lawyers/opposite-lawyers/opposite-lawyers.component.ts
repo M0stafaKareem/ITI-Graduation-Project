@@ -146,6 +146,7 @@ export class OppositeLawyersComponent {
     return new Promise((resolve) => {
       this.oppositeLawyerService.insertOppositeLawyer(newLawyer).subscribe({
         next: (data) => {
+          this.paginatedOppositeLawyers?.push(data);
           this.toaster.success(' Added Successfully!');
           resolve(true);
         },
@@ -186,13 +187,7 @@ export class OppositeLawyersComponent {
   submitForm = async (lawyerData: Lawyers) => {
     if (this.formType === 'Add') {
       if (this.form.valid) {
-        this.addNewOppositeLawyer(lawyerData).then((result) => {
-          if (result) {
-            this.lawyers?.push(lawyerData);
-          } else {
-            console.log('failed to add Category');
-          }
-        });
+        this.addNewOppositeLawyer(lawyerData);
       } else {
         this.form.markAllAsTouched();
         return;
@@ -243,7 +238,7 @@ export class OppositeLawyersComponent {
         next: () => {
           console.log('deleting');
 
-          this.lawyers = this.lawyers?.filter(
+          this.paginatedOppositeLawyers = this.paginatedOppositeLawyers?.filter(
             (lawyer: Lawyers) => lawyer.id !== lawyerId
           );
 
