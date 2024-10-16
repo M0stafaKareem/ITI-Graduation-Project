@@ -1,0 +1,16 @@
+<div class="mailbox-container">
+  <h1>Mailbox</h1>
+  <div *ngFor="let mail of mails" class="mail-item">
+    <div class="d-flex flex-column">
+      <h3>{{ mail.subject }}</h3>
+      <p>
+        <strong>From:</strong> {{ mail.name }} (<a
+          href="mailto:{{ mail.email }}"
+          >{{ mail.email }}</a
+        >)
+      </p>
+      <p>{{ mail.message }}</p>
+    </div>
+    <button class="send-btn" (click)="toggleResponseForm()">Respond</button>
+  </div>
+</div>
