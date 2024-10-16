@@ -16,6 +16,7 @@ import { Session } from '../../../shared/models/session.model';
 import { NgIf } from '@angular/common';
 import { CaseSessionService } from '../../../shared/services/case-session.service';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-case-details',
@@ -48,12 +49,16 @@ export class CaseDetailsComponent {
   formHeader: string = 'Add New Category';
   upaddingSessionId?: number;
   newSessionInputRows!: inputType[];
+  form: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
     private caseSession: CaseSessionService,
-    private toaster: ToastrService
-  ) {}
+    private toaster: ToastrService,
+    private fb: FormBuilder
+  ) {
+    this.form = this.fb.group({});
+  }
 
   ngOnInit(): void {
     const resolvedData = this.route.snapshot.data['case'];
@@ -95,6 +100,17 @@ export class CaseDetailsComponent {
     });
   }
 
+  validations(targetCase?: Session) {
+    this.form = this.fb.group({
+      id: [targetCase?.session_number || '', Validators.required],
+      case_id: [this.route.snapshot.params['id'] || '', Validators.required],
+      session_date: [targetCase?.session_date || '', Validators.required],
+      happened: [targetCase?.happened || '', Validators.required],
+      requirements: [targetCase?.requirements || '', Validators.required],
+      court_decision: [targetCase?.court_decision || '', Validators.required],
+    });
+  }
+
   toggleFormVisibility = (sessionId?: number) => {
     this.upaddingSessionId = sessionId;
     const targetSession = this.sessions?.find(
@@ -107,6 +123,7 @@ export class CaseDetailsComponent {
       this.formHeader = 'Add Session';
       this.formType = 'Add';
     }
+    this.validations(targetSession);
     this.newSessionInputRows = [
       {
         backed_key: 'id',
@@ -151,29 +168,35 @@ export class CaseDetailsComponent {
 
   submitForm = async (sessionData: Session) => {
     if (this.formType === 'Add') {
-      this.addNewSession(sessionData).then((result) => {
-        if (result) {
-          this.sessions?.push(sessionData);
-        } else {
-          console.log('failed to add Category');
-        }
-      });
-    } else if (this.formType === 'Update') {
-      await this.updateSession(this.upaddingSessionId!, sessionData).then(
-        (result) => {
+      if (this.form.valid) {
+        this.addNewSession(sessionData).then((result) => {
           if (result) {
-            this.sessions = this.sessions?.map((item) => {
-              if (item.id == this.upaddingSessionId) {
-                console.log(sessionData);
-                return sessionData;
-              }
-              return item;
-            });
-          } else {
-            console.log('failed to update session');
+            this.sessions?.push(sessionData);
           }
-        }
-      );
+        });
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
+    } else if (this.formType === 'Update') {
+      if (this.form.valid) {
+        await this.updateSession(this.upaddingSessionId!, sessionData).then(
+          (result) => {
+            if (result) {
+              this.sessions = this.sessions?.map((item) => {
+                if (item.id == this.upaddingSessionId) {
+                  console.log(sessionData);
+                  return sessionData;
+                }
+                return item;
+              });
+            }
+          }
+        );
+      } else {
+        this.form.markAllAsTouched();
+        return;
+      }
     }
     this.toggleFormVisibility();
   };
