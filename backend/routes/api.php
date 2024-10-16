@@ -20,6 +20,7 @@ use App\Http\Controllers\OpposingLawyerController;
 use App\Http\Controllers\lawyerController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\GuestApplicationController;
 
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -57,6 +58,7 @@ Route::apiResource('CaseGrades', CaseGradeController::class);
 Route::apiResource('parties', PartyController::class);
 Route::apiResource('CasesParties', CasesPartiesController::class);
 Route::apiResource('Cases',CaseController::class);
+Route::apiResource('Guest-Application',GuestApplicationController::class);
 
 Route::apiResource('Clients', ClientsController::class);
 Route::get('/Clients-with-invoices', [App\Http\Controllers\ClientsController::class, 'getClientsWithInvoices']);
