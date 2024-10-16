@@ -5,8 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './mail.component.html',
-  styleUrl: './mail.component.css'
+  styleUrl: './mail.component.css',
 })
-export class MailComponent {
-
-}
+export class MailComponent {}

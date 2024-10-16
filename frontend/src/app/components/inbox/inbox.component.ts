@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { MailComponent } from './mail/mail.component';
 import { CommonModule } from '@angular/common';
+import { ConfirmApplicationService } from './confirm-application.service';
 
-interface Mail {
+export interface Mail {
   name: string;
   email: string;
   subject: string;
@@ -17,6 +18,8 @@ interface Mail {
   styleUrl: './inbox.component.css',
 })
 export class InboxComponent {
+  constructor(private mailService: ConfirmApplicationService) {}
+
   mails: Mail[] = [
     {
       name: 'John Doe',
@@ -31,6 +34,17 @@ export class InboxComponent {
       message: 'The project is on track for delivery next week.',
     },
   ];
+
+  ngOnInit() {
+    this.mailService.getAllApplications().subscribe({
+      next: (applications) => {
+        this.mails = applications;
+      },
+      error: (error) => {
+        console.error('Error fetching applications:', error);
+      },
+    });
+  }
 
   toggleResponseForm() {}
 }

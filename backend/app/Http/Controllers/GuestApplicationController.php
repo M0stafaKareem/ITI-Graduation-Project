@@ -107,25 +107,26 @@ class GuestApplicationController extends Controller
 
     public function SendEmail(Request $request)
     {
-        try{
-            
+        try {
+
             $request->validate([
-                
-                "email"=>"required|email",
-                "message"=>"required",
-               
+
+                "email" => "required|email",
+                "message" => "required",
+
             ]);
 
 
             Mail::to($request->email)->send(new ApplicationConfirmation($request->message));
             return response()->json(['message' => 'Email Sent successfully.']);
-
-        }catch(ValidationException $e) {
-            return response()->
-            json(['message'=> 'validaition failed ' 
-              ,'errors'=> $e->errors()], 404);
-        }catch (\Exception $e) {
-            return response()->json(['error'=> 'application not updated '] , 404);
+        } catch (ValidationException $e) {
+            return response()->json([
+                    'message' => 'validaition failed ',
+                    'errors' => $e->errors()
+                ], 404);
+        } catch (\Exception $e) {
+            dd($e);
+            return response()->json(['error' => 'application not sent '], 404);
         }
     }
 }

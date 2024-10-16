@@ -11,6 +11,7 @@ use Illuminate\Queue\SerializesModels;
 
 class ApplicationConfirmation extends Mailable
 {
+    protected $data;
     use Queueable, SerializesModels;
 
     /**
@@ -18,7 +19,7 @@ class ApplicationConfirmation extends Mailable
      */
     public function __construct($data)
     {
-        $this->data= $data;
+        $this->data = $data;
     }
 
     /**
@@ -37,7 +38,8 @@ class ApplicationConfirmation extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'email.Application-Confirmation',
+            view: 'emails.Application-Confirmation',
+            with: ['data' => $this->data],
         );
     }
 
