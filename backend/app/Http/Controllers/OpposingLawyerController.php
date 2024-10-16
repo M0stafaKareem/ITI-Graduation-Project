@@ -43,8 +43,8 @@ class OpposingLawyerController extends Controller
             'address' => 'required',
         ]);
 
-        OpposingLawyer::create($request->all());
-        return response()->json(['message' => 'Opposing Lawyer created successfully.']);
+        $opposingLawyer = OpposingLawyer::create($request->all());
+        return response()->json($opposingLawyer);
     }
 
     /**

@@ -35,9 +35,9 @@ class TaskController extends Controller
                 'due_date' => 'required',
 
             ]);
-            Task::create($request->all());
+            $task =  Task::create($request->all());
 
-            return response()->json(['message' => 'task created successfully.']);
+            return response()->json($task);
         } catch (ValidationException $e) {
             return response()->json([
                     'message' => 'validaition failed ',
