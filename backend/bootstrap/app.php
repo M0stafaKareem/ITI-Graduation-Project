@@ -22,12 +22,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         //
-    })->withCommands([
-        \App\Console\Commands\DailyEventReminder::class,
-        
-    ])->withSchedule(function ( $scheduler) {
-        $scheduler->command('events:reminder')->dailyAt( '15:03');
-
+    })->withSchedule( function ($schedule) {
+        $schedule->command('events:reminder')->everySecond();
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

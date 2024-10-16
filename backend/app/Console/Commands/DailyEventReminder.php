@@ -16,14 +16,18 @@ class DailyEventReminder extends Command
 
     public function handle()
     {
-        $today = today();
-        $tomorrow = $today->addDay();
+        //console log
+        //console log
+        $console = new \Symfony\Component\Console\Output\ConsoleOutput( );
+        $console->write('Sending email reminders for upcoming events...');
+        // $today = today();
+        // $tomorrow = $today->addDay();
 
-        $events = Event::whereBetween('start', [$today, $tomorrow])->get();
+        // $events = Event::whereBetween('start', [$today, $tomorrow])->get();
 
-        foreach ($events as $event) {
-            // Send email reminder for the event
-            Mail::to(user::all())->send(new EventReminder($event));
-        }
+        // foreach ($events as $event) {
+        //     // Send email reminder for the event
+        //     Mail::to(user::all())->send(new EventReminder($event));
+        // }
     }
 }

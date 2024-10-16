@@ -49,7 +49,7 @@ class ClientsController extends Controller
                 "gender"=> "required",
                 "address"=> "required",
                 "description"=> "required",
-                "client_category"=> "required",
+                "client_category_id"=> "required",
             ]);
             $client_category = ClientCategory::find($request->client_category);
             if (!$client_category) {
