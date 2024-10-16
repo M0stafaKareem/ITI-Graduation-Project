@@ -30,6 +30,7 @@ class ExpenseController extends Controller
         $request->validate([
             'expense_name' => 'required',
             'amount' => 'required',
+            'budget_id' => 'required',
         ]);
         $request = Expense::create($request->all());
         return response()->json(['message' => 'expense created successfully' ],200);
@@ -62,6 +63,7 @@ class ExpenseController extends Controller
             $request->validate([
                 'expense_name' => 'required',
                 'amount' => 'required',
+                'budget_id' => 'required',
             ]);
             $expense = Expense::findOrFail($id);
             $expense->update($request->all());

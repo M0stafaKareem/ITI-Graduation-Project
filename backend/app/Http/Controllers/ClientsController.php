@@ -9,6 +9,7 @@ use App\Models\Country;
 use App\Models\state;
 use Illuminate\Http\Request;
 use App\Models\Invoice;
+use Illuminate\Validation\ValidationData;
 
 class ClientsController extends Controller
 {
@@ -67,7 +68,17 @@ class ClientsController extends Controller
 
         $Client = Client::create($request->all());
 
-        return $Client;
+            return $Client;
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->
+            json(['message'=> 'validaition failed' 
+              ,'errors'=> $e->errors()], 404);
+            
+        }
+        catch (\Exception $e) {
+            return response()->json(['error'=> 'event not created '] , 404);
+        }
     }
 
     public function show($id)

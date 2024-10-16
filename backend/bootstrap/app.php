@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->api(prepend: [
-            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            
         ]);
 
         $middleware->alias([
@@ -22,6 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         //
+    })->withSchedule( function ($schedule) {
+        
+    
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
