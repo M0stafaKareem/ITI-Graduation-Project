@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use Illuminate\Http\Request;
 use App\Models\Payment;
 use Illuminate\Validation\ValidationException;
@@ -41,7 +42,23 @@ class PaymentController extends Controller
                 'description' => 'required',
                 'invoice_id' => 'nullable',
             ]); 
-            $payment = Payment::create($request->all());
+            $invoice=Invoice::findOrFail($request->invoice_id);
+            $payment=Payment::create($request->all());
+            $newSpent = $invoice->spent+$request->amount;
+            $invoice->save();
+            if ($newSpent > $invoice->invoice_amount)
+            {
+                return response()->
+                json(['message' => 'invoice amonut exceeded.'], 400);
+            }
+            $invoice->update(['spent' => $newSpent]);
+
+            $payment->save();
+            $invoice->save();
+
+
+            // $payment = Payment::create($request->all());
+
             return response()->
             json($payment,200);
         }catch(ValidationException $e){
@@ -110,6 +127,6 @@ class PaymentController extends Controller
     $payments = Payment::with('invoice')->get();
 
     return response()->json($payments);
-}
+}   
 
 }

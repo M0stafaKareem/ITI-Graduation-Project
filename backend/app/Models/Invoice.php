@@ -12,7 +12,8 @@ class Invoice extends Model
     use HasFactory;
     protected $fillable = [
         'invoice_number',
-        'invoice_amount',  
+        'invoice_amount', 
+        'spent', 
         'client_id',
     ];
     public function payment(){

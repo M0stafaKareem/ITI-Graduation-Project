@@ -68,7 +68,8 @@ class ClientsController extends Controller
 
         $Client = Client::create($request->all());
 
-            return $Client;
+           try 
+           { return $Client;
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->

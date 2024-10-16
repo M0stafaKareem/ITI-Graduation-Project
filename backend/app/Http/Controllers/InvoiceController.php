@@ -27,11 +27,11 @@ class InvoiceController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->validate([
+            $validated= $request->validate([
                 'client_id' => 'required|exists:clients,id',
                 'invoice_number' => 'required',
                 'invoice_amount'=> 'required',
-                
+                'spent'=>'required'
                         ]);
            
 
@@ -39,10 +39,8 @@ class InvoiceController extends Controller
                 'client_id' => $request->client_id,
                 'invoice_number' => $request->invoice_number,
                 'invoice_amount' => $request->invoice_amount,
-            ]);
-      
-            
-        
+                'spent'=>$request->spent
+            ]);        
             return response()->json([
                 'message' => 'Invoice created successfully',
                 'invoice' => $invoice->load('payment', 'client:id,name')
