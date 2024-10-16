@@ -16,10 +16,10 @@ class GuestApplicationController extends Controller
      */
     public function index()
     {
-        try{
+        try {
             return GuestApplication::all();
-        }catch (\Exception $e) {
-            return response()->json(['error'=> 'application not found '] , 404); 
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'application not found '], 404);
         }
     }
 
@@ -28,39 +28,39 @@ class GuestApplicationController extends Controller
      */
     public function store(Request $request)
     {
-        try{
+        try {
 
             $request->validate([
-                "name"=>"required",
-                "email"=>"required|email",
-                "message"=>"required",
-                "subject"=>"required"
-               
-            ]);
-    
-            GuestApplication::create($request->all());
-            return response()->json(['message' => 'application created successfully.']);
+                "name" => "required",
+                "email" => "required|email",
+                "message" => "required",
+                "subject" => "required"
 
-        }catch (ValidationException $e) {
-            return response()->
-            json(['message'=> 'validaition failed' 
-              ,'errors'=> $e->errors()], 404);
-        }catch (\Exception $e) {
-            return response()->json(['error'=> 'application not created '] , 404);
+            ]);
+
+            $response = GuestApplication::create($request->all());
+            return response()->json($response);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'validaition failed',
+                'errors' => $e->errors()
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'application not created '], 404);
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show( $id)
+    public function show($id)
     {
-        try{
+        try {
 
             $application = GuestApplication::findOrFail($id);
             return $application;
-        }catch (\Exception $e) {
-            return response()->json(['error'=> 'application not found '] , 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'application not found '], 404);
         }
     }
 
@@ -69,24 +69,24 @@ class GuestApplicationController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        try{
-            
+        try {
+
             $request->validate([
-                "name"=>"required",
-                "email"=>"required|email",
-                "message"=>"required",
-                "subject"=>"required"
+                "name" => "required",
+                "email" => "required|email",
+                "message" => "required",
+                "subject" => "required"
             ]);
             $application = GuestApplication::findOrFail($id);
             $application->update($request->all());
             return response()->json(['message' => 'application updated successfully.']);
-
-        }catch(ValidationException $e) {
-            return response()->
-            json(['message'=> 'validaition failed ' 
-              ,'errors'=> $e->errors()], 404);
-        }catch (\Exception $e) {
-            return response()->json(['error'=> 'application not updated '] , 404);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'validaition failed ',
+                'errors' => $e->errors()
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'application not updated '], 404);
         }
     }
 
@@ -95,14 +95,14 @@ class GuestApplicationController extends Controller
      */
     public function destroy(string $id)
     {
-        try{
+        try {
 
             $application = GuestApplication::findOrFail($id);
             $application->delete();
             return response()->json(['message' => 'application deleted successfully.']);
-     }  catch (\Exception $e) {
-        return response()->json(['error'=> 'application not deleted '] , 404);
-     } 
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'application not deleted '], 404);
+        }
     }
 
     public function SendEmail(Request $request)
