@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\GuestApplication;
 use Illuminate\Validation\ValidationException;
+use Mail;
+use App\Mail\ApplicationConfirmation;
 
 class GuestApplicationController extends Controller
 {
@@ -101,5 +103,29 @@ class GuestApplicationController extends Controller
      }  catch (\Exception $e) {
         return response()->json(['error'=> 'application not deleted '] , 404);
      } 
+    }
+
+    public function SendEmail(Request $request)
+    {
+        try{
+            
+            $request->validate([
+                
+                "email"=>"required|email",
+                "message"=>"required",
+               
+            ]);
+
+
+            Mail::to($request->email)->send(new ApplicationConfirmation($request->message));
+            return response()->json(['message' => 'Email Sent successfully.']);
+
+        }catch(ValidationException $e) {
+            return response()->
+            json(['message'=> 'validaition failed ' 
+              ,'errors'=> $e->errors()], 404);
+        }catch (\Exception $e) {
+            return response()->json(['error'=> 'application not updated '] , 404);
+        }
     }
 }
