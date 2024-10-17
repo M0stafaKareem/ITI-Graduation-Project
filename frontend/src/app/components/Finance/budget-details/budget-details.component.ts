@@ -58,6 +58,7 @@ export class BudgetDetailsComponent {
     private activatedRoute: ActivatedRoute,
     private toaster: ToastrService
   ) {}
+
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: Params) => {
       this.budgetId = params['id'];
@@ -98,7 +99,12 @@ export class BudgetDetailsComponent {
   initializeData() {
     this.expenseService.apiGetExpensesByBudgetId(this.budgetId).subscribe({
       next: (budget: apiBudget) => {
-        this.budget = budget;
+        let spent = 0;
+        budget.expenses?.forEach((budget) => {
+          spent += budget.amount;
+        });
+        this.budget = { ...budget, spent: spent };
+
         this.expenses = budget.expenses!.map((item: apiExpense) => {
           return { ...item, budget_name: budget.budget_name };
         });

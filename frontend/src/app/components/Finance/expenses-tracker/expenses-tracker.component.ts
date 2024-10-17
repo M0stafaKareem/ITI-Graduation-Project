@@ -56,10 +56,19 @@ export class ExpensesTrackerComponent implements OnInit {
     private toaster: ToastrService
   ) {}
 
-  ngOnInit(): void {
+  initializeData() {
     this.budgetService.apiGetBudgets().subscribe({
       next: (data: apiBudget[]) => {
-        this.budgets = data;
+        this.budgets = data.map((item) => {
+          let spent = 0;
+          item.expenses?.forEach((item) => {
+            spent += item.amount;
+          });
+          return {
+            ...item,
+            spent: spent,
+          };
+        });
         this.budgetCategories = this.budgets.map((item) => {
           return {
             id: item.id,
@@ -94,6 +103,10 @@ export class ExpensesTrackerComponent implements OnInit {
     });
   }
 
+  ngOnInit(): void {
+    this.initializeData();
+  }
+
   addBudget() {
     const budget: apiBudget = {
       id: uuidv4(),
@@ -105,6 +118,7 @@ export class ExpensesTrackerComponent implements OnInit {
       if (!res.message) {
         this.budgets.push(res);
         this.buildBudgetCards(this.budgets);
+        this.initializeData();
         this.budgetCategories = this.budgets.map((item) => {
           return {
             id: item.id,
@@ -138,6 +152,7 @@ export class ExpensesTrackerComponent implements OnInit {
           this.expenseTableData = this.expenseService.buildExpenseTable(
             this.expenses
           );
+          this.initializeData();
           this.toaster.success(
             expense.expense_name + ' Created Successfully',
             'DONE'
@@ -155,6 +170,7 @@ export class ExpensesTrackerComponent implements OnInit {
     this.expenseService.apiDeleteExpenseById(data.id).subscribe((res) => {
       if (res.message === 'expense deleted successfully.') {
         this.toaster.success(`${data.name} Deleted Successfully`, 'Success');
+        this.initializeData();
         this.expenses = this.expenses.filter((exp) => exp.id !== data.id);
         this.expenseTableData = this.expenseTableData.filter(
           (exp) => exp.id !== data.id
