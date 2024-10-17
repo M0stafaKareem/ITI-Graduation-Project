@@ -30,7 +30,7 @@ export class TodoListComponent {
           name: user.name,
           avatar:
             user.avatar ||
-            `assets/users/user-${Math.floor(Math.random() * 6) + 1}.jpg`,
+            `assets/users/office-man.png`,
         })
       )
     );
