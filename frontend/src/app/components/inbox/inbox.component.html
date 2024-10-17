@@ -1,0 +1,32 @@
+<div class="mailbox-container">
+  <h1>Mailbox</h1>
+  <div *ngFor="let mail of mails" class="mail-item">
+    <div class="mail-body d-flex flex-column">
+      <h3>{{ mail.subject }}</h3>
+      <p>
+        <strong>From:</strong> {{ mail.name }} (<a
+          href="mailto:{{ mail.email }}"
+          >{{ mail.email }}</a
+        >)
+      </p>
+      <p>{{ mail.message }}</p>
+      <button class="delete-btn" (click)="deleteMail(mail.id)">
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </div>
+    <div class="response">
+      <h4 for="response">Enter a Message</h4>
+      <textarea
+        type="text"
+        id="response"
+        [(ngModel)]="enteredResponce[+mail.id]"
+      ></textarea>
+      <button
+        class="send-btn"
+        (click)="respondToMessage(mail.email, enteredResponce[+mail.id])"
+      >
+        > Respond
+      </button>
+    </div>
+  </div>
+</div>

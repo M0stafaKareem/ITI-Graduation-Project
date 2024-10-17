@@ -131,6 +131,7 @@ export class ClientsComponent implements OnInit {
     return new Promise((resolve) => {
       this.clientsService.insertClient(newClient).subscribe({
         next: (data) => {
+          this.paginatedClients?.push(data);
           this.toaster.success('Client added successfully', 'Success!');
           resolve(true);
         },
@@ -174,7 +175,7 @@ export class ClientsComponent implements OnInit {
       name: [targetClient?.name || '', Validators.required],
       country_id: [targetClient?.country_id || '', Validators.required],
       city_id: [targetClient?.city_id || '', Validators.required],
-      client_category: [
+      client_category_id: [
         targetClient?.client_category_id || '',
         Validators.required,
       ],
@@ -195,6 +196,8 @@ export class ClientsComponent implements OnInit {
     const targetClient = this.paginatedClients?.find(
       (clients) => clients.id == clientId
     );
+    console.log(targetClient);
+
     if (clientId && targetClient) {
       this.formHeader = 'Update Client';
       this.formType = 'Update';
@@ -231,7 +234,7 @@ export class ClientsComponent implements OnInit {
         value: targetClient ? '' + targetClient.city_id : undefined,
       },
       {
-        backed_key: 'client_category',
+        backed_key: 'client_category_id',
         title: 'Client Category',
         type: 'select',
         options: this.clientCategories?.map((item) => {
@@ -273,7 +276,7 @@ export class ClientsComponent implements OnInit {
           { id: '0', value: 'Male' },
           { id: '1', value: 'Female' },
         ],
-        value: targetClient ? targetClient.gender : undefined,
+        value: targetClient ? '' + targetClient.gender : undefined,
       },
       {
         backed_key: 'address',
@@ -346,7 +349,7 @@ export class ClientsComponent implements OnInit {
       this.loading = true;
       this.clientsService.deleteClient(clientId).subscribe({
         next: () => {
-          this.clients = this.clients?.filter(
+          this.paginatedClients = this.paginatedClients?.filter(
             (clientItem: any) => clientItem.id !== clientId
           );
 

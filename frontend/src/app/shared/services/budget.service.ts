@@ -22,7 +22,7 @@ export class BudgetService {
   apiAddBudget(budget: apiBudget) {
     this.spinner.show();
     return this.http
-      .post<{ message: string }>(this.budgetsAPI, budget)
+      .post(this.budgetsAPI, budget)
       .pipe(finalize(() => this.spinner.hide()));
   }
 

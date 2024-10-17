@@ -13,9 +13,9 @@ class BudgetController extends Controller
      */
     public function index()
     {
-        try{
+        try {
             return Budget::with('expenses')->get();
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
@@ -25,23 +25,18 @@ class BudgetController extends Controller
      */
     public function store(Request $request)
     {
-        try{
+        try {
             $request->validate([
                 'budget_name' => 'required',
                 'amount' => 'required',
                 'spent' => 'required',
             ]);
             $request = Budget::create($request->all());
-            return response()
-            ->json(['message' => 'budget created successfully' ],200);
-        }
-        catch(ValidationException $e){
-            return response()->
-            json(['message' => $e->getMessage()], 400);  
-        }
-        catch(\Exception $e){
-            return response()->
-            json(['error' => $e->getMessage()], 500);
+            return response()->json($request);
+        } catch (ValidationException $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -50,10 +45,10 @@ class BudgetController extends Controller
      */
     public function show(string $id)
     {
-        try{
-            $budget = Budget::with('expenses')->findOrFail($id) ;
+        try {
+            $budget = Budget::with('expenses')->findOrFail($id);
             return $budget;
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
@@ -63,23 +58,20 @@ class BudgetController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        try{
+        try {
 
             $request->validate([
                 'budget_name' => 'required',
                 'amount' => 'required',
-                'spent'=> 'required'
+                'spent' => 'required'
             ]);
             $budget = Budget::with('expenses')->findOrFail($id);
             $budget->update($request->all());
-            return response()->
-            json(['message' => 'budget updated successfully.']);
-        }catch(ValidationException $e){
-            return response()->
-            json(['message' => $e->getMessage()], 400);  
-        }catch(\Exception $e){
-            return response()->
-            json(['error' => $e->getMessage()], 500);
+            return response()->json(['message' => 'budget updated successfully.']);
+        } catch (ValidationException $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -88,11 +80,11 @@ class BudgetController extends Controller
      */
     public function destroy(string $id)
     {
-        try{
-        $budget = Budget::with('expenses')->findOrFail($id);
+        try {
+            $budget = Budget::with('expenses')->findOrFail($id);
             $budget->delete();
             return response()->json(['message' => 'budget deleted successfully.']);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

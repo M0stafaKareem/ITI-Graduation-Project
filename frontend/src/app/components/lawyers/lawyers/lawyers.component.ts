@@ -99,12 +99,13 @@ export class LawyersComponent implements OnInit {
     return new Promise((resolve) => {
       this.lawyerService.insertLawyer(newLawyer).subscribe({
         next: (data) => {
+          this.paginatedLawyers?.push(data);
           this.toaster.success('Lawyer added successfully');
           resolve(true);
         },
         error: (error) => {
           this.toaster.error(error.error.message, 'Error!');
-          resolve(true);
+          resolve(false);
         },
       });
     });
@@ -181,13 +182,7 @@ export class LawyersComponent implements OnInit {
   submitForm = async (lawyerData: Lawyers) => {
     if (this.formType === 'Add') {
       if (this.form.valid) {
-        this.addNewLawyer(lawyerData).then((result) => {
-          if (result) {
-            this.lawyers?.push(lawyerData);
-          } else {
-            console.log('failed to add Category');
-          }
-        });
+        this.addNewLawyer(lawyerData);
       } else {
         this.form.markAllAsTouched();
         return;
@@ -235,7 +230,7 @@ export class LawyersComponent implements OnInit {
         next: () => {
           console.log('deleting');
 
-          this.lawyers = this.lawyers?.filter(
+          this.paginatedLawyers = this.paginatedLawyers?.filter(
             (lawyer: Lawyers) => lawyer.id !== lawyerId
           );
 

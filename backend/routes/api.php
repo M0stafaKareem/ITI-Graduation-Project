@@ -20,6 +20,7 @@ use App\Http\Controllers\OpposingLawyerController;
 use App\Http\Controllers\lawyerController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\GuestApplicationController;
 
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -56,61 +57,64 @@ Route::apiResource('CaseCategories', CaseCategoryController::class);
 Route::apiResource('CaseGrades', CaseGradeController::class);
 Route::apiResource('parties', PartyController::class);
 Route::apiResource('CasesParties', CasesPartiesController::class);
-Route::apiResource('Cases',CaseController::class);
+Route::apiResource('Cases', CaseController::class);
+
+Route::apiResource('Guest-Application', GuestApplicationController::class);
+Route::post('confirm-application', [GuestApplicationController::class, 'SendEmail']);
 
 Route::apiResource('Clients', ClientsController::class);
 Route::get('/Clients-with-invoices', [App\Http\Controllers\ClientsController::class, 'getClientsWithInvoices']);
 
-Route::apiResource('ClientCategories',ClientCategoryController::class);
+Route::apiResource('ClientCategories', ClientCategoryController::class);
 
 
 // Countries
-Route::get('/Countries', CountryController::class.'@index');
-Route::get('/Countries/{id}', CountryController::class.'@show');
-Route::get('/Countries/{id}/Cities', CountryController::class.'@City');
+Route::get('/Countries', CountryController::class . '@index');
+Route::get('/Countries/{id}', CountryController::class . '@show');
+Route::get('/Countries/{id}/Cities', CountryController::class . '@City');
 
 // States
-Route::get('/States', StateController::class.'@index');
-Route::get('/States/{id}', StateController::class.'@show');
+Route::get('/States', StateController::class . '@index');
+Route::get('/States/{id}', StateController::class . '@show');
 
 // Cities
-Route::get('/Cities', CityController::class.'@index');
-Route::get('/Cities/{id}', CityController::class.'@show');
+Route::get('/Cities', CityController::class . '@index');
+Route::get('/Cities/{id}', CityController::class . '@show');
 
 // Court 
-Route::apiResource('courts',CourtController::class);
+Route::apiResource('courts', CourtController::class);
 
 //lawyers
-Route::apiResource('lawyers',lawyerController::class);
+Route::apiResource('lawyers', lawyerController::class);
 
 //opposing lawyers
-Route::apiResource('opposinglawyers',OpposingLawyerController::class);
+Route::apiResource('opposinglawyers', OpposingLawyerController::class);
 
 //Tasks for To Do List 
-Route::apiResource('tasks',TaskController::class);
+Route::apiResource('tasks', TaskController::class);
 
 //event route
-Route::apiResource('events',EventController::class);
+Route::apiResource('events', EventController::class);
 
 //session route
 Route::get('/sessions/cases/{caseId}', [App\Http\Controllers\SessionController::class, 'getSessionsByCaseId']);
-Route::apiResource('sessions',App\Http\Controllers\SessionController::class);
+Route::apiResource('sessions', App\Http\Controllers\SessionController::class);
 
 //expense route
-Route::apiResource('expenses',controller: App\Http\Controllers\ExpenseController::class);
+Route::apiResource('expenses', controller: App\Http\Controllers\ExpenseController::class);
 
 //budget controller 
-Route::apiResource('budgets',controller: App\Http\Controllers\BudgetController::class);
+Route::apiResource('budgets', controller: App\Http\Controllers\BudgetController::class);
 
 //payments 
-Route::apiResource('payments',controller: App\Http\Controllers\PaymentController::class);
+Route::apiResource('payments', controller: App\Http\Controllers\PaymentController::class);
 Route::get('/payments-with-invoices-with-clients', [App\Http\Controllers\PaymentController::class, 'indexRecursive']);
 
 //invoices
-Route::apiResource('invoices',controller: App\Http\Controllers\InvoiceController::class);
+Route::apiResource('invoices', controller: App\Http\Controllers\InvoiceController::class);
 
-Route::post('/verify-otp',  [AuthenticatedSessionController::class ,'verificationOtp']) 
-->middleware('guest')
+Route::post('/verify-otp',  [AuthenticatedSessionController::class, 'verificationOtp'])
+    ->middleware('guest')
     ->name('verification.otp');
 
 //client-with-invoices

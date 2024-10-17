@@ -141,7 +141,7 @@ export class CasesComponent implements OnInit {
     const targetCase = this.paginatedCases?.find(
       (clients) => clients.id === caseId
     );
-    if (targetCase) {
+    if (targetCase && caseId) {
       this.formHeader = 'Update Case';
       this.formType = 'Update';
     } else {
@@ -260,7 +260,7 @@ export class CasesComponent implements OnInit {
       if (this.form.valid) {
         this.addNewCase(caseData).then((result) => {
           if (result) {
-            this.cases?.push(caseData);
+            this.paginatedCases?.push(caseData);
           }
         });
       } else {
@@ -316,7 +316,7 @@ export class CasesComponent implements OnInit {
     return new Promise((resolve) => {
       this.caseService.updateCase(caseId, updatedCase).subscribe({
         next: (data) => {
-          this.toaster.success(data.message);
+          this.toaster.success('case updated successfully');
           resolve(true);
         },
         error: (error) => {
@@ -345,7 +345,7 @@ export class CasesComponent implements OnInit {
       this.loading = true;
       this.caseService.deleteCase(caseId).subscribe({
         next: () => {
-          this.cases = this.cases?.filter(
+          this.paginatedCases = this.paginatedCases?.filter(
             (caseItem: Case) => caseItem.id !== caseId
           );
           this.toaster.success('Case deleted successfully');
