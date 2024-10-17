@@ -66,7 +66,9 @@ export type ChartOptions = {
 })
 export class DashboardComponent {
   @ViewChild('chart') chart: ChartComponent | undefined;
-  public chartOptions: Partial<ChartOptions>;
+  public chartOptions: Partial<ChartOptions> = {
+    
+  };
   makeIconColorful(element: HTMLElement, color: string) {
     if (element) {
       // transition:  all ease-in-out  0.7s
@@ -111,82 +113,90 @@ export class DashboardComponent {
     TodoListService.getTodos().subscribe((data) => {
       this.Tasks = data.length;
     });
-
-    this.chartOptions = {
-      series: [
-        {
-          name: 'Expenses',
-          data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 9, 17, 2, 7, 5],
-        },
-      ],
-      chart: {
-        height: 350,
-        type: 'line',
-      },
-      stroke: {
-        width: 7,
-        curve: 'smooth',
-      },
-      xaxis: {
-        type: 'datetime',
-        categories: [
-          '1/11/2000',
-          '2/11/2000',
-          '3/11/2000',
-          '4/11/2000',
-          '5/11/2000',
-          '6/11/2000',
-          '7/11/2000',
-          '8/11/2000',
-          '9/11/2000',
-          '10/11/2000',
-          '11/11/2000',
-          '12/11/2000',
-          '1/11/2001',
-          '2/11/2001',
-          '3/11/2001',
-          '4/11/2001',
-          '5/11/2001',
-          '6/11/2001',
+    this.CasesService.getCases().subscribe((cases) => {
+      const chartData = cases.reduce((acc:any, caseItem) => {
+        const date = new Date(caseItem.first_session_date);
+        const month = date.toLocaleString('default', { month: 'long' });
+        const year = date.getFullYear();
+    
+        if (!acc[year]) {
+          acc[year] = {};
+        }
+    
+        if (!acc[year][month]) {
+          acc[year][month] = 0;
+        }
+    
+        acc[year][month]++;
+    
+        return acc;
+      }, {});
+    
+      const seriesData:any = [];
+      const categories:any = [];
+    
+      Object.keys(chartData).forEach((year) => {
+        Object.keys(chartData[year]).forEach((month) => {
+          seriesData.push(chartData[year][month]);
+          categories.push(`${month} ${year}`);
+        });
+      });
+    
+      this.chartOptions = {
+        series: [
+          {
+            name: 'Cases',
+            data: seriesData,
+          },
         ],
-      },
-      title: {
-        text: 'Traffic Sources',
-        align: 'left',
-        style: {
-          fontSize: '16px',
-          color: '#666',
+        chart: {
+          height: 350,
+          type: 'line',
         },
-      },
-      fill: {
-        type: 'gradient',
-        gradient: {
-          shade: 'dark',
-          gradientToColors: ['#FDD835'],
-          shadeIntensity: 1,
-          type: 'horizontal',
-          opacityFrom: 1,
-          opacityTo: 1,
-          stops: [0, 100, 100, 100],
+        xaxis: {
+          type: 'datetime',
+          categories,
         },
-      },
-      markers: {
-        size: 4,
-        colors: ['#FFA41B'],
-        strokeColors: '#fff',
-        strokeWidth: 2,
-        hover: {
-          size: 7,
-        },
-      },
-      yaxis: {
-        min: -10,
-        max: 40,
         title: {
-          text: 'Engagement',
+          text: 'Traffic Sources',
+          align: 'left',
+          style: {
+            fontSize: '16px',
+            color: '#666',
+          },
         },
-      },
-    };
+        fill: {
+          type: 'gradient',
+          gradient: {
+            shade: 'dark',
+            gradientToColors: ['#FDD835'],
+            shadeIntensity: 1,
+            type: 'horizontal',
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 100, 100, 100],
+          },
+        },
+        markers: {
+          size: 4,
+          colors: ['#FFA41B'],
+          strokeColors: '#fff',
+          strokeWidth: 2,
+          hover: {
+            size: 7,
+          },
+        },
+        yaxis: {
+          min: -10,
+          max: 40,
+          title: {
+            text: 'Engagement',
+          },
+        },
+      };
+    });
+
+    
   }
   ngOnInit(): void {
     setTimeout(() => {

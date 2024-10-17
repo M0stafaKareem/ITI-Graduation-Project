@@ -18,7 +18,7 @@ class CasesSeeder extends Seeder
                 'first_session_date' => $faker->date(),
                 'case_category_id' => $faker->numberBetween(1, 10),
                 'case_grade_id' => $faker->numberBetween(1, 5),
-                'client_id' => $faker->numberBetween(1, 20),
+                'client_id' => 1,
                 'court_id' => $faker->numberBetween(1, 5),
                 'lawyer_id' => $faker->numberBetween(1, 10),
                 'opposing_lawyer_id' => $faker->numberBetween(1, 10),
