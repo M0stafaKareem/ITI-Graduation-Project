@@ -14,9 +14,9 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        try{
+        try {
             return Expense::all();
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
@@ -26,30 +26,30 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
-        try{
-        $request->validate([
-            'expense_name' => 'required',
-            'amount' => 'required',
-            'budget_id' => 'required',
-        ]);
-        $request = Expense::create($request->all());
-        return response()->json(['message' => 'expense created successfully' ],200);
-    }catch(ValidationException $e){
-        return response()->json(['message' => $e->getMessage()], 400);  
-    }catch(\Exception $e){
-        return response()->json(['error' => $e->getMessage()], 500);
-    } 
+        try {
+            $request->validate([
+                'expense_name' => 'required',
+                'amount' => 'required',
+                'budget_id' => 'required',
+            ]);
+            $request = Expense::create($request->all());
+            return response()->json(['message' => 'expense created successfully'], 200);
+        } catch (ValidationException $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        try{
+        try {
 
-            $expense = Expense::findOrFail($id) ;
+            $expense = Expense::findOrFail($id);
             return $expense;
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json(['error' => 'expense not found'], 404);
         }
     }
@@ -59,7 +59,7 @@ class ExpenseController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        try{
+        try {
             $request->validate([
                 'expense_name' => 'required',
                 'amount' => 'required',
@@ -68,9 +68,9 @@ class ExpenseController extends Controller
             $expense = Expense::findOrFail($id);
             $expense->update($request->all());
             return response()->json(['message' => 'expense updated successfully.']);
-        }catch(ValidationException $e){
-            return response()->json(['message' => $e->getMessage()], 400);  
-        }catch(\Exception $e){
+        } catch (ValidationException $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -80,11 +80,11 @@ class ExpenseController extends Controller
      */
     public function destroy(string $id)
     {
-        try{
+        try {
             $expense = Expense::findOrFail($id);
             $expense->delete();
             return response()->json(['message' => 'expense deleted successfully.']);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

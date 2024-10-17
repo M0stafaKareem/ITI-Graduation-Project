@@ -16,7 +16,6 @@ class ClientsSeeder extends Seeder
             DB::table('clients')->insert([
                 'name' => $faker->firstName() . ' ' . $faker->lastName(),
                 'country_id' => $faker->numberBetween(1, 5),
-                'state_id' => $faker->numberBetween(1, 5),
                 'city_id' => $faker->numberBetween(1, 10),
                 'client_category_id' => $faker->numberBetween(1, 5),
                 'role' => $faker->randomElement(['Defendant', 'Plaintiff', 'Accused', 'Victim', 'Witness', 'Other']),

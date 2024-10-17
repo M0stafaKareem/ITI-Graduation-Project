@@ -19,7 +19,7 @@
 .mail-item {
   background: white;
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: space-between;
   border-radius: 8px;
   padding: 1.6vw;
@@ -56,6 +56,36 @@
 
 .mail-item a:hover {
   text-decoration: underline;
+}
+
+.mail-body {
+  flex: 3;
+}
+.response {
+  padding-left: 20px;
+  padding-block: 20px;
+  border-left: 4px solid #ccc;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.3vh;
+}
+
+.delete-btn {
+  border: none;
+  outline: none;
+  align-self: end;
+  color: rgba(255, 0, 0, 0.7);
+  background-color: transparent;
+  font-size: 1.8em;
+  margin-top: 1vh;
+  margin-right: 2vw;
+  transition: all 0.1s ease-in-out;
+  /* max-width: 30px; */
+}
+.delete-btn:hover {
+  transform: scale(1.3);
 }
 
 .send-btn {
