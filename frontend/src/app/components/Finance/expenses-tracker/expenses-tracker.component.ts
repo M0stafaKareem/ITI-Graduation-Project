@@ -101,10 +101,17 @@ export class ExpensesTrackerComponent implements OnInit {
       amount: parseInt(this.budgetForm.value.budget),
       spent: 0,
     };
-    this.budgetService.apiAddBudget(budget).subscribe((res) => {
-      if (res.message === 'budget created successfully') {
-        this.budgets.push(budget);
+    this.budgetService.apiAddBudget(budget).subscribe((res: any) => {
+      if (!res.message) {
+        this.budgets.push(res);
         this.buildBudgetCards(this.budgets);
+        this.budgetCategories = this.budgets.map((item) => {
+          return {
+            id: item.id,
+            name: item.budget_name,
+            color: 'red',
+          };
+        });
         this.budgetForm.reset();
       } else {
         this.toaster.error(res.message, 'Failed');

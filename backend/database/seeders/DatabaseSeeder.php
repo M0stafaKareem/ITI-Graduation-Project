@@ -23,9 +23,9 @@ class DatabaseSeeder extends Seeder
             ClientsSeeder::class,
             CasesSeeder::class,
             CsessionsSeeder::class,
-            CasesPartiesSeeder::class,
             BudgetSeeder::class,
             ExpenseSeeder::class,
+            CasesPartiesSeeder::class,
         ]);
     }
 }

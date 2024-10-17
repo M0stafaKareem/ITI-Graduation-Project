@@ -16,17 +16,20 @@ class BudgetSeeder extends Seeder
             [
                 'budget_name' => 'Marketing',
                 'amount' => 10000,
+                'spent' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'budget_name' => 'Development',
                 'amount' => 20000,
+                'spent' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'budget_name' => 'Operations',
+                'spent' => 0,
                 'amount' => 9000,
                 'created_at' => now(),
                 'updated_at' => now(),

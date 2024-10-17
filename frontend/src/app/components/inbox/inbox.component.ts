@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { MailComponent } from './mail/mail.component';
 import { CommonModule } from '@angular/common';
 import { ConfirmApplicationService } from './confirm-application.service';
+import { ToastrService } from 'ngx-toastr';
+import { FormsModule } from '@angular/forms';
 
 export interface Mail {
+  id: string;
   name: string;
   email: string;
   subject: string;
@@ -13,28 +15,18 @@ export interface Mail {
 @Component({
   selector: 'app-inbox',
   standalone: true,
-  imports: [MailComponent, CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './inbox.component.html',
   styleUrl: './inbox.component.css',
 })
 export class InboxComponent {
-  constructor(private mailService: ConfirmApplicationService) {}
+  constructor(
+    private mailService: ConfirmApplicationService,
+    private toaster: ToastrService
+  ) {}
 
-  mails: Mail[] = [
-    {
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      subject: 'Meeting Reminder',
-      message: 'Just a reminder about our meeting tomorrow at 10 AM.',
-    },
-    {
-      name: 'Jane Smith',
-      email: 'jane.smith@example.com',
-      subject: 'Project Update',
-      message: 'The project is on track for delivery next week.',
-    },
-  ];
-
+  mails: Mail[] = [];
+  enteredResponce: string[] = [];
   ngOnInit() {
     this.mailService.getAllApplications().subscribe({
       next: (applications) => {
@@ -46,5 +38,26 @@ export class InboxComponent {
     });
   }
 
-  toggleResponseForm() {}
+  respondToMessage(email: string, message: string): void {
+    this.mailService.sendResponse({ email, message }).subscribe({
+      next: () => {
+        this.toaster.success('Response sent successfully');
+        this.enteredResponce = [];
+      },
+      error: (error) => {
+        this.toaster.error('Failed to send response');
+      },
+    });
+  }
+  deleteMail(applicationId: string) {
+    this.mailService.deleteApplication(applicationId).subscribe({
+      next: () => {
+        this.toaster.success('Application deleted successfully');
+        this.mails = this.mails.filter((mail) => mail.id !== applicationId);
+      },
+      error: (error) => {
+        this.toaster.error('Failed to delete application');
+      },
+    });
+  }
 }
